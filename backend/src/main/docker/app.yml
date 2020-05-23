@@ -1,0 +1,8 @@
+version: '2'
+services:
+  sgl-app:
+    image: sgl
+  sgl-mysql:
+    extends:
+      file: mysql.yml
+      service: sgl-mysql
