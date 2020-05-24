@@ -9,9 +9,7 @@ spring:
     database: MYSQL
     show-sql: true
     hibernate:
-      ddl-auto: update
-      naming:
-        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+      ddl-auto: none
   liquibase:
     change-log: classpath:db/master.xml
 #    drop-first: true
