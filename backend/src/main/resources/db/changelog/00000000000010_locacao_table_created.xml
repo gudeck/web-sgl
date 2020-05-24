@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+
+    <property name="autoIncrement" value="true"/>
+
+    <changeSet id="00000000000001" author="gudeck">
+        <createTable tableName="LOCACAO">
+            <column name="ID" type="BIGINT" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="DATA_LOCACAO" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DATA_DEVOLUCAO_PREVISTA" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DATA_DEVOLUCAO" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VALOR" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="MULTA" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ID_ITEM" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="FK_LOCACAO_ITEM" references="ITEM(ID)"/>
+            </column>
+            <column name="ID_CLIENTE" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="FK_LOCACAO_CLIENTE" references="CLIENTE(ID)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
+
