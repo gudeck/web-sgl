@@ -10,7 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.math.BigDecimal;
 
-@Entity
+@Entity(name = "CLASSE")
 @Getter
 @Setter
 public class Classe {
