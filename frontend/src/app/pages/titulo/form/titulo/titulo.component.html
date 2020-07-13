@@ -1,0 +1,43 @@
+<p-table [(selection)]="tituloSelecionado" [globalFilterFields]="['nome']" [paginator]="true" [rows]="20"
+         [value]="titulos"
+         selectionMode="single">
+  <ng-template id="caption" pTemplate="caption">
+    <button (click)="setFocus()" class="botoesCabecalho" icon="pi pi-plus" label="Add" pButton></button>
+    <button (click)="delete(tituloSelecionado)" [disabled]="!isOneSelected()" class="botoesCabecalho" icon="pi pi-trash"
+            label="Delete" pButton></button>
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th scope="col">Nome</th>
+      <th scope="col">Ano</th>
+      <th scope="col">Sinopse</th>
+      <th scope="col">Categoria</th>
+      <th scope="col">Diretor</th>
+      <th scope="col">Classe</th>
+    </tr>
+  </ng-template>
+  <ng-template let-titulo pTemplate="body">
+    <tr [pSelectableRow]="titulo">
+      <td>{{titulo["nome"]}}</td>
+      <td>{{titulo["ano"]}}</td>
+      <td>{{titulo["sinopse"]}}</td>
+      <td>{{titulo["categoria"]["descricao"]}}</td>
+      <td>{{titulo["diretor"]["nome"]}}</td>
+      <td>{{titulo["classe"]["nome"]}}</td>
+    </tr>
+  </ng-template>
+</p-table>
+<br><br>
+<p-card [style]="{width: '100%'}" header="Cadastro de Classe">
+  <div class="p-grid p-justify-between" style="margin: 2% auto 0">
+    <div>
+      <span class="ui-float-label">
+        <input [(ngModel)]="novoTitulo.nome" id="inputNome" pInputText size="80" type="text">
+        <label for="inputNome">Nome</label>
+      </span>
+    </div>
+    <div>
+      <button (click)="post(novoTitulo)" label="Cadastrar" pButton></button>
+    </div>
+  </div>
+</p-card>

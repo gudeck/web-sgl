@@ -8,13 +8,15 @@ import {AppComponent} from './app.component';
 import {AtorComponent} from './pages/ator/form/ator.component';
 import {ClasseComponent} from './pages/classe/form/classe.component';
 import {DiretorComponent} from './pages/diretor/form/diretor.component';
+import {TituloComponent} from './pages/titulo/form/titulo/titulo.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AtorComponent,
     DiretorComponent,
-    ClasseComponent
+    ClasseComponent,
+    TituloComponent
   ],
   imports: [
     BrowserModule,
