@@ -6,12 +6,6 @@ import java.util.List;
 
 public interface CategoriaService {
 
-    CategoriaDTO getById(Long id);
-
-    CategoriaDTO save(CategoriaDTO categoriaDTO);
-
     List<CategoriaDTO> getAll();
-
-    void delete(Long id);
 
 }
