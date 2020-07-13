@@ -6,13 +6,15 @@ import {ButtonModule, CardModule, InputTextModule, TableModule} from 'primeng';
 
 import {AppComponent} from './app.component';
 import {AtorComponent} from './pages/ator/form/ator.component';
+import {ClasseComponent} from './pages/classe/form/classe.component';
 import {DiretorComponent} from './pages/diretor/form/diretor.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AtorComponent,
-    DiretorComponent
+    DiretorComponent,
+    ClasseComponent
   ],
   imports: [
     BrowserModule,
