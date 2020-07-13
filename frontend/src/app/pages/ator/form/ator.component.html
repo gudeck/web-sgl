@@ -1,0 +1,27 @@
+<p-table [(selection)]="atorSelecionado" [globalFilterFields]="['nome']" [paginator]="true" [rows]="20" [value]="atores"
+         selectionMode="single">
+  <ng-template id="caption" pTemplate="caption">
+    <button (click)="setFocus()" class="botoesCabecalho" icon="pi pi-plus" label="Add" pButton></button>
+    <button (click)="delete(atorSelecionado)" [disabled]="!isOneSelected()" class="botoesCabecalho" icon="pi pi-trash"
+            label="Delete" pButton></button>
+  </ng-template>
+  <ng-template let-ator pTemplate="body">
+    <tr [pSelectableRow]="ator">
+      <td>{{ator["nome"]}}</td>
+    </tr>
+  </ng-template>
+</p-table>
+<br><br>
+<p-card [style]="{width: '100%'}" header="Cadastro do Ator">
+  <div class="p-grid p-justify-between" style="margin: 2% auto 0">
+    <div>
+      <span class="ui-float-label">
+        <input [(ngModel)]="novoAtor.nome" id="inputNome" pInputText size="80" type="text">
+        <label for="inputNome">Nome</label>
+      </span>
+    </div>
+    <div>
+      <button (click)="post(novoAtor)" label="Cadastrar" pButton></button>
+    </div>
+  </div>
+</p-card>
