@@ -13,11 +13,11 @@
       <th scope="col">Prazo para devolução</th>
     </tr>
   </ng-template>
-  <ng-template let-ator pTemplate="body">
-    <tr [pSelectableRow]="ator">
-      <td>{{ator["nome"]}}</td>
-      <td>R$ {{ator["valor"]}}</td>
-      <td>{{ator["prazoDevolucao"]}} {{ator["prazoDevolucao"] === 1 ? 'dia' : 'dias'}}</td>
+  <ng-template let-classe pTemplate="body">
+    <tr [pSelectableRow]="classe">
+      <td>{{classe["nome"]}}</td>
+      <td>R$ {{classe["valor"]}}</td>
+      <td>{{classe["prazoDevolucao"]}} {{classe["prazoDevolucao"] === 1 ? 'dia' : 'dias'}}</td>
     </tr>
   </ng-template>
 </p-table>
