@@ -16,7 +16,7 @@ import javax.persistence.ManyToOne;
 import java.time.LocalDate;
 import java.util.List;
 
-@Entity
+@Entity(name = "TITULO")
 @Getter
 @Setter
 public class Titulo {
