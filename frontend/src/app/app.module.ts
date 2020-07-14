@@ -2,7 +2,18 @@ import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {BrowserModule} from '@angular/platform-browser';
-import {ButtonModule, CardModule, InputTextModule, TableModule} from 'primeng';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {
+  AutoCompleteModule,
+  ButtonModule,
+  CalendarModule,
+  CardModule,
+  DropdownModule,
+  InputTextareaModule,
+  InputTextModule,
+  ListboxModule,
+  TableModule
+} from 'primeng';
 
 import {AppComponent} from './app.component';
 import {AtorComponent} from './pages/ator/form/ator.component';
@@ -25,7 +36,13 @@ import {TituloComponent} from './pages/titulo/form/titulo/titulo.component';
     ButtonModule,
     InputTextModule,
     CardModule,
-    FormsModule
+    FormsModule,
+    CalendarModule,
+    BrowserAnimationsModule,
+    ListboxModule,
+    AutoCompleteModule,
+    DropdownModule,
+    InputTextareaModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -21,10 +21,13 @@ export class TituloComponent implements OnInit {
   public categorias: Categoria[];
   public classes: Classe[];
   public diretores: Diretor[];
+  public diretoresFiltrados: Diretor[];
   public titulos: Titulo[];
 
   public novoTitulo: Titulo;
   public tituloSelecionado: Titulo;
+
+  public br: any;
 
   constructor(
     private atorService: AtorService,
@@ -38,22 +41,34 @@ export class TituloComponent implements OnInit {
     this.atorService.getAll().subscribe(value => this.atores = value);
     this.categoriaService.getAll().subscribe(value => this.categorias = value);
     this.classeService.getAll().subscribe(value => this.classes = value);
-    this.diretorService.getAll().subscribe(value => this.diretores = value);
+    this.diretorService.getAll().subscribe(value => this.diretoresFiltrados = this.diretores = value);
     this.tituloService.getAll().subscribe(value => this.titulos = value);
 
     this.novoTitulo = new Titulo();
+
+    this.br = {
+      firstDayOfWeek: 1,
+      dayNames: ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'],
+      dayNamesShort: ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'],
+      dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+      monthNames: ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'],
+      monthNamesShort: ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'],
+      today: 'Hoje',
+      clear: 'Excluir'
+    };
   }
 
   delete(tituloSelecionado: Titulo) {
-    this.diretorService.delete(tituloSelecionado.id).subscribe(() => {
-      this.diretores = this.diretores.filter(value => value.id !== tituloSelecionado.id);
+    this.tituloService.delete(tituloSelecionado.id).subscribe(() => {
+      this.titulos = this.titulos.filter(value => value.id !== tituloSelecionado.id);
       this.tituloSelecionado = null;
     });
   }
 
   post(novoTitulo: Titulo) {
-    this.diretorService.post(novoTitulo).subscribe(value => {
-      this.diretores.push(value);
+    this.tituloService.post(novoTitulo).subscribe(value => {
+      this.titulos.push(value);
+      this.novoTitulo = new Titulo();
       this.novoTitulo = new Titulo();
     });
   }

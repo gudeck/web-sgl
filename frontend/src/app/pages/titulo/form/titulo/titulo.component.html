@@ -32,11 +32,45 @@
   <div class="p-grid p-justify-between" style="margin: 2% auto 0">
     <div>
       <span class="ui-float-label">
-        <input [(ngModel)]="novoTitulo.nome" id="inputNome" pInputText size="80" type="text">
+        <input [(ngModel)]="novoTitulo.nome" id="inputNome" pInputText type="text">
         <label for="inputNome">Nome</label>
+      </span>
+      <span class="ui-float-label">
+        <p-dropdown [(ngModel)]="novoTitulo.diretor" [options]="diretores" filter="filter" filterBy="value.nome"
+                    id="inputDiretor"
+                    optionLabel="nome"></p-dropdown>
+        <label for="inputDiretor">Diretor</label>
+      </span>
+      <span class="ui-float-label">
+        <p-calendar [(ngModel)]="novoTitulo.ano" [locale]="br" [showIcon]="true" dateFormat="dd/mm/yy"
+                    id="inputData"></p-calendar>
+        <label for="inputData">Data</label>
+      </span>
+      <span class="ui-float-label">
+        <textarea [(ngModel)]="novoTitulo.sinopse" [cols]="80" [rows]="5" autoResize="autoResize" id="inputSinopse"
+                  maxlength="400" pInputTextarea></textarea>
+        <label for="inputSinopse">Sinopse</label>
+      </span>
+      <span class="ui-float-label">
+        <p-dropdown [(ngModel)]="novoTitulo.classe" [options]="classes" filter="filter" filterBy="value.nome"
+                    id="inputClasse"
+                    optionLabel="nome"></p-dropdown>
+        <label for="inputClasse">Classe</label>
+      </span>
+      <span class="ui-float-label">
+        <p-dropdown [(ngModel)]="novoTitulo.categoria" [options]="categorias" filter="filter" filterBy="value.descricao"
+                    id="inputCategoria"
+                    optionLabel="descricao"></p-dropdown>
+        <label for="inputCategoria">Categoria</label>
       </span>
     </div>
     <div>
+      <p-listbox [(ngModel)]="novoTitulo.atores" [checkbox]="true" [filter]="true" [multiple]="true" [options]="atores"
+                 optionLabel="nome">
+        <p-header>
+          Atores
+        </p-header>
+      </p-listbox>
       <button (click)="post(novoTitulo)" label="Cadastrar" pButton></button>
     </div>
   </div>
