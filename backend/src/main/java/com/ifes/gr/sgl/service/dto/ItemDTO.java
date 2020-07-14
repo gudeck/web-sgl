@@ -12,7 +12,7 @@ public class ItemDTO {
     private Long id;
     private Long numeroSerie;
     private LocalDate dataAquisicao;
-    private Long idTitulo;
-    private Long idTipoItem;
+    private TituloDTO titulo;
+    private TipoItemDTO tipoItem;
 
 }

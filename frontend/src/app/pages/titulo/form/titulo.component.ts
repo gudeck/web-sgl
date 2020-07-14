@@ -1,14 +1,14 @@
 import {Component, OnInit} from '@angular/core';
-import {Ator} from '../../../ator/model/ator';
-import {AtorService} from '../../../ator/service/ator.service';
-import {Classe} from '../../../classe/model/classe';
-import {ClasseService} from '../../../classe/service/classe.service';
-import {Diretor} from '../../../diretor/model/diretor';
-import {DiretorService} from '../../../diretor/service/diretor.service';
-import {Categoria} from '../../model/categoria';
-import {Titulo} from '../../model/titulo';
-import {CategoriaService} from '../../service/categoria.service';
-import {TituloService} from '../../service/titulo.service';
+import {Ator} from '../../ator/model/ator';
+import {AtorService} from '../../ator/service/ator.service';
+import {Classe} from '../../classe/model/classe';
+import {ClasseService} from '../../classe/service/classe.service';
+import {Diretor} from '../../diretor/model/diretor';
+import {DiretorService} from '../../diretor/service/diretor.service';
+import {Categoria} from '../model/categoria';
+import {Titulo} from '../model/titulo';
+import {CategoriaService} from '../service/categoria.service';
+import {TituloService} from '../service/titulo.service';
 
 @Component({
   selector: 'app-titulo',
@@ -21,7 +21,6 @@ export class TituloComponent implements OnInit {
   public categorias: Categoria[];
   public classes: Classe[];
   public diretores: Diretor[];
-  public diretoresFiltrados: Diretor[];
   public titulos: Titulo[];
 
   public novoTitulo: Titulo;
@@ -41,7 +40,7 @@ export class TituloComponent implements OnInit {
     this.atorService.getAll().subscribe(value => this.atores = value);
     this.categoriaService.getAll().subscribe(value => this.categorias = value);
     this.classeService.getAll().subscribe(value => this.classes = value);
-    this.diretorService.getAll().subscribe(value => this.diretoresFiltrados = this.diretores = value);
+    this.diretorService.getAll().subscribe(value => this.diretores = value);
     this.tituloService.getAll().subscribe(value => this.titulos = value);
 
     this.novoTitulo = new Titulo();
@@ -68,7 +67,6 @@ export class TituloComponent implements OnInit {
   post(novoTitulo: Titulo) {
     this.tituloService.post(novoTitulo).subscribe(value => {
       this.titulos.push(value);
-      this.novoTitulo = new Titulo();
       this.novoTitulo = new Titulo();
     });
   }

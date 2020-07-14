@@ -9,6 +9,7 @@ import {
   CalendarModule,
   CardModule,
   DropdownModule,
+  InputNumberModule,
   InputTextareaModule,
   InputTextModule,
   ListboxModule,
@@ -19,7 +20,8 @@ import {AppComponent} from './app.component';
 import {AtorComponent} from './pages/ator/form/ator.component';
 import {ClasseComponent} from './pages/classe/form/classe.component';
 import {DiretorComponent} from './pages/diretor/form/diretor.component';
-import {TituloComponent} from './pages/titulo/form/titulo/titulo.component';
+import {ItemComponent} from './pages/item/form/item.component';
+import {TituloComponent} from './pages/titulo/form/titulo.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,8 @@ import {TituloComponent} from './pages/titulo/form/titulo/titulo.component';
     AtorComponent,
     DiretorComponent,
     ClasseComponent,
-    TituloComponent
+    TituloComponent,
+    ItemComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +45,8 @@ import {TituloComponent} from './pages/titulo/form/titulo/titulo.component';
     ListboxModule,
     AutoCompleteModule,
     DropdownModule,
-    InputTextareaModule
+    InputTextareaModule,
+    InputNumberModule
   ],
   providers: [],
   bootstrap: [AppComponent]
