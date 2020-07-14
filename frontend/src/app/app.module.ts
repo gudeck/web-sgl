@@ -1,23 +1,29 @@
+import {HttpClientModule} from '@angular/common/http';
 import {NgModule} from '@angular/core';
+import {FormsModule} from '@angular/forms';
 import {BrowserModule} from '@angular/platform-browser';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {ButtonModule, CardModule, MenuModule, SidebarModule} from 'primeng';
+import {ButtonModule, CardModule, InputTextModule, TableModule} from 'primeng';
 
 import {AppComponent} from './app.component';
-import { SidebarComponent } from './components/sidebar/sidebar.component';
+import {AtorComponent} from './pages/ator/form/ator.component';
+import {ClasseComponent} from './pages/classe/form/classe.component';
+import {DiretorComponent} from './pages/diretor/form/diretor.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    SidebarComponent
+    AtorComponent,
+    DiretorComponent,
+    ClasseComponent
   ],
   imports: [
     BrowserModule,
-    BrowserAnimationsModule,
-    SidebarModule,
+    HttpClientModule,
+    TableModule,
     ButtonModule,
+    InputTextModule,
     CardModule,
-    MenuModule
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
