@@ -24,5 +24,18 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="00000000000002" author="gudeck">
+        <createTable tableName="SOCIO_DEPENDENTE">
+            <column name="ID_SOCIO" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" foreignKeyName="FK_SOCIO_DEPENDENTE_SOCIO"
+                             references="SOCIO(ID)"/>
+            </column>
+            <column name="ID_DEPENDENTE" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" foreignKeyName="FK_SOCIO_DEPENDENTE_DEPENDENTE"
+                             references="DEPENDENTE(ID)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
 </databaseChangeLog>
 

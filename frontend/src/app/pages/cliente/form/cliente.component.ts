@@ -14,7 +14,6 @@ import {SocioService} from '../service/socio.service';
 })
 export class ClienteComponent implements OnInit {
 
-  public dependentes: Dependente[];
   public sexos: Sexo[];
   public socios: Socio[];
 
@@ -57,10 +56,6 @@ export class ClienteComponent implements OnInit {
   post(novoSocio: Socio) {
     this.loading = true;
     this.socioService.post(novoSocio).subscribe(socioRegistrado => {
-      this.dependentes.forEach(dependente => {
-        dependente.responsavel = socioRegistrado;
-        this.dependenteService.post(dependente).subscribe();
-      });
       this.socios.push(socioRegistrado);
       this.loading = false;
       this.initialize();
@@ -72,7 +67,7 @@ export class ClienteComponent implements OnInit {
   }
 
   setFocus() {
-    document.getElementById('inputNome').focus();
+    document.getElementById('inputNomeSocio').focus();
     this.cleanSelection();
   }
 
@@ -82,21 +77,20 @@ export class ClienteComponent implements OnInit {
 
   initialize() {
     this.novoSocio = new Socio();
-    this.dependentes = [];
   }
 
   criarDependente() {
     if (!this.isLimiteDependentes()) {
-      this.dependentes.push(new Dependente());
+      this.novoSocio.dependentes.push(new Dependente());
     }
   }
 
   isLimiteDependentes() {
-    return this.dependentes.length >= 3;
+    return this.novoSocio.dependentes.length >= 3;
   }
 
   removerDependente(i: number) {
-    this.dependentes.splice(i, 1);
+    this.novoSocio.dependentes.splice(i, 1);
   }
 
 }

@@ -79,7 +79,8 @@
                 type="button"></button>
 
         <p-accordion>
-          <p-accordionTab *ngFor="let dependente of dependentes; let i = index;" header="Dependente {{i + 1}}">
+          <p-accordionTab *ngFor="let dependente of novoSocio.dependentes; let i = index;"
+                          header="Dependente {{i + 1}}">
             <div class="ui-fluid p-formgrid p-grid">
               <div class="p-col-12">
                 <button (click)="removerDependente(i)" icon="pi pi-trash" pButton type="button"></button>
