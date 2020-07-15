@@ -1,11 +1,8 @@
-<p-table [(selection)]="diretorSelecionado" [globalFilterFields]="['nome']" [paginator]="true" [rows]="20"
-         [value]="diretores"
-         selectionMode="single">
+<p-table [(selection)]="diretorSelecionado" [paginator]="true" [rows]="20" [value]="diretores" selectionMode="single">
   <ng-template id="caption" pTemplate="caption">
-    <button (click)="setFocus()" class="botoesCabecalho" icon="pi pi-plus" label="Add" pButton></button>
+    <button (click)="setFocus()" icon="pi pi-plus" label="Add" pButton></button>
     <button (click)="delete(diretorSelecionado)" [disabled]="!isOneSelected()" class="botoesCabecalho"
-            icon="pi pi-trash"
-            label="Delete" pButton></button>
+            icon="pi pi-trash" label="Delete" pButton></button>
   </ng-template>
   <ng-template let-diretor pTemplate="body">
     <tr [pSelectableRow]="diretor">
@@ -13,17 +10,19 @@
     </tr>
   </ng-template>
 </p-table>
-<br><br>
-<p-card [style]="{width: '100%'}" header="Cadastro do Diretor">
-  <div class="p-grid p-justify-between" style="margin: 2% auto 0">
-    <div>
-      <span class="ui-float-label">
-        <input [(ngModel)]="novoDiretor.nome" id="inputNome" pInputText size="80" type="text">
+<p-card header="Cadastro de Diretor">
+  <form #formDiretor="ngForm">
+    <div class="ui-fluid p-formgrid p-grid">
+      <div class="p-field p-col-12">
         <label for="inputNome">Nome</label>
-      </span>
+        <input [(ngModel)]="novoDiretor.nome" id="inputNome" maxlength="80" name="nome" pInputText required
+               type="text">
+      </div>
     </div>
-    <div>
-      <button (click)="post(novoDiretor)" label="Cadastrar" pButton></button>
+    <div class="p-grid p-justify-between">
+      <button (click)="formDiretor.reset()" label="Limpar" pButton type="button"></button>
+      <button (click)="post(novoDiretor); formDiretor.reset()" [disabled]="!formDiretor.form.valid" label="Cadastrar"
+              pButton type="submit"></button>
     </div>
-  </div>
+  </form>
 </p-card>
