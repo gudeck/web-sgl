@@ -46,14 +46,16 @@
         <div class="p-field p-col-12">
           <label for="inputDiretor">Diretor</label>
           <p-autoComplete (completeMethod)="filtrarDiretores($event)" [(ngModel)]="novoTitulo.diretor"
-                          [minLength]="1" [suggestions]="diretoresFiltrados" field="nome" id="inputDiretor"
-                          maxlength="80" name="diretor"></p-autoComplete>
+                          [minLength]="1" [suggestions]="diretoresFiltrados" field="nome"
+                          forceSelection="forceSelection" id="inputDiretor" maxlength="80"
+                          name="diretor"></p-autoComplete>
         </div>
         <div class="p-field p-col-12">
           <label for="inputCategoria">Categoria</label>
           <p-autoComplete (completeMethod)="filtrarCategorias($event)" [(ngModel)]="novoTitulo.categoria"
-                          [minLength]="1" [suggestions]="categoriasFiltradas" field="descricao" id="inputCategoria"
-                          maxlength="80" name="categoria"></p-autoComplete>
+                          [minLength]="1" [suggestions]="categoriasFiltradas" field="descricao"
+                          forceSelection="forceSelection" id="inputCategoria" maxlength="80"
+                          name="categoria"></p-autoComplete>
         </div>
       </div>
       <div class="p-col-6">

@@ -36,8 +36,8 @@
       <div class="p-field p-col-8">
         <label for="inputTitulo">Título</label>
         <p-autoComplete (completeMethod)="filtrarTitulos($event)" [(ngModel)]="novoItem.titulo"
-                        [minLength]="1" [suggestions]="titulosFiltrados" field="nome" id="inputTitulo"
-                        maxlength="80" name="diretor" required></p-autoComplete>
+                        [minLength]="1" [suggestions]="titulosFiltrados" field="nome" forceSelection="forceSelection"
+                        id="inputTitulo" maxlength="80" name="diretor" required></p-autoComplete>
       </div>
       <div class="p-field p-col-2">
         <label for="inputDataAquisicao">Data de aquisição</label>
