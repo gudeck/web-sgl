@@ -79,33 +79,33 @@
                 type="button"></button>
 
         <p-accordion>
-          <p-accordionTab *ngFor="let dependente of dependentes; index as i;" header="Dependente {{i + 1}}">
+          <p-accordionTab *ngFor="let dependente of dependentes; let i = index;" header="Dependente {{i + 1}}">
             <div class="ui-fluid p-formgrid p-grid">
               <div class="p-col-12">
                 <button (click)="removerDependente(i)" icon="pi pi-trash" pButton type="button"></button>
               </div>
               <div class="p-field p-col-12">
                 <label for="inputNomeDependente{{i}}">Nome</label>
-                <input [(ngModel)]="dependente.nome" id="inputNomeDependente{{i}}" maxlength="80"
-                       name="nomeDependente"
-                       pInputText required type="text">
+                <input [(ngModel)]="dependente.nome" [ngModelOptions]="{standalone: true}" id="inputNomeDependente{{i}}"
+                       maxlength="80" name="nomeDependenteativoDependente{{i}}" pInputText required type="text">
               </div>
               <div class="p-field p-col-4">
                 <label for="inputDataNascimentoDependente{{i}}">Data de nascimento</label>
-                <p-calendar [(ngModel)]="dependente.dataNascimento" [locale]="br" dateFormat="dd/mm/yy"
-                            id="inputDataNascimentoDependente{{i}}" name="dataNascimentoDependente" required
+                <p-calendar [(ngModel)]="dependente.dataNascimento" [locale]="br" [ngModelOptions]="{standalone: true}"
+                            dateFormat="dd/mm/yy" id="inputDataNascimentoDependente{{i}}"
+                            name="dataNascimentoDependenteativoDependente{{i}}" required
                             showButtonBar="true"></p-calendar>
               </div>
               <div class="p-field p-col-4">
                 <label for="inputSexoDependente{{i}}">Sexo</label>
-                <p-dropdown [(ngModel)]="dependente.sexo" [options]="sexos" id="inputSexoDependente{{i}}"
-                            name="sexoDependente" optionLabel="descricao" placeholder="Selecione..."
-                            required></p-dropdown>
+                <p-dropdown [(ngModel)]="dependente.sexo" [ngModelOptions]="{standalone: true}" [options]="sexos"
+                            id="inputSexoDependente{{i}}" name="sexoDependenteativoDependente{{i}}"
+                            optionLabel="descricao" placeholder="Selecione..." required></p-dropdown>
               </div>
               <div class="p-field-checkbox p-col-4">
                 <label></label>
-                <p-checkbox [(ngModel)]="dependente.ativo" [binary]="true" label="Ativo?" name="ativoDependente"
-                            required></p-checkbox>
+                <p-checkbox [(ngModel)]="dependente.ativo" [binary]="true" [ngModelOptions]="{standalone: true}"
+                            label="Ativo?" name="ativoDependente{{i}}" required></p-checkbox>
               </div>
             </div>
           </p-accordionTab>

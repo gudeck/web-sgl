@@ -95,7 +95,8 @@ export class ClienteComponent implements OnInit {
     return this.dependentes.length >= 3;
   }
 
-  public removerDependente(i: number) {
+  removerDependente(i: number) {
     this.dependentes.splice(i, 1);
   }
+
 }

@@ -1,9 +1,9 @@
-<p-table [(selection)]="locacaoSelecionada" [globalFilterFields]="['nome']" [paginator]="true" [rows]="20"
-         [value]="locacoes" selectionMode="single">
+<p-table [(selection)]="locacaoSelecionada" [loading]="loading" [paginator]="true" [rows]="20" [value]="locacoes"
+         selectionMode="single">
   <ng-template id="caption" pTemplate="caption">
-    <button (click)="setFocus()" icon="pi pi-plus" label="Add" pButton type="button"></button>
-    <button (click)="delete(locacaoSelecionada)" [disabled]="!isOneSelected()" icon="pi pi-trash" label="Delete"
-            pButton type="button"></button>
+    <button (click)="setFocus()" icon="pi pi-plus" label="Add" pButton></button>
+    <button (click)="delete(locacaoSelecionada)" [disabled]="!isOneSelected()" class="botoesCabecalho"
+            icon="pi pi-trash" label="Delete" pButton></button>
   </ng-template>
   <ng-template pTemplate="header">
     <tr>
@@ -11,21 +11,24 @@
       <th scope="col">Item</th>
       <th scope="col">Data da locação</th>
       <th scope="col">Data de devolução prevista</th>
-      <th scope="col">Data de devolução</th>
       <th scope="col">Valor</th>
+      <th scope="col">Data de devolução</th>
       <th scope="col">Multa</th>
     </tr>
   </ng-template>
   <ng-template let-locacao pTemplate="body">
     <tr [pSelectableRow]="locacao">
       <td>{{locacao["cliente"]["nome"]}}</td>
-      <td>{{locacao["item"]["nome"]}}</td>
+      <td>{{locacao["item"]["titulo"]["nome"]}}</td>
       <td>{{locacao["dataLocacao"]}}</td>
-      <td>{{locacao["dataDevolucao"]}}</td>
       <td>{{locacao["dataDevolucaoPrevista"]}}</td>
-      <td>{{locacao["Valor"]}}</td>
-      <td>{{locacao["Multa"]}}</td>
+      <td>{{locacao["valor"]}}</td>
+      <td>{{locacao["dataDevolucao"]}}</td>
+      <td>{{locacao["multa"]}}</td>
     </tr>
+  </ng-template>
+  <ng-template pTemplate="summary">
+    Total de registros: {{locacoes.length}}
   </ng-template>
 </p-table>
 <form #formLocacao="ngForm">
@@ -34,14 +37,14 @@
       <div class="p-field p-col-6">
         <label for="inputCliente">Cliente</label>
         <p-autoComplete (completeMethod)="filtrarClientes($event)" [(ngModel)]="novaLocacao.cliente"
-                        [minLength]="1" [suggestions]="clientesFiltrados" field="nome" id="inputCliente"
-                        name="cliente"></p-autoComplete>
+                        [minLength]="1" [suggestions]="clientesFiltrados" field="nome" forceSelection="forceSelection"
+                        id="inputCliente" name="cliente" required></p-autoComplete>
       </div>
       <div class="p-field p-col-6">
         <label for="inputItem">Item</label>
         <p-autoComplete (completeMethod)="filtrarItens($event)" [(ngModel)]="novaLocacao.item"
-                        [minLength]="1" [suggestions]="itensFiltrados" field="titulo.nome" id="inputItem"
-                        name="item"></p-autoComplete>
+                        [minLength]="1" [suggestions]="itensFiltrados" field="titulo.nome"
+                        forceSelection="forceSelection" id="inputItem" name="item" required></p-autoComplete>
       </div>
       <div class="p-field p-col-6">
         <label for="inputDataLocacao">Data de locação</label>
@@ -57,12 +60,12 @@
       <div class="p-field p-col-6">
         <label for="inputDataDevolucao">Data de devolução</label>
         <p-calendar [(ngModel)]="novaLocacao.dataDevolucao" [locale]="br" dateFormat="dd/mm/yy" id="inputDataDevolucao"
-                    name="dataDevolucao" required showButtonBar="true"></p-calendar>
+                    name="dataDevolucao" showButtonBar="true"></p-calendar>
       </div>
       <div class="p-field p-col-3">
         <label for="inputValor">Valor (R$)</label>
         <p-inputNumber [(ngModel)]="novaLocacao.valor" [maxFractionDigits]="2" [minFractionDigits]="2" currency="BRL"
-                       id="inputValor" locale="pt-BR" mode="currency" name="valor"></p-inputNumber>
+                       id="inputValor" locale="pt-BR" mode="currency" name="valor" required></p-inputNumber>
       </div>
       <div class="p-field p-col-3">
         <label for="inputMulta">Multa (R$) </label>

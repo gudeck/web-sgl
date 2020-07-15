@@ -18,13 +18,14 @@ export class LocacaoComponent implements OnInit {
   public itens: Item[];
   public locacoes: Locacao[];
 
+  public clientesFiltrados: Cliente[];
+  public itensFiltrados: Item[];
+
   public novaLocacao: Locacao;
   public locacaoSelecionada: Locacao;
 
   public br: any;
-
-  public clientesFiltrados: Cliente[];
-  public itensFiltrados: Item[];
+  public loading: boolean;
 
   constructor(
     private constantService: ConstantService,
@@ -35,25 +36,34 @@ export class LocacaoComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loading = true;
     this.clienteService.getAll().subscribe(clientes => this.clientes = clientes);
     this.itemService.getAll().subscribe(itens => this.itens = itens);
-    this.locacaoService.getAll().subscribe(locacoes => this.locacoes = locacoes);
+    this.locacaoService.getAll().subscribe(locacoes => {
+      this.locacoes = locacoes;
+      this.loading = false;
+    });
 
+    this.locacoes = [];
     this.initialize();
 
     this.br = this.constantService.br;
   }
 
   delete(locacaoSelecionado: Locacao) {
+    this.loading = true;
     this.locacaoService.delete(locacaoSelecionado.id).subscribe(() => {
       this.locacoes = this.locacoes.filter(value => value.id !== locacaoSelecionado.id);
-      this.locacaoSelecionada = null;
+      this.loading = false;
+      this.cleanSelection();
     });
   }
 
   post(novaLocacao: Locacao) {
+    this.loading = true;
     this.locacaoService.post(novaLocacao).subscribe(locacaoRegistrado => {
       this.locacoes.push(locacaoRegistrado);
+      this.loading = false;
       this.initialize();
     });
   }
@@ -64,12 +74,15 @@ export class LocacaoComponent implements OnInit {
 
   setFocus() {
     document.getElementById('inputNome').focus();
+    this.cleanSelection();
+  }
+
+  cleanSelection() {
     this.locacaoSelecionada = null;
   }
 
   initialize() {
     this.novaLocacao = new Locacao();
-    this.locacoes = [];
   }
 
   filtrarClientes(event) {
@@ -81,7 +94,7 @@ export class LocacaoComponent implements OnInit {
     });
   }
 
-  public filtrarItens(event) {
+  filtrarItens(event) {
     this.itensFiltrados = [];
     this.itens.forEach(item => {
       if (item.titulo.nome.toLowerCase().indexOf(event.query.toLowerCase()) === 0) {
@@ -89,4 +102,5 @@ export class LocacaoComponent implements OnInit {
       }
     });
   }
+
 }
