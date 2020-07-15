@@ -6,7 +6,7 @@ import lombok.Setter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
-@Entity
+@Entity(name = "SOCIO")
 @Getter
 @Setter
 public class Socio extends Cliente {
