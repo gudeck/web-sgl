@@ -3,8 +3,11 @@ package com.ifes.gr.sgl.domain;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import java.util.List;
 
 @Entity(name = "SOCIO")
 @Getter
@@ -19,5 +22,8 @@ public class Socio extends Cliente {
 
     @Column(name = "TELEFONE", nullable = false, length = 12)
     private String telefone;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "responsavel", orphanRemoval = true)
+    private List<Dependente> dependentes;
 
 }
