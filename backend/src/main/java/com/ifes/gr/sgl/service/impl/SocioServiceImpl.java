@@ -20,11 +20,6 @@ public class SocioServiceImpl implements SocioService {
     private final SocioRepository socioRepository;
 
     @Override
-    public SocioDTO getById(Long id) {
-        return socioMapper.toDto(getSocio(id));
-    }
-
-    @Override
     public SocioDTO save(SocioDTO socioDTO) {
         return socioMapper.toDto(socioRepository.save(socioMapper.toEntity(socioDTO)));
     }

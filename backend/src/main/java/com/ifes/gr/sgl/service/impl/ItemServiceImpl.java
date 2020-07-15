@@ -20,11 +20,6 @@ public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
 
     @Override
-    public ItemDTO getById(Long id) {
-        return itemMapper.toDto(getItem(id));
-    }
-
-    @Override
     public ItemDTO save(ItemDTO itemDTO) {
         return itemMapper.toDto(itemRepository.save(itemMapper.toEntity(itemDTO)));
     }

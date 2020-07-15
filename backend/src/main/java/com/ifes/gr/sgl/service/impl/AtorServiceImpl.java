@@ -21,11 +21,6 @@ public class AtorServiceImpl implements AtorService {
     private final AtorRepository atorRepository;
 
     @Override
-    public AtorDTO getById(Long id) {
-        return atorMapper.toDto(getAtor(id));
-    }
-
-    @Override
     public AtorDTO save(AtorDTO atorDTO) {
         return atorMapper.toDto(atorRepository.save(atorMapper.toEntity(atorDTO)));
     }

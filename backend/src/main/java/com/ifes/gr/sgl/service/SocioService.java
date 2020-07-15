@@ -6,8 +6,6 @@ import java.util.List;
 
 public interface SocioService {
 
-    SocioDTO getById(Long id);
-
     SocioDTO save(SocioDTO socioDTO);
 
     List<SocioDTO> getAll();

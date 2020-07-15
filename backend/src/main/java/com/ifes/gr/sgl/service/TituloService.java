@@ -6,8 +6,6 @@ import java.util.List;
 
 public interface TituloService {
 
-    TituloDTO getById(Long id);
-
     TituloDTO save(TituloDTO tituloDTO);
 
     List<TituloDTO> getAll();

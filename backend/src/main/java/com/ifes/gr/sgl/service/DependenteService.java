@@ -6,8 +6,6 @@ import java.util.List;
 
 public interface DependenteService {
 
-    DependenteDTO getById(Long id);
-
     DependenteDTO save(DependenteDTO dependenteDTO);
 
     List<DependenteDTO> getAll();

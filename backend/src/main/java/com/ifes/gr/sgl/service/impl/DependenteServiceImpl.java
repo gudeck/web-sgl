@@ -20,11 +20,6 @@ public class DependenteServiceImpl implements DependenteService {
     private final DependenteRepository dependenteRepository;
 
     @Override
-    public DependenteDTO getById(Long id) {
-        return dependenteMapper.toDto(getDependente(id));
-    }
-
-    @Override
     public DependenteDTO save(DependenteDTO dependenteDTO) {
         return dependenteMapper.toDto(dependenteRepository.save(dependenteMapper.toEntity(dependenteDTO)));
     }

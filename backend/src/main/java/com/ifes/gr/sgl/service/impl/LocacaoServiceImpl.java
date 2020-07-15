@@ -21,11 +21,6 @@ public class LocacaoServiceImpl implements LocacaoService {
     private final LocacaoRepository locacaoRepository;
 
     @Override
-    public LocacaoDTO getById(Long id) {
-        return locacaoMapper.toDto(getLocacao(id));
-    }
-
-    @Override
     public LocacaoDTO save(LocacaoDTO locacaoDTO) {
         return locacaoMapper.toDto(locacaoRepository.save(locacaoMapper.toEntity(locacaoDTO)));
     }

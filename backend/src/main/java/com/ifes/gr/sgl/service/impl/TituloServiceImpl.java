@@ -20,11 +20,6 @@ public class TituloServiceImpl implements TituloService {
     private final TituloRepository tituloRepository;
 
     @Override
-    public TituloDTO getById(Long id) {
-        return tituloMapper.toDto(getTitulo(id));
-    }
-
-    @Override
     public TituloDTO save(TituloDTO tituloDTO) {
         return tituloMapper.toDto(tituloRepository.save(tituloMapper.toEntity(tituloDTO)));
     }

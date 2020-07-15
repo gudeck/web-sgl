@@ -6,8 +6,6 @@ import java.util.List;
 
 public interface LocacaoService {
 
-    LocacaoDTO getById(Long id);
-
     LocacaoDTO save(LocacaoDTO locacaoDTO);
 
     List<LocacaoDTO> getAll();

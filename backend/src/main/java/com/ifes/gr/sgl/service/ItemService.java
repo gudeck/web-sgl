@@ -6,8 +6,6 @@ import java.util.List;
 
 public interface ItemService {
 
-    ItemDTO getById(Long id);
-
     ItemDTO save(ItemDTO itemDTO);
 
     List<ItemDTO> getAll();

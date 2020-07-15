@@ -20,11 +20,6 @@ public class DiretorServiceImpl implements DiretorService {
     private final DiretorRepository diretorRepository;
 
     @Override
-    public DiretorDTO getById(Long id) {
-        return diretorMapper.toDto(getDiretor(id));
-    }
-
-    @Override
     public DiretorDTO save(DiretorDTO diretorDTO) {
         return diretorMapper.toDto(diretorRepository.save(diretorMapper.toEntity(diretorDTO)));
     }
