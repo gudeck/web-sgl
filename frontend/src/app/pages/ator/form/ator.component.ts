@@ -14,24 +14,35 @@ export class AtorComponent implements OnInit {
   public novoAtor: Ator;
   public atorSelecionado: Ator;
 
+  public loading: boolean;
+
   constructor(private atorService: AtorService) {
   }
 
   ngOnInit(): void {
-    this.atorService.getAll().subscribe(atores => this.atores = atores);
+    this.loading = true;
+    this.atorService.getAll().subscribe(atores => {
+      this.atores = atores;
+      this.loading = false;
+    });
+    this.atores = [];
     this.initialize();
   }
 
   delete(atorSelecionado: Ator) {
+    this.loading = true;
     this.atorService.delete(atorSelecionado.id).subscribe(() => {
       this.atores = this.atores.filter(ator => ator.id !== atorSelecionado.id);
+      this.loading = false;
       this.cleanSelection();
     });
   }
 
   post(novoAtor: Ator) {
+    this.loading = true;
     this.atorService.post(novoAtor).subscribe(atorRegistrado => {
       this.atores.push(atorRegistrado);
+      this.loading = false;
       this.initialize();
     });
   }

@@ -14,24 +14,35 @@ export class DiretorComponent implements OnInit {
   public novoDiretor: Diretor;
   public diretorSelecionado: Diretor;
 
+  public loading: boolean;
+
   constructor(private diretorService: DiretorService) {
   }
 
   ngOnInit(): void {
-    this.diretorService.getAll().subscribe(diretores => this.diretores = diretores);
+    this.loading = true;
+    this.diretorService.getAll().subscribe(diretores => {
+      this.diretores = diretores;
+      this.loading = false;
+    });
+    this.diretores = [];
     this.initialize();
   }
 
   delete(diretorSelecionado: Diretor) {
+    this.loading = true;
     this.diretorService.delete(diretorSelecionado.id).subscribe(() => {
       this.diretores = this.diretores.filter(diretor => diretor.id !== diretorSelecionado.id);
+      this.loading = false;
       this.cleanSelection();
     });
   }
 
   post(novoDiretor: Diretor) {
+    this.loading = true;
     this.diretorService.post(novoDiretor).subscribe(diretorRegistrado => {
       this.diretores.push(diretorRegistrado);
+      this.loading = false;
       this.initialize();
     });
   }
