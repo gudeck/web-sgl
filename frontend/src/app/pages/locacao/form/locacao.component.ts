@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {ConstantService} from '../../../service/constant.service';
 import {Cliente} from '../../cliente/model/cliente';
 import {ClienteService} from '../../cliente/service/cliente.service';
 import {Item} from '../../item/model/item';
@@ -26,6 +27,7 @@ export class LocacaoComponent implements OnInit {
   public itensFiltrados: Item[];
 
   constructor(
+    private constantService: ConstantService,
     private clienteService: ClienteService,
     private itemService: ItemService,
     private locacaoService: LocacaoService
@@ -39,16 +41,7 @@ export class LocacaoComponent implements OnInit {
 
     this.initialize();
 
-    this.br = {
-      firstDayOfWeek: 1,
-      dayNames: ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'],
-      dayNamesShort: ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'],
-      dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
-      monthNames: ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'],
-      monthNamesShort: ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'],
-      today: 'Hoje',
-      clear: 'Limpar'
-    };
+    this.br = this.constantService.br;
   }
 
   delete(locacaoSelecionado: Locacao) {

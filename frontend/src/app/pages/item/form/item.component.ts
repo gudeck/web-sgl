@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {ConstantService} from '../../../service/constant.service';
 import {Titulo} from '../../titulo/model/titulo';
 import {TituloService} from '../../titulo/service/titulo.service';
 import {Item} from '../model/item';
@@ -23,6 +24,7 @@ export class ItemComponent implements OnInit {
   public br: any;
 
   constructor(
+    private constantService: ConstantService,
     private itemService: ItemService,
     private tipoItemService: TipoItemService,
     private tituloService: TituloService
@@ -36,16 +38,7 @@ export class ItemComponent implements OnInit {
 
     this.novoItem = new Item();
 
-    this.br = {
-      firstDayOfWeek: 1,
-      dayNames: ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'],
-      dayNamesShort: ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'],
-      dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
-      monthNames: ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'],
-      monthNamesShort: ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'],
-      today: 'Hoje',
-      clear: 'Limpar'
-    };
+    this.br = this.constantService.br;
   }
 
   delete(itemSelecionado: Item) {
