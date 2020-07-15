@@ -22,6 +22,7 @@ export class ClienteComponent implements OnInit {
   public socioSelecionado: Socio;
 
   public br: any;
+  public loading: boolean;
 
   constructor(
     private constantService: ConstantService,
@@ -31,28 +32,37 @@ export class ClienteComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.sexoService.getAll().subscribe(value => this.sexos = value);
-    this.socioService.getAll().subscribe(value => this.socios = value);
+    this.loading = true;
+    this.sexoService.getAll().subscribe(sexos => this.sexos = sexos);
+    this.socioService.getAll().subscribe(socios => {
+      this.socios = socios;
+      this.loading = false;
+    });
 
+    this.socios = [];
     this.initialize();
 
     this.br = this.constantService.br;
   }
 
   delete(socioSelecionado: Socio) {
+    this.loading = true;
     this.socioService.delete(socioSelecionado.id).subscribe(() => {
-      this.socios = this.socios.filter(value => value.id !== socioSelecionado.id);
-      this.socioSelecionado = null;
+      this.socios = this.socios.filter(socio => socio.id !== socioSelecionado.id);
+      this.loading = false;
+      this.cleanSelection();
     });
   }
 
   post(novoSocio: Socio) {
+    this.loading = true;
     this.socioService.post(novoSocio).subscribe(socioRegistrado => {
       this.dependentes.forEach(dependente => {
         dependente.responsavel = socioRegistrado;
         this.dependenteService.post(dependente).subscribe();
       });
       this.socios.push(socioRegistrado);
+      this.loading = false;
       this.initialize();
     });
   }
@@ -63,6 +73,10 @@ export class ClienteComponent implements OnInit {
 
   setFocus() {
     document.getElementById('inputNome').focus();
+    this.cleanSelection();
+  }
+
+  cleanSelection() {
     this.socioSelecionado = null;
   }
 

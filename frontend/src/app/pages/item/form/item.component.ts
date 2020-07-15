@@ -35,9 +35,13 @@ export class ItemComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.itemService.getAll().subscribe(value => this.itens = value);
-    this.tipoItemService.getAll().subscribe(value => this.tiposItem = value);
-    this.tituloService.getAll().subscribe(value => this.titulos = value);
+    this.loading = true;
+    this.itemService.getAll().subscribe(itens => {
+      this.itens = itens;
+      this.loading = false;
+    });
+    this.tipoItemService.getAll().subscribe(tiposItem => this.tiposItem = tiposItem);
+    this.tituloService.getAll().subscribe(titulos => this.titulos = titulos);
 
     this.itens = [];
     this.initialize();
@@ -48,7 +52,7 @@ export class ItemComponent implements OnInit {
   delete(itemSelecionado: Item) {
     this.loading = true;
     this.itemService.delete(itemSelecionado.id).subscribe(() => {
-      this.itens = this.itens.filter(value => value.id !== itemSelecionado.id);
+      this.itens = this.itens.filter(item => item.id !== itemSelecionado.id);
       this.loading = false;
       this.cleanSelection();
     });

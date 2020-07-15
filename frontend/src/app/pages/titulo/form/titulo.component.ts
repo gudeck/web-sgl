@@ -44,12 +44,12 @@ export class TituloComponent implements OnInit {
 
   ngOnInit(): void {
     this.loading = true;
-    this.atorService.getAll().subscribe(value => this.atores = value);
-    this.categoriaService.getAll().subscribe(value => this.categorias = value);
-    this.classeService.getAll().subscribe(value => this.classes = value);
-    this.diretorService.getAll().subscribe(value => this.diretores = value);
-    this.tituloService.getAll().subscribe(value => {
-      this.titulos = value;
+    this.atorService.getAll().subscribe(atores => this.atores = atores);
+    this.categoriaService.getAll().subscribe(categorias => this.categorias = categorias);
+    this.classeService.getAll().subscribe(classes => this.classes = classes);
+    this.diretorService.getAll().subscribe(diretores => this.diretores = diretores);
+    this.tituloService.getAll().subscribe(titulos => {
+      this.titulos = titulos;
       this.loading = false;
     });
 
@@ -62,7 +62,7 @@ export class TituloComponent implements OnInit {
   delete(tituloSelecionado: Titulo) {
     this.loading = true;
     this.tituloService.delete(tituloSelecionado.id).subscribe(() => {
-      this.titulos = this.titulos.filter(value => value.id !== tituloSelecionado.id);
+      this.titulos = this.titulos.filter(titulo => titulo.id !== tituloSelecionado.id);
       this.loading = false;
       this.cleanSelection();
     });
@@ -70,8 +70,8 @@ export class TituloComponent implements OnInit {
 
   post(novoTitulo: Titulo) {
     this.loading = true;
-    this.tituloService.post(novoTitulo).subscribe(value => {
-      this.titulos.push(value);
+    this.tituloService.post(novoTitulo).subscribe(tituloRegistrado => {
+      this.titulos.push(tituloRegistrado);
       this.loading = false;
       this.initialize();
     });
