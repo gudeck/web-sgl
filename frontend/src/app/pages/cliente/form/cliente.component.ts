@@ -7,7 +7,7 @@ import {SexoService} from '../service/sexo.service';
 import {SocioService} from '../service/socio.service';
 
 @Component({
-  selector: 'app-socio',
+  selector: 'app-cliente',
   templateUrl: './cliente.component.html',
   styleUrls: ['./cliente.component.css']
 })
