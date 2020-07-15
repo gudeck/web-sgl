@@ -18,10 +18,13 @@ export class ItemComponent implements OnInit {
   public tiposItem: TipoItem[];
   public titulos: Titulo[];
 
+  public titulosFiltrados: Titulo[];
+
   public novoItem: Item;
   public itemSelecionado: Item;
 
   public br: any;
+  public loading: boolean;
 
   constructor(
     private constantService: ConstantService,
@@ -36,22 +39,27 @@ export class ItemComponent implements OnInit {
     this.tipoItemService.getAll().subscribe(value => this.tiposItem = value);
     this.tituloService.getAll().subscribe(value => this.titulos = value);
 
-    this.novoItem = new Item();
+    this.itens = [];
+    this.initialize();
 
     this.br = this.constantService.br;
   }
 
   delete(itemSelecionado: Item) {
+    this.loading = true;
     this.itemService.delete(itemSelecionado.id).subscribe(() => {
       this.itens = this.itens.filter(value => value.id !== itemSelecionado.id);
-      this.itemSelecionado = null;
+      this.loading = false;
+      this.cleanSelection();
     });
   }
 
   post(novoItem: Item) {
-    this.itemService.post(novoItem).subscribe(value => {
-      this.itens.push(value);
-      this.novoItem = new Item();
+    this.loading = true;
+    this.itemService.post(novoItem).subscribe(itemRegistrado => {
+      this.itens.push(itemRegistrado);
+      this.loading = false;
+      this.initialize();
     });
   }
 
@@ -61,7 +69,25 @@ export class ItemComponent implements OnInit {
 
   setFocus() {
     document.getElementById('inputNome').focus();
+    this.cleanSelection();
   }
 
+  cleanSelection() {
+    this.itemSelecionado = null;
+  }
+
+  initialize() {
+    this.novoItem = new Item();
+  }
+
+
+  public filtrarTitulos(event) {
+    this.titulosFiltrados = [];
+    this.titulos.forEach(titulo => {
+      if (titulo.nome.toLowerCase().indexOf(event.query.toLowerCase()) === 0) {
+        this.titulosFiltrados.push(titulo);
+      }
+    });
+  }
 
 }
