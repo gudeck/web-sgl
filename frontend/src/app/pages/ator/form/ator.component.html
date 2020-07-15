@@ -14,8 +14,8 @@
     Total de registros: {{atores.length}}
   </ng-template>
 </p-table>
-<form #formAtor="ngForm">
-  <p-card header="Cadastro de Ator">
+<p-card header="Cadastro de Ator">
+  <form #formAtor="ngForm">
     <div class="ui-fluid p-formgrid p-grid">
       <div class="p-field p-col-12">
         <label for="inputNome">Nome</label>
@@ -27,5 +27,5 @@
       <button (click)="post(novoAtor); formAtor.reset()" [disabled]="!formAtor.form.valid" label="Cadastrar"
               pButton type="submit"></button>
     </div>
-  </p-card>
-</form>
+  </form>
+</p-card>
