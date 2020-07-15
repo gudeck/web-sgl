@@ -1,0 +1,93 @@
+<p-table [(selection)]="socioSelecionado" [globalFilterFields]="['nome']" [paginator]="true" [rows]="20"
+         [value]="socios" selectionMode="single">
+  <ng-template id="caption" pTemplate="caption">
+    <button (click)="setFocus()" icon="pi pi-plus" label="Add" pButton type="button"></button>
+    <button (click)="delete(socioSelecionado)" [disabled]="!isOneSelected()" icon="pi pi-trash" label="Delete"
+            pButton type="button"></button>
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th scope="col">Nome</th>
+      <th scope="col">Data de nascimento</th>
+      <th scope="col">Ativo?</th>
+      <th scope="col">Sexo</th>
+      <th scope="col">CPF</th>
+      <th scope="col">Endereco</th>
+      <th scope="col">Telefone</th>
+    </tr>
+  </ng-template>
+  <ng-template let-socio pTemplate="body">
+    <tr [pSelectableRow]="socio">
+      <td>{{socio["nome"]}}</td>
+      <td>{{socio["dataNascimento"]}}</td>
+      <td>{{socio["ativo"] ? 'Sim' : 'Não'}}</td>
+      <td>{{socio["sexo"]["descricao"]}}</td>
+      <td>{{socio["cpf"]}}</td>
+      <td>{{socio["endereco"]}}</td>
+      <td>{{socio["telefone"]}}</td>
+    </tr>
+  </ng-template>
+</p-table>
+<form #formCliente="ngForm">
+  <p-card header="Cadastro de Socio">
+    <span class="ui-float-label">
+      <input [(ngModel)]="novoSocio.nome" id="inputNome" name="nomeSocio" pInputText required size="40" type="text">
+      <label for="inputNome">Nome</label>
+    </span>
+    <span class="ui-float-label">
+      <p-calendar [(ngModel)]="novoSocio.dataNascimento" [locale]="br" dateFormat="dd/mm/yy" id="inputDataNascimento"
+                  name="dataNascimentoSocio" required showButtonBar="true"></p-calendar>
+      <label for="inputDataNascimento">Data de nascimento</label>
+    </span>
+    <p-checkbox [(ngModel)]="novoSocio.ativo" [binary]="true" label="Ativo?" name="ativoSocio" required></p-checkbox>
+    <p-dropdown [(ngModel)]="novoSocio.sexo" [options]="sexos" name="sexoSocio" optionLabel="descricao"
+                placeholder="Selecione..."
+                required></p-dropdown>
+    <span class="ui-float-label">
+      <p-inputMask [(ngModel)]="novoSocio.cpf" [unmask]="true" autoClear id="inputCpf" mask="999.999.999-99"
+                   name="cpfSocio" required slotChar=" "></p-inputMask>
+      <label for="inputCpf">CPF</label>
+    </span>
+    <span class="ui-float-label">
+      <input [(ngModel)]="novoSocio.endereco" id="inputEndereco" name="enderecoSocio" pInputText required size="40"
+             type="text">
+      <label for="inputEndereco">Endereco</label>
+    </span>
+    <span class="ui-float-label">
+      <p-inputMask [(ngModel)]="novoSocio.telefone" [unmask]="true" autoClear id="inputTelefone" mask="(99) 99999-9999"
+                   name="telefoneSocio" required slotChar=" "></p-inputMask>
+      <label for="inputTelefone">Telefone</label>
+    </span>
+
+    <button (click)="criarDependente()" [disabled]="isLimiteDependentes()" label="Novo Dependente" pButton
+            type="button"></button>
+
+    <p-accordion [multiple]="true">
+      <p-accordionTab *ngFor="let dependente of dependentes; index as i;" header="Dependente {{i + 1}}">
+        <button (click)="removerDependente(i)" icon="pi pi-trash" pButton type="button"></button>
+
+        <span class="ui-float-label">
+          <input [(ngModel)]="dependente.nome" id="inputNomeDependente{{i}}" name="nomeDependente{{i}}" pInputText
+                 required size="40" type="text">
+          <label for="inputNomeDependente{{i}}">Nome</label>
+        </span>
+        <span class="ui-float-label">
+          <p-calendar [(ngModel)]="dependente.dataNascimento" [locale]="br" dateFormat="dd/mm/yy"
+                      id="inputDataNascimentoDependente{{i}}" name="dataNascimentoDependente{{i}}" required
+                      showButtonBar="true"></p-calendar>
+          <label for="inputDataNascimentoDependente{{i}}">Data de nascimento</label>
+        </span>
+        <p-checkbox [(ngModel)]="dependente.ativo" [binary]="true" label="Ativo?"
+                    name="ativoDependente{{i}}" required></p-checkbox>
+        <p-dropdown [(ngModel)]="dependente.sexo" [options]="sexos" name="sexoDependente{{i}}" optionLabel="descricao"
+                    placeholder="Selecione..."
+                    required></p-dropdown>
+      </p-accordionTab>
+    </p-accordion>
+
+    <button (click)="formCliente.reset()" label="Limpar" pButton type="button"></button>
+    <button (click)="post(novoSocio); formCliente.reset()" [disabled]="!formCliente.form.valid" label="Cadastrar"
+            pButton
+            type="submit"></button>
+  </p-card>
+</form>
