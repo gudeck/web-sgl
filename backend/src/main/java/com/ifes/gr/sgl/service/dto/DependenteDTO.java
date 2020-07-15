@@ -7,6 +7,6 @@ import lombok.Setter;
 @Setter
 public class DependenteDTO extends ClienteDTO {
 
-    private Long idResponsavel;
+    private SocioDTO responsavel;
 
 }

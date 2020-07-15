@@ -7,21 +7,19 @@
     <property name="autoIncrement" value="true"/>
 
     <changeSet id="00000000000001" author="gudeck">
-        <createTable tableName="CLIENTE">
-            <column name="ID" type="BIGINT" autoIncrement="${autoIncrement}">
-                <constraints primaryKey="true" nullable="false"/>
+        <createTable tableName="SOCIO">
+            <column name="ID" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" foreignKeyName="FK_SOCIO_CLIENTE"
+                             references="CLIENTE(ID)"/>
             </column>
-            <column name="NOME" type="VARCHAR(80)">
+            <column name="CPF" type="VARCHAR(11)">
                 <constraints nullable="false"/>
             </column>
-            <column name="DATA_NASCIMENTO" type="DATE">
+            <column name="ENDERECO" type="VARCHAR(200)">
                 <constraints nullable="false"/>
             </column>
-            <column name="ATIVO" type="BOOLEAN">
+            <column name="TELEFONE" type="VARCHAR(12)">
                 <constraints nullable="false"/>
-            </column>
-            <column name="ID_SEXO" type="BIGINT">
-                <constraints nullable="false" foreignKeyName="FK_CLIENTE_SEXO" references="SEXO(ID)"/>
             </column>
         </createTable>
     </changeSet>

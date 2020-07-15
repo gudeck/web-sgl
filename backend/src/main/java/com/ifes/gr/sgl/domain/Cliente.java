@@ -14,8 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.time.LocalDate;
 
-@Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Entity(name = "CLIENTE")
+@Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
 public class Cliente {
