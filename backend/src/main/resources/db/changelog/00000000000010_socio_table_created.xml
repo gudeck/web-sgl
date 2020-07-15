@@ -18,7 +18,7 @@
             <column name="ENDERECO" type="VARCHAR(200)">
                 <constraints nullable="false"/>
             </column>
-            <column name="TELEFONE" type="VARCHAR(12)">
+            <column name="TELEFONE" type="VARCHAR(11)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
