@@ -1,32 +1,36 @@
-<p-table [(selection)]="diretorSelecionado" [loading]="loading" [paginator]="true" [rows]="20" [value]="diretores"
-         selectionMode="single">
-  <ng-template id="caption" pTemplate="caption">
-    <button (click)="setFocus()" icon="pi pi-plus" label="Add" pButton></button>
-    <button (click)="delete(diretorSelecionado)" [disabled]="!isOneSelected()" class="botoesCabecalho"
-            icon="pi pi-trash" label="Delete" pButton></button>
-  </ng-template>
-  <ng-template let-diretor pTemplate="body">
-    <tr [pSelectableRow]="diretor">
-      <td>{{diretor["nome"]}}</td>
-    </tr>
-  </ng-template>
-  <ng-template pTemplate="summary">
-    Total de registros: {{diretores.length}}
-  </ng-template>
-</p-table>
-<p-card header="Cadastro de Diretor">
-  <form #formDiretor="ngForm">
-    <div class="ui-fluid p-formgrid p-grid">
-      <div class="p-field p-col-12">
-        <label for="inputNome">Nome</label>
-        <input [(ngModel)]="novoDiretor.nome" id="inputNome" maxlength="80" name="nome" pInputText required
-               type="text">
+<div class="list">
+  <p-table [(selection)]="diretorSelecionado" [loading]="loading" [paginator]="true" [rows]="20" [value]="diretores"
+           selectionMode="single">
+    <ng-template id="caption" pTemplate="caption">
+      <button (click)="setFocus()" icon="pi pi-plus" label="Add" pButton></button>
+      <button (click)="delete(diretorSelecionado)" [disabled]="!isOneSelected()" class="botoesCabecalho"
+              icon="pi pi-trash" label="Delete" pButton></button>
+    </ng-template>
+    <ng-template let-diretor pTemplate="body">
+      <tr [pSelectableRow]="diretor">
+        <td>{{diretor["nome"]}}</td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      Total de registros: {{diretores.length}}
+    </ng-template>
+  </p-table>
+</div>
+<div class="crud">
+  <p-card header="Cadastro de Diretor">
+    <form #formDiretor="ngForm">
+      <div class="ui-fluid p-formgrid p-grid">
+        <div class="p-field p-col-12">
+          <label for="inputNome">Nome</label>
+          <input [(ngModel)]="novoDiretor.nome" id="inputNome" maxlength="80" name="nome" pInputText required
+                 type="text">
+        </div>
       </div>
-    </div>
-    <div class="p-grid p-justify-between">
-      <button (click)="formDiretor.reset()" label="Limpar" pButton type="button"></button>
-      <button (click)="post(novoDiretor); formDiretor.reset()" [disabled]="!formDiretor.form.valid" label="Cadastrar"
-              pButton type="submit"></button>
-    </div>
-  </form>
-</p-card>
+      <div class="p-grid p-justify-between">
+        <button (click)="formDiretor.reset()" label="Limpar" pButton type="button"></button>
+        <button (click)="post(novoDiretor); formDiretor.reset()" [disabled]="!formDiretor.form.valid" label="Cadastrar"
+                pButton type="submit"></button>
+      </div>
+    </form>
+  </p-card>
+</div>

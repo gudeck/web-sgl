@@ -18,13 +18,16 @@ import {
   ListboxModule,
   TableModule
 } from 'primeng';
+import {AppRoutingModule} from './app-routing.module';
 
 import {AppComponent} from './app.component';
+import {HomeComponent} from './components/home/home.component';
+import {LayoutComponent} from './components/layout/layout.component';
+import {SidebarComponent} from './components/sidebar/sidebar.component';
 import {AtorComponent} from './pages/ator/form/ator.component';
 import {ClasseComponent} from './pages/classe/form/classe.component';
 import {ClienteComponent} from './pages/cliente/form/cliente.component';
 import {DiretorComponent} from './pages/diretor/form/diretor.component';
-import {SidebarComponent} from "./components/sidebar/sidebar.component";
 import {ItemComponent} from './pages/item/form/item.component';
 import {LocacaoComponent} from './pages/locacao/form/locacao.component';
 import {TituloComponent} from './pages/titulo/form/titulo.component';
@@ -39,7 +42,9 @@ import {TituloComponent} from './pages/titulo/form/titulo.component';
     TituloComponent,
     ItemComponent,
     ClienteComponent,
-    LocacaoComponent
+    LocacaoComponent,
+    LayoutComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -58,7 +63,8 @@ import {TituloComponent} from './pages/titulo/form/titulo.component';
     InputNumberModule,
     CheckboxModule,
     InputMaskModule,
-    AccordionModule
+    AccordionModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
