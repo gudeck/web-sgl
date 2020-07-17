@@ -9,29 +9,41 @@ import {AtorService} from '../service/ator.service';
 })
 export class AtorComponent implements OnInit {
 
+  public atores: Ator[];
+
   public novoAtor: Ator;
   public atorSelecionado: Ator;
-  public atores: Ator[];
+
+  public loading: boolean;
 
   constructor(private atorService: AtorService) {
   }
 
   ngOnInit(): void {
-    this.atorService.getAll().subscribe(value => this.atores = value);
-    this.novoAtor = new Ator();
+    this.loading = true;
+    this.atorService.getAll().subscribe(atores => {
+      this.atores = atores;
+      this.loading = false;
+    });
+    this.atores = [];
+    this.initialize();
   }
 
   delete(atorSelecionado: Ator) {
+    this.loading = true;
     this.atorService.delete(atorSelecionado.id).subscribe(() => {
-      this.atores = this.atores.filter(value => value.id !== atorSelecionado.id);
-      this.atorSelecionado = null;
+      this.atores = this.atores.filter(ator => ator.id !== atorSelecionado.id);
+      this.loading = false;
+      this.cleanSelection();
     });
   }
 
   post(novoAtor: Ator) {
-    this.atorService.post(novoAtor).subscribe(value => {
-      this.atores.push(value);
-      this.novoAtor = new Ator();
+    this.loading = true;
+    this.atorService.post(novoAtor).subscribe(atorRegistrado => {
+      this.atores.push(atorRegistrado);
+      this.loading = false;
+      this.initialize();
     });
   }
 
@@ -41,6 +53,15 @@ export class AtorComponent implements OnInit {
 
   setFocus() {
     document.getElementById('inputNome').focus();
+    this.cleanSelection();
+  }
+
+  cleanSelection() {
+    this.atorSelecionado = null;
+  }
+
+  initialize() {
+    this.novoAtor = new Ator();
   }
 
 }

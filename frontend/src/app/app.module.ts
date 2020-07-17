@@ -4,11 +4,14 @@ import {FormsModule} from '@angular/forms';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
+  AccordionModule,
   AutoCompleteModule,
   ButtonModule,
   CalendarModule,
   CardModule,
+  CheckboxModule,
   DropdownModule,
+  InputMaskModule,
   InputNumberModule,
   InputTextareaModule,
   InputTextModule,
@@ -19,8 +22,10 @@ import {
 import {AppComponent} from './app.component';
 import {AtorComponent} from './pages/ator/form/ator.component';
 import {ClasseComponent} from './pages/classe/form/classe.component';
+import {ClienteComponent} from './pages/cliente/form/cliente.component';
 import {DiretorComponent} from './pages/diretor/form/diretor.component';
 import {ItemComponent} from './pages/item/form/item.component';
+import {LocacaoComponent} from './pages/locacao/form/locacao.component';
 import {TituloComponent} from './pages/titulo/form/titulo.component';
 
 @NgModule({
@@ -30,7 +35,9 @@ import {TituloComponent} from './pages/titulo/form/titulo.component';
     DiretorComponent,
     ClasseComponent,
     TituloComponent,
-    ItemComponent
+    ItemComponent,
+    ClienteComponent,
+    LocacaoComponent
   ],
   imports: [
     BrowserModule,
@@ -46,7 +53,10 @@ import {TituloComponent} from './pages/titulo/form/titulo.component';
     AutoCompleteModule,
     DropdownModule,
     InputTextareaModule,
-    InputNumberModule
+    InputNumberModule,
+    CheckboxModule,
+    InputMaskModule,
+    AccordionModule
   ],
   providers: [],
   bootstrap: [AppComponent]

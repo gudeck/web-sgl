@@ -9,29 +9,41 @@ import {DiretorService} from '../service/diretor.service';
 })
 export class DiretorComponent implements OnInit {
 
+  public diretores: Diretor[];
+
   public novoDiretor: Diretor;
   public diretorSelecionado: Diretor;
-  public diretores: Diretor[];
+
+  public loading: boolean;
 
   constructor(private diretorService: DiretorService) {
   }
 
   ngOnInit(): void {
-    this.diretorService.getAll().subscribe(value => this.diretores = value);
-    this.novoDiretor = new Diretor();
+    this.loading = true;
+    this.diretorService.getAll().subscribe(diretores => {
+      this.diretores = diretores;
+      this.loading = false;
+    });
+    this.diretores = [];
+    this.initialize();
   }
 
   delete(diretorSelecionado: Diretor) {
+    this.loading = true;
     this.diretorService.delete(diretorSelecionado.id).subscribe(() => {
-      this.diretores = this.diretores.filter(value => value.id !== diretorSelecionado.id);
-      this.diretorSelecionado = null;
+      this.diretores = this.diretores.filter(diretor => diretor.id !== diretorSelecionado.id);
+      this.loading = false;
+      this.cleanSelection();
     });
   }
 
   post(novoDiretor: Diretor) {
-    this.diretorService.post(novoDiretor).subscribe(value => {
-      this.diretores.push(value);
-      this.novoDiretor = new Diretor();
+    this.loading = true;
+    this.diretorService.post(novoDiretor).subscribe(diretorRegistrado => {
+      this.diretores.push(diretorRegistrado);
+      this.loading = false;
+      this.initialize();
     });
   }
 
@@ -41,6 +53,15 @@ export class DiretorComponent implements OnInit {
 
   setFocus() {
     document.getElementById('inputNome').focus();
+    this.cleanSelection();
+  }
+
+  cleanSelection() {
+    this.diretorSelecionado = null;
+  }
+
+  initialize() {
+    this.novoDiretor = new Diretor();
   }
 
 }

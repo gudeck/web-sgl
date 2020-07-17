@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {ConstantService} from '../../../service/constant.service';
 import {Titulo} from '../../titulo/model/titulo';
 import {TituloService} from '../../titulo/service/titulo.service';
 import {Item} from '../model/item';
@@ -17,12 +18,16 @@ export class ItemComponent implements OnInit {
   public tiposItem: TipoItem[];
   public titulos: Titulo[];
 
+  public titulosFiltrados: Titulo[];
+
   public novoItem: Item;
   public itemSelecionado: Item;
 
   public br: any;
+  public loading: boolean;
 
   constructor(
+    private constantService: ConstantService,
     private itemService: ItemService,
     private tipoItemService: TipoItemService,
     private tituloService: TituloService
@@ -30,35 +35,35 @@ export class ItemComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.itemService.getAll().subscribe(value => this.itens = value);
-    this.tipoItemService.getAll().subscribe(value => this.tiposItem = value);
-    this.tituloService.getAll().subscribe(value => this.titulos = value);
+    this.loading = true;
+    this.itemService.getAll().subscribe(itens => {
+      this.itens = itens;
+      this.loading = false;
+    });
+    this.tipoItemService.getAll().subscribe(tiposItem => this.tiposItem = tiposItem);
+    this.tituloService.getAll().subscribe(titulos => this.titulos = titulos);
 
-    this.novoItem = new Item();
+    this.itens = [];
+    this.initialize();
 
-    this.br = {
-      firstDayOfWeek: 1,
-      dayNames: ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'],
-      dayNamesShort: ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'],
-      dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
-      monthNames: ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'],
-      monthNamesShort: ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'],
-      today: 'Hoje',
-      clear: 'Excluir'
-    };
+    this.br = this.constantService.br;
   }
 
   delete(itemSelecionado: Item) {
+    this.loading = true;
     this.itemService.delete(itemSelecionado.id).subscribe(() => {
-      this.itens = this.itens.filter(value => value.id !== itemSelecionado.id);
-      this.itemSelecionado = null;
+      this.itens = this.itens.filter(item => item.id !== itemSelecionado.id);
+      this.loading = false;
+      this.cleanSelection();
     });
   }
 
   post(novoItem: Item) {
-    this.itemService.post(novoItem).subscribe(value => {
-      this.itens.push(value);
-      this.novoItem = new Item();
+    this.loading = true;
+    this.itemService.post(novoItem).subscribe(itemRegistrado => {
+      this.itens.push(itemRegistrado);
+      this.loading = false;
+      this.initialize();
     });
   }
 
@@ -68,7 +73,25 @@ export class ItemComponent implements OnInit {
 
   setFocus() {
     document.getElementById('inputNome').focus();
+    this.cleanSelection();
   }
 
+  cleanSelection() {
+    this.itemSelecionado = null;
+  }
+
+  initialize() {
+    this.novoItem = new Item();
+  }
+
+
+  public filtrarTitulos(event) {
+    this.titulosFiltrados = [];
+    this.titulos.forEach(titulo => {
+      if (titulo.nome.toLowerCase().indexOf(event.query.toLowerCase()) === 0) {
+        this.titulosFiltrados.push(titulo);
+      }
+    });
+  }
 
 }

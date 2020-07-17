@@ -1,10 +1,9 @@
-<p-table [(selection)]="itemSelecionado" [globalFilterFields]="['nome']" [paginator]="true" [rows]="20"
-         [value]="itens"
+<p-table [(selection)]="itemSelecionado" [loading]="loading" [paginator]="true" [rows]="20" [value]="itens"
          selectionMode="single">
   <ng-template id="caption" pTemplate="caption">
-    <button (click)="setFocus()" class="botoesCabecalho" icon="pi pi-plus" label="Add" pButton></button>
-    <button (click)="delete(itemSelecionado)" [disabled]="!isOneSelected()" class="botoesCabecalho" icon="pi pi-trash"
-            label="Delete" pButton></button>
+    <button (click)="setFocus()" icon="pi pi-plus" label="Add" pButton></button>
+    <button (click)="delete(itemSelecionado)" [disabled]="!isOneSelected()" class="botoesCabecalho"
+            icon="pi pi-trash" label="Delete" pButton></button>
   </ng-template>
   <ng-template pTemplate="header">
     <tr>
@@ -22,33 +21,40 @@
       <td>{{item["tipoItem"]["descricao"]}}</td>
     </tr>
   </ng-template>
+  <ng-template pTemplate="summary">
+    Total de registros: {{itens.length}}
+  </ng-template>
 </p-table>
-<br><br>
-<p-card [style]="{width: '100%'}" header="Cadastro de Item">
-  <div class="p-grid p-justify-between" style="margin: 2% auto 0">
-    <div>
-      <span class="ui-float-label">
-        <p-inputNumber [(ngModel)]="novoItem.numeroSerie" id="inputNumeroSerie"></p-inputNumber>
+<p-card header="Cadastro de Item">
+  <form #formItem="ngForm">
+    <div class="ui-fluid p-formgrid p-grid">
+      <div class="p-field p-col-12">
         <label for="inputNumeroSerie">Número de série</label>
-      </span>
-      <span class="ui-float-label">
-        <p-calendar [(ngModel)]="novoItem.dataAquisicao" [locale]="br" [showIcon]="true" dateFormat="dd/mm/yy"
-                    id="inputDataAquisicao"></p-calendar>
-        <label for="inputDataAquisicao">Data de aquisição</label>
-      </span>
-      <span class="ui-float-label">
-        <p-dropdown [(ngModel)]="novoItem.titulo" [options]="titulos" filter="filter" filterBy="value.nome"
-                    id="inputTitulo" optionLabel="nome"></p-dropdown>
+        <p-inputNumber [(ngModel)]="novoItem.numeroSerie" [useGrouping]="false" id="inputNumeroSerie"
+                       max="9999999999999999" name="numeroSerie" required></p-inputNumber>
+      </div>
+      <div class="p-field p-col-8">
         <label for="inputTitulo">Título</label>
-      </span>
-      <span class="ui-float-label">
-        <p-dropdown [(ngModel)]="novoItem.tipoItem" [options]="tiposItem" filter="filter" filterBy="value.descricao"
-                    id="inputTiposItem" optionLabel="descricao"></p-dropdown>
+        <p-autoComplete (completeMethod)="filtrarTitulos($event)" [(ngModel)]="novoItem.titulo"
+                        [minLength]="1" [suggestions]="titulosFiltrados" field="nome" forceSelection="forceSelection"
+                        id="inputTitulo" maxlength="80" name="diretor" required></p-autoComplete>
+      </div>
+      <div class="p-field p-col-2">
+        <label for="inputDataAquisicao">Data de aquisição</label>
+        <p-calendar [(ngModel)]="novoItem.dataAquisicao" [locale]="br" dateFormat="dd/mm/yy" id="inputDataAquisicao"
+                    name="dataAquisicao" required showButtonBar="true"></p-calendar>
+      </div>
+      <div class="p-field p-col-2">
         <label for="inputTiposItem">Tipo</label>
-      </span>
+        <p-dropdown [(ngModel)]="novoItem.tipoItem" [options]="tiposItem" filter="filter" filterBy="value.descricao"
+                    id="inputTiposItem" name="tipoItem" optionLabel="descricao" placeholder="Selecione..."
+                    required></p-dropdown>
+      </div>
     </div>
-    <div>
-      <button (click)="post(novoItem)" label="Cadastrar" pButton></button>
+    <div class="p-grid p-justify-between">
+      <button (click)="formItem.reset()" label="Limpar" pButton type="button"></button>
+      <button (click)="post(novoItem); formItem.reset()" [disabled]="!formItem.form.valid" label="Cadastrar" pButton
+              type="submit"></button>
     </div>
-  </div>
+  </form>
 </p-card>

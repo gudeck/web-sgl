@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {ConstantService} from '../../../service/constant.service';
 import {Ator} from '../../ator/model/ator';
 import {AtorService} from '../../ator/service/ator.service';
 import {Classe} from '../../classe/model/classe';
@@ -23,12 +24,17 @@ export class TituloComponent implements OnInit {
   public diretores: Diretor[];
   public titulos: Titulo[];
 
+  public diretoresFiltrados: Diretor[];
+  public categoriasFiltradas: Categoria[];
+
   public novoTitulo: Titulo;
   public tituloSelecionado: Titulo;
 
   public br: any;
+  public loading: boolean;
 
   constructor(
+    private constantService: ConstantService,
     private atorService: AtorService,
     private categoriaService: CategoriaService,
     private classeService: ClasseService,
@@ -37,37 +43,37 @@ export class TituloComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.atorService.getAll().subscribe(value => this.atores = value);
-    this.categoriaService.getAll().subscribe(value => this.categorias = value);
-    this.classeService.getAll().subscribe(value => this.classes = value);
-    this.diretorService.getAll().subscribe(value => this.diretores = value);
-    this.tituloService.getAll().subscribe(value => this.titulos = value);
+    this.loading = true;
+    this.atorService.getAll().subscribe(atores => this.atores = atores);
+    this.categoriaService.getAll().subscribe(categorias => this.categorias = categorias);
+    this.classeService.getAll().subscribe(classes => this.classes = classes);
+    this.diretorService.getAll().subscribe(diretores => this.diretores = diretores);
+    this.tituloService.getAll().subscribe(titulos => {
+      this.titulos = titulos;
+      this.loading = false;
+    });
 
-    this.novoTitulo = new Titulo();
+    this.titulos = [];
+    this.initialize();
 
-    this.br = {
-      firstDayOfWeek: 1,
-      dayNames: ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'],
-      dayNamesShort: ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'],
-      dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
-      monthNames: ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'],
-      monthNamesShort: ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'],
-      today: 'Hoje',
-      clear: 'Excluir'
-    };
+    this.br = this.constantService.br;
   }
 
   delete(tituloSelecionado: Titulo) {
+    this.loading = true;
     this.tituloService.delete(tituloSelecionado.id).subscribe(() => {
-      this.titulos = this.titulos.filter(value => value.id !== tituloSelecionado.id);
-      this.tituloSelecionado = null;
+      this.titulos = this.titulos.filter(titulo => titulo.id !== tituloSelecionado.id);
+      this.loading = false;
+      this.cleanSelection();
     });
   }
 
   post(novoTitulo: Titulo) {
-    this.tituloService.post(novoTitulo).subscribe(value => {
-      this.titulos.push(value);
-      this.novoTitulo = new Titulo();
+    this.loading = true;
+    this.tituloService.post(novoTitulo).subscribe(tituloRegistrado => {
+      this.titulos.push(tituloRegistrado);
+      this.loading = false;
+      this.initialize();
     });
   }
 
@@ -77,6 +83,34 @@ export class TituloComponent implements OnInit {
 
   setFocus() {
     document.getElementById('inputNome').focus();
+    this.cleanSelection();
+  }
+
+  cleanSelection() {
+    this.tituloSelecionado = null;
+  }
+
+  initialize() {
+    this.novoTitulo = new Titulo();
+  }
+
+
+  public filtrarDiretores(event) {
+    this.diretoresFiltrados = [];
+    this.diretores.forEach(diretor => {
+      if (diretor.nome.toLowerCase().indexOf(event.query.toLowerCase()) === 0) {
+        this.diretoresFiltrados.push(diretor);
+      }
+    });
+  }
+
+  public filtrarCategorias(event) {
+    this.categoriasFiltradas = [];
+    this.categorias.forEach(categoria => {
+      if (categoria.descricao.toLowerCase().indexOf(event.query.toLowerCase()) === 0) {
+        this.categoriasFiltradas.push(categoria);
+      }
+    });
   }
 
 }

@@ -12,9 +12,6 @@
                 <constraints primaryKey="true" nullable="false" foreignKeyName="FK_DEPENDENTE_CLIENTE"
                              references="CLIENTE(ID)"/>
             </column>
-            <column name="ID_RESPONSAVEL" type="BIGINT">
-                <constraints nullable="false" foreignKeyName="FK_DEPENDENTE_SOCIO" references="SOCIO(ID)"/>
-            </column>
         </createTable>
     </changeSet>
 

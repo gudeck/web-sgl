@@ -9,29 +9,41 @@ import {ClasseService} from '../service/classe.service';
 })
 export class ClasseComponent implements OnInit {
 
+  public classes: Classe[];
+
   public novaClasse: Classe;
   public classeSelecionada: Classe;
-  public classes: Classe[];
+
+  public loading: boolean;
 
   constructor(private classeService: ClasseService) {
   }
 
   ngOnInit(): void {
-    this.classeService.getAll().subscribe(value => this.classes = value);
-    this.novaClasse = new Classe();
+    this.loading = true;
+    this.classeService.getAll().subscribe(classes => {
+      this.classes = classes;
+      this.loading = false;
+    });
+    this.classes = [];
+    this.initialize();
   }
 
-  delete(classeSelecionado: Classe) {
-    this.classeService.delete(classeSelecionado.id).subscribe(() => {
-      this.classes = this.classes.filter(value => value.id !== classeSelecionado.id);
-      this.classeSelecionada = null;
+  delete(classeSelecionada: Classe) {
+    this.loading = true;
+    this.classeService.delete(classeSelecionada.id).subscribe(() => {
+      this.classes = this.classes.filter(classe => classe.id !== classeSelecionada.id);
+      this.loading = false;
+      this.cleanSelection();
     });
   }
 
-  post(novoClasse: Classe) {
-    this.classeService.post(novoClasse).subscribe(value => {
-      this.classes.push(value);
-      this.novaClasse = new Classe();
+  post(novaClasse: Classe) {
+    this.loading = true;
+    this.classeService.post(novaClasse).subscribe(classeRegistrada => {
+      this.classes.push(classeRegistrada);
+      this.loading = false;
+      this.initialize();
     });
   }
 
@@ -41,6 +53,15 @@ export class ClasseComponent implements OnInit {
 
   setFocus() {
     document.getElementById('inputNome').focus();
+    this.cleanSelection();
+  }
+
+  cleanSelection() {
+    this.classeSelecionada = null;
+  }
+
+  initialize() {
+    this.novaClasse = new Classe();
   }
 
 }
