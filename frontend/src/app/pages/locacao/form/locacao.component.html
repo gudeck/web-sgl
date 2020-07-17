@@ -1,82 +1,87 @@
-<p-table [(selection)]="locacaoSelecionada" [loading]="loading" [paginator]="true" [rows]="20" [value]="locacoes"
-         selectionMode="single">
-  <ng-template id="caption" pTemplate="caption">
-    <button (click)="setFocus()" icon="pi pi-plus" label="Add" pButton></button>
-    <button (click)="delete(locacaoSelecionada)" [disabled]="!isOneSelected()" class="botoesCabecalho"
-            icon="pi pi-trash" label="Delete" pButton></button>
-  </ng-template>
-  <ng-template pTemplate="header">
-    <tr>
-      <th scope="col">Cliente</th>
-      <th scope="col">Item</th>
-      <th scope="col">Data da locação</th>
-      <th scope="col">Data de devolução prevista</th>
-      <th scope="col">Valor</th>
-      <th scope="col">Data de devolução</th>
-      <th scope="col">Multa</th>
-    </tr>
-  </ng-template>
-  <ng-template let-locacao pTemplate="body">
-    <tr [pSelectableRow]="locacao">
-      <td>{{locacao["cliente"]["nome"]}}</td>
-      <td>{{locacao["item"]["titulo"]["nome"]}}</td>
-      <td>{{locacao["dataLocacao"]}}</td>
-      <td>{{locacao["dataDevolucaoPrevista"]}}</td>
-      <td>{{locacao["valor"]}}</td>
-      <td>{{locacao["dataDevolucao"]}}</td>
-      <td>{{locacao["multa"]}}</td>
-    </tr>
-  </ng-template>
-  <ng-template pTemplate="summary">
-    Total de registros: {{locacoes.length}}
-  </ng-template>
-</p-table>
-<form #formLocacao="ngForm">
+<div class="list">
+  <p-table [(selection)]="locacaoSelecionada" [loading]="loading" [paginator]="true" [rows]="20" [value]="locacoes"
+           selectionMode="single">
+    <ng-template id="caption" pTemplate="caption">
+      <button (click)="setFocus()" icon="pi pi-plus" label="Add" pButton></button>
+      <button (click)="delete(locacaoSelecionada)" [disabled]="!isOneSelected()" class="botoesCabecalho"
+              icon="pi pi-trash" label="Delete" pButton></button>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th scope="col">Cliente</th>
+        <th scope="col">Item</th>
+        <th scope="col">Data da locação</th>
+        <th scope="col">Data de devolução prevista</th>
+        <th scope="col">Valor</th>
+        <th scope="col">Data de devolução</th>
+        <th scope="col">Multa</th>
+      </tr>
+    </ng-template>
+    <ng-template let-locacao pTemplate="body">
+      <tr [pSelectableRow]="locacao">
+        <td>{{locacao["cliente"]["nome"]}}</td>
+        <td>{{locacao["item"]["titulo"]["nome"]}}</td>
+        <td>{{locacao["dataLocacao"]}}</td>
+        <td>{{locacao["dataDevolucaoPrevista"]}}</td>
+        <td>{{locacao["valor"]}}</td>
+        <td>{{locacao["dataDevolucao"]}}</td>
+        <td>{{locacao["multa"]}}</td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      Total de registros: {{locacoes.length}}
+    </ng-template>
+  </p-table>
+</div>
+<div class="crud">
   <p-card header="Cadastro de Locação">
-    <div class="ui-fluid p-formgrid p-grid">
-      <div class="p-field p-col-6">
-        <label for="inputCliente">Cliente</label>
-        <p-autoComplete (completeMethod)="filtrarClientes($event)" [(ngModel)]="novaLocacao.cliente"
-                        [minLength]="1" [suggestions]="clientesFiltrados" field="nome" forceSelection="forceSelection"
-                        id="inputCliente" name="cliente" required></p-autoComplete>
+    <form #formLocacao="ngForm">
+      <div class="ui-fluid p-formgrid p-grid">
+        <div class="p-field p-col-6">
+          <label for="inputCliente">Cliente</label>
+          <p-autoComplete (completeMethod)="filtrarClientes($event)" [(ngModel)]="novaLocacao.cliente"
+                          [minLength]="1" [suggestions]="clientesFiltrados" field="nome" forceSelection="forceSelection"
+                          id="inputCliente" name="cliente" required></p-autoComplete>
+        </div>
+        <div class="p-field p-col-6">
+          <label for="inputItem">Item</label>
+          <p-autoComplete (completeMethod)="filtrarItens($event)" [(ngModel)]="novaLocacao.item"
+                          [minLength]="1" [suggestions]="itensFiltrados" field="titulo.nome"
+                          forceSelection="forceSelection" id="inputItem" name="item" required></p-autoComplete>
+        </div>
+        <div class="p-field p-col-6">
+          <label for="inputDataLocacao">Data de locação</label>
+          <p-calendar [(ngModel)]="novaLocacao.dataLocacao" [locale]="br" dateFormat="dd/mm/yy" id="inputDataLocacao"
+                      name="dataLocacao" required showButtonBar="true"></p-calendar>
+        </div>
+        <div class="p-field  p-col-6">
+          <label for="inputDataDevolucaoPrevista">Data de devolução prevista</label>
+          <p-calendar [(ngModel)]="novaLocacao.dataDevolucaoPrevista" [locale]="br" dateFormat="dd/mm/yy"
+                      id="inputDataDevolucaoPrevista" name="dataDevolucaoPrevista" required
+                      showButtonBar="true"></p-calendar>
+        </div>
+        <div class="p-field p-col-6">
+          <label for="inputDataDevolucao">Data de devolução</label>
+          <p-calendar [(ngModel)]="novaLocacao.dataDevolucao" [locale]="br" dateFormat="dd/mm/yy"
+                      id="inputDataDevolucao"
+                      name="dataDevolucao" showButtonBar="true"></p-calendar>
+        </div>
+        <div class="p-field p-col-3">
+          <label for="inputValor">Valor (R$)</label>
+          <p-inputNumber [(ngModel)]="novaLocacao.valor" [maxFractionDigits]="2" [minFractionDigits]="2" currency="BRL"
+                         id="inputValor" locale="pt-BR" mode="currency" name="valor" required></p-inputNumber>
+        </div>
+        <div class="p-field p-col-3">
+          <label for="inputMulta">Multa (R$) </label>
+          <p-inputNumber [(ngModel)]="novaLocacao.multa" [maxFractionDigits]="2" [minFractionDigits]="2" currency="BRL"
+                         id="inputMulta" locale="pt-BR" mode="currency" name="multa"></p-inputNumber>
+        </div>
       </div>
-      <div class="p-field p-col-6">
-        <label for="inputItem">Item</label>
-        <p-autoComplete (completeMethod)="filtrarItens($event)" [(ngModel)]="novaLocacao.item"
-                        [minLength]="1" [suggestions]="itensFiltrados" field="titulo.nome"
-                        forceSelection="forceSelection" id="inputItem" name="item" required></p-autoComplete>
+      <div class="p-grid p-justify-between">
+        <button (click)="formLocacao.reset()" label="Limpar" pButton type="button"></button>
+        <button (click)="post(novaLocacao); formLocacao.reset()" [disabled]="!formLocacao.form.valid" label="Cadastrar"
+                pButton type="submit"></button>
       </div>
-      <div class="p-field p-col-6">
-        <label for="inputDataLocacao">Data de locação</label>
-        <p-calendar [(ngModel)]="novaLocacao.dataLocacao" [locale]="br" dateFormat="dd/mm/yy" id="inputDataLocacao"
-                    name="dataLocacao" required showButtonBar="true"></p-calendar>
-      </div>
-      <div class="p-field  p-col-6">
-        <label for="inputDataDevolucaoPrevista">Data de devolução prevista</label>
-        <p-calendar [(ngModel)]="novaLocacao.dataDevolucaoPrevista" [locale]="br" dateFormat="dd/mm/yy"
-                    id="inputDataDevolucaoPrevista" name="dataDevolucaoPrevista" required
-                    showButtonBar="true"></p-calendar>
-      </div>
-      <div class="p-field p-col-6">
-        <label for="inputDataDevolucao">Data de devolução</label>
-        <p-calendar [(ngModel)]="novaLocacao.dataDevolucao" [locale]="br" dateFormat="dd/mm/yy" id="inputDataDevolucao"
-                    name="dataDevolucao" showButtonBar="true"></p-calendar>
-      </div>
-      <div class="p-field p-col-3">
-        <label for="inputValor">Valor (R$)</label>
-        <p-inputNumber [(ngModel)]="novaLocacao.valor" [maxFractionDigits]="2" [minFractionDigits]="2" currency="BRL"
-                       id="inputValor" locale="pt-BR" mode="currency" name="valor" required></p-inputNumber>
-      </div>
-      <div class="p-field p-col-3">
-        <label for="inputMulta">Multa (R$) </label>
-        <p-inputNumber [(ngModel)]="novaLocacao.multa" [maxFractionDigits]="2" [minFractionDigits]="2" currency="BRL"
-                       id="inputMulta" locale="pt-BR" mode="currency" name="multa"></p-inputNumber>
-      </div>
-    </div>
-    <div class="p-grid p-justify-between">
-      <button (click)="formLocacao.reset()" label="Limpar" pButton type="button"></button>
-      <button (click)="post(novaLocacao); formLocacao.reset()" [disabled]="!formLocacao.form.valid" label="Cadastrar"
-              pButton type="submit"></button>
-    </div>
+    </form>
   </p-card>
-</form>
+</div>
