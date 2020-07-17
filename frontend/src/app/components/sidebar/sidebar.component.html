@@ -1,25 +1,22 @@
-<p-sidebar [(visible)]="visibleSidebar1">
-  <div class="sidebar">
-    <div class="sidebar-centered">
-      <h2 style="font-weight:normal">Passatempo</h2>
-      <p-card header="Bem-vinde" [subheader]="nomeFuncionario">
-        <p-header>
-          <div id="blue" style="border:1px transparent; width:50px; height:50px; margin:10px auto;">
-            <img src="Card" src="./assets/User50x50.png" height="50" width="50" >
-          </div>
-        </p-header>
-      </p-card>
-    </div>
+<div class="fundo">
+  <div class="sidebar ui-sidebar">
+    <h2>Passatempo</h2>
+    <p-card [subheader]="nomeFuncionario" header="Bem-vinde">
+      <p-header>
+        <div id="blue" style="border:1px transparent; width:50px; height:50px; margin:10px auto;">
+          <img height="50" src="./assets/User50x50.png" width="50">
+        </div>
+      </p-header>
+    </p-card>
     <div id="left" style="border:1px transparent; width:50px; height:50px;">
       <ul>
-        <li><a class="item"> Filme </a></li>
-        <li><a class="item"> Ator </a></li>
-        <li><a class="item"> Diretor </a></li>
-        <li><a class="item"> Classe </a></li>
-        <li><a class="item"> Item </a></li>
-        <li><a class="item"> Cliente </a></li>
+        <li><a> Filme </a></li>
+        <li><a> Ator </a></li>
+        <li><a> Diretor </a></li>
+        <li><a> Classe </a></li>
+        <li><a> Item </a></li>
+        <li><a> Cliente </a></li>
       </ul>
     </div>
   </div>
-
-</p-sidebar>
+</div>
