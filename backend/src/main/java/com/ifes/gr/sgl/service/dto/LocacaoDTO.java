@@ -15,7 +15,7 @@ public class LocacaoDTO {
     private LocalDate dataDevolucao;
     private Double valor;
     private Double multa;
-    private Long idItem;
-    private Long idCliente;
+    private ItemDTO item;
+    private ClienteDTO cliente;
 
 }

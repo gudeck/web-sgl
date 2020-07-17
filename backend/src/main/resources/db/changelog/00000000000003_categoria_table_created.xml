@@ -17,4 +17,40 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="00000000000002" author="gudeck">
+        <insert tableName="CATEGORIA">
+            <column name="DESCRICAO">Ação</column>
+        </insert>
+        <insert tableName="CATEGORIA">
+            <column name="DESCRICAO">Animação</column>
+        </insert>
+        <insert tableName="CATEGORIA">
+            <column name="DESCRICAO">Aventura</column>
+        </insert>
+        <insert tableName="CATEGORIA">
+            <column name="DESCRICAO">Comédia</column>
+        </insert>
+        <insert tableName="CATEGORIA">
+            <column name="DESCRICAO">Cult</column>
+        </insert>
+        <insert tableName="CATEGORIA">
+            <column name="DESCRICAO">Documentário</column>
+        </insert>
+        <insert tableName="CATEGORIA">
+            <column name="DESCRICAO">Drama</column>
+        </insert>
+        <insert tableName="CATEGORIA">
+            <column name="DESCRICAO">Ficção</column>
+        </insert>
+        <insert tableName="CATEGORIA">
+            <column name="DESCRICAO">Ficção</column>
+        </insert>
+        <insert tableName="CATEGORIA">
+            <column name="DESCRICAO">Terror</column>
+        </insert>
+        <insert tableName="CATEGORIA">
+            <column name="DESCRICAO">Trash</column>
+        </insert>
+    </changeSet>
+
 </databaseChangeLog>

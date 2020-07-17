@@ -14,9 +14,9 @@ public class TituloDTO {
     private String nome;
     private LocalDate ano;
     private String sinopse;
-    private Long idCategoria;
-    private Long idDiretor;
-    private Long idClasse;
+    private CategoriaDTO categoria;
+    private DiretorDTO diretor;
+    private ClasseDTO classe;
     private List<AtorDTO> atores;
 
 }

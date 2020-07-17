@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+
+    <property name="autoIncrement" value="true"/>
+
+    <changeSet id="00000000000001" author="gudeck">
+        <createTable tableName="SOCIO">
+            <column name="ID" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" foreignKeyName="FK_SOCIO_CLIENTE"
+                             references="CLIENTE(ID)"/>
+            </column>
+            <column name="CPF" type="VARCHAR(11)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ENDERECO" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TELEFONE" type="VARCHAR(11)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="00000000000002" author="gudeck">
+        <createTable tableName="SOCIO_DEPENDENTE">
+            <column name="ID_SOCIO" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" foreignKeyName="FK_SOCIO_DEPENDENTE_SOCIO"
+                             references="SOCIO(ID)"/>
+            </column>
+            <column name="ID_DEPENDENTE" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" foreignKeyName="FK_SOCIO_DEPENDENTE_DEPENDENTE"
+                             references="DEPENDENTE(ID)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
+

@@ -20,11 +20,6 @@ public class ClasseServiceImpl implements ClasseService {
     private final ClasseRepository classeRepository;
 
     @Override
-    public ClasseDTO getById(Long id) {
-        return classeMapper.toDto(getClasse(id));
-    }
-
-    @Override
     public ClasseDTO save(ClasseDTO classeDTO) {
         return classeMapper.toDto(classeRepository.save(classeMapper.toEntity(classeDTO)));
     }

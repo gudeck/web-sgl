@@ -1,0 +1,60 @@
+<p-table [(selection)]="itemSelecionado" [loading]="loading" [paginator]="true" [rows]="20" [value]="itens"
+         selectionMode="single">
+  <ng-template id="caption" pTemplate="caption">
+    <button (click)="setFocus()" icon="pi pi-plus" label="Add" pButton></button>
+    <button (click)="delete(itemSelecionado)" [disabled]="!isOneSelected()" class="botoesCabecalho"
+            icon="pi pi-trash" label="Delete" pButton></button>
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th scope="col">Número de série</th>
+      <th scope="col">Data de aquisição</th>
+      <th scope="col">Título</th>
+      <th scope="col">Tipo</th>
+    </tr>
+  </ng-template>
+  <ng-template let-item pTemplate="body">
+    <tr [pSelectableRow]="item">
+      <td>{{item["numeroSerie"]}}</td>
+      <td>{{item["dataAquisicao"]}}</td>
+      <td>{{item["titulo"]["nome"]}}</td>
+      <td>{{item["tipoItem"]["descricao"]}}</td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="summary">
+    Total de registros: {{itens.length}}
+  </ng-template>
+</p-table>
+<p-card header="Cadastro de Item">
+  <form #formItem="ngForm">
+    <div class="ui-fluid p-formgrid p-grid">
+      <div class="p-field p-col-12">
+        <label for="inputNumeroSerie">Número de série</label>
+        <p-inputNumber [(ngModel)]="novoItem.numeroSerie" [useGrouping]="false" id="inputNumeroSerie"
+                       max="9999999999999999" name="numeroSerie" required></p-inputNumber>
+      </div>
+      <div class="p-field p-col-8">
+        <label for="inputTitulo">Título</label>
+        <p-autoComplete (completeMethod)="filtrarTitulos($event)" [(ngModel)]="novoItem.titulo"
+                        [minLength]="1" [suggestions]="titulosFiltrados" field="nome" forceSelection="forceSelection"
+                        id="inputTitulo" maxlength="80" name="diretor" required></p-autoComplete>
+      </div>
+      <div class="p-field p-col-2">
+        <label for="inputDataAquisicao">Data de aquisição</label>
+        <p-calendar [(ngModel)]="novoItem.dataAquisicao" [locale]="br" dateFormat="dd/mm/yy" id="inputDataAquisicao"
+                    name="dataAquisicao" required showButtonBar="true"></p-calendar>
+      </div>
+      <div class="p-field p-col-2">
+        <label for="inputTiposItem">Tipo</label>
+        <p-dropdown [(ngModel)]="novoItem.tipoItem" [options]="tiposItem" filter="filter" filterBy="value.descricao"
+                    id="inputTiposItem" name="tipoItem" optionLabel="descricao" placeholder="Selecione..."
+                    required></p-dropdown>
+      </div>
+    </div>
+    <div class="p-grid p-justify-between">
+      <button (click)="formItem.reset()" label="Limpar" pButton type="button"></button>
+      <button (click)="post(novoItem); formItem.reset()" [disabled]="!formItem.form.valid" label="Cadastrar" pButton
+              type="submit"></button>
+    </div>
+  </form>
+</p-card>

@@ -13,6 +13,6 @@ public class ClienteDTO {
     private String nome;
     private LocalDate dataNascimento;
     private Boolean ativo;
-    private Long idSexo;
+    private SexoDTO sexo;
 
 }

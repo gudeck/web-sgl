@@ -20,20 +20,8 @@
             <column name="ATIVO" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
-            <column name="CPF" type="VARCHAR(11)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="ENDERECO" type="VARCHAR(200)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="TELEFONE" type="VARCHAR(12)">
-                <constraints nullable="false"/>
-            </column>
             <column name="ID_SEXO" type="BIGINT">
                 <constraints nullable="false" foreignKeyName="FK_CLIENTE_SEXO" references="SEXO(ID)"/>
-            </column>
-            <column name="ID_RESPONSAVEL" type="BIGINT">
-                <constraints nullable="true" foreignKeyName="FK_CLIENTE_RESPONSAVEL" references="CLIENTE(ID)"/>
             </column>
         </createTable>
     </changeSet>

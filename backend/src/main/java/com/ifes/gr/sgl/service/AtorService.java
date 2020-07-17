@@ -6,8 +6,6 @@ import java.util.List;
 
 public interface AtorService {
 
-    AtorDTO getById(Long id);
-
     AtorDTO save(AtorDTO atorDTO);
 
     List<AtorDTO> getAll();
