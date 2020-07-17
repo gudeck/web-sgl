@@ -33,13 +33,10 @@ ul > li:nth-child(6) {
   list-style-image: url('../../../assets/account.png');
 }
 
-#page {
-  background-color: dimgray;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
+h2 {
+  color: #DEDEDE;
+  font-weight: bold;
+  font-family: "Open Sans", "Helvetica Neue", sans-serif;
 }
 
 #imagem {
@@ -50,6 +47,15 @@ ul > li:nth-child(6) {
 }
 
 #sidebar {
-  width: 20%;
-  height: 100%;
+  height: 100vh;
+  background-color: #323232;
+}
+
+#content {
+  margin: 10px 25px;
+}
+
+.p-grid {
+  height: 100vh;
+  background-color: dimgray;
 }

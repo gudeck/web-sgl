@@ -1,6 +1,6 @@
-<div id="page">
-  <div class="ui-sidebar" id="sidebar">
-    <h2>Passatempo</h2>
+<div class="p-grid">
+  <div class="p-col-2" id="sidebar">
+    <a routerLink="/"><h2>Passatempo</h2></a>
     <p-card [subheader]="nomeFuncionario" header="Bem-vinde">
       <p-header>
         <div id="imagem">
@@ -10,16 +10,18 @@
     </p-card>
     <div>
       <ul>
-        <li><a> Filme </a></li>
-        <li><a> Ator </a></li>
-        <li><a> Diretor </a></li>
-        <li><a> Classe </a></li>
-        <li><a> Item </a></li>
-        <li><a> Cliente </a></li>
+        <li><a routerLink="/titulos"> Título </a></li>
+        <li><a routerLink="/atores"> Ator </a></li>
+        <li><a routerLink="/diretores"> Diretor </a></li>
+        <li><a routerLink="/classes"> Classe </a></li>
+        <li><a routerLink="/itens"> Item </a></li>
+        <li><a routerLink="/clientes"> Cliente </a></li>
       </ul>
     </div>
   </div>
-  <div id="content">
-
+  <div class="p-col-10">
+    <div id="content">
+      <ng-content></ng-content>
+    </div>
   </div>
 </div>
