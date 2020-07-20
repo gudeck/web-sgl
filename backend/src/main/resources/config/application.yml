@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: sgl
+  datasource:
+    url: jdbc:mysql://localhost:3306/sgl?createDatabaseIfNotExist=true&usrSSL=false
+    username: root
+    password:
+  jpa:
+    database: MYSQL
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  liquibase:
+    change-log: classpath:db/master.xml
+    drop-first: true
+

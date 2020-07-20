@@ -1,0 +1,27 @@
+<div class="p-grid">
+  <div class="p-col-2" id="sidebar">
+    <a routerLink="/"><h2>Passatempo</h2></a>
+    <p-card [subheader]="nomeFuncionario" header="Bem-vinde">
+      <p-header>
+        <div id="imagem">
+          <img alt="Imagem do usuário" height="50" src="./assets/User50x50.png" width="50">
+        </div>
+      </p-header>
+    </p-card>
+    <div>
+      <ul>
+        <li><a routerLink="/titulos"> Título </a></li>
+        <li><a routerLink="/atores"> Ator </a></li>
+        <li><a routerLink="/diretores"> Diretor </a></li>
+        <li><a routerLink="/classes"> Classe </a></li>
+        <li><a routerLink="/itens"> Item </a></li>
+        <li><a routerLink="/clientes"> Cliente </a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="p-col-10">
+    <div id="content">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>

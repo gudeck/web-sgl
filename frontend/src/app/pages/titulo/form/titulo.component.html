@@ -1,0 +1,91 @@
+<div class="list">
+  <p-table [(selection)]="tituloSelecionado" [loading]="loading" [paginator]="true" [rows]="20" [value]="titulos"
+           selectionMode="single">
+    <ng-template id="caption" pTemplate="caption">
+      <button (click)="setFocus()" icon="pi pi-plus" label="Add" pButton></button>
+      <button (click)="delete(tituloSelecionado)" [disabled]="!isOneSelected()" class="botoesCabecalho"
+              icon="pi pi-trash" label="Delete" pButton></button>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th scope="col">Nome</th>
+        <th scope="col">Ano</th>
+        <th scope="col">Sinopse</th>
+        <th scope="col">Categoria</th>
+        <th scope="col">Diretor</th>
+        <th scope="col">Classe</th>
+      </tr>
+    </ng-template>
+    <ng-template let-titulo pTemplate="body">
+      <tr [pSelectableRow]="titulo">
+        <td>{{titulo["nome"]}}</td>
+        <td>{{titulo["ano"]}}</td>
+        <td>{{titulo["sinopse"]}}</td>
+        <td>{{titulo["categoria"]["descricao"]}}</td>
+        <td>{{titulo["diretor"]["nome"]}}</td>
+        <td>{{titulo["classe"]["nome"]}}</td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      Total de registros: {{titulos.length}}
+    </ng-template>
+  </p-table>
+</div>
+<div class="crud">
+  <p-card header="Cadastro de Título">
+    <form #formTitulo="ngForm">
+      <div class="ui-fluid p-formgrid p-grid">
+        <div class="p-field p-col-12">
+          <label for="inputNome">Nome</label>
+          <input [(ngModel)]="novoTitulo.nome" id="inputNome" maxlength="80" name="nome" pInputText required
+                 type="text">
+        </div>
+        <div class="p-col-6">
+          <div class="p-field p-col-12">
+            <label for="inputClasse">Classe</label>
+            <p-dropdown [(ngModel)]="novoTitulo.classe" [options]="classes" filter="filter" filterBy="value.nome"
+                        id="inputClasse" name="classe" optionLabel="nome" placeholder="Selecione..."
+                        required></p-dropdown>
+          </div>
+          <div class="p-field p-col-12">
+            <label for="inputDiretor">Diretor</label>
+            <p-autoComplete (completeMethod)="filtrarDiretores($event)" [(ngModel)]="novoTitulo.diretor"
+                            [minLength]="1" [suggestions]="diretoresFiltrados" field="nome"
+                            forceSelection="forceSelection" id="inputDiretor" maxlength="80"
+                            name="diretor"></p-autoComplete>
+          </div>
+          <div class="p-field p-col-12">
+            <label for="inputCategoria">Categoria</label>
+            <p-autoComplete (completeMethod)="filtrarCategorias($event)" [(ngModel)]="novoTitulo.categoria"
+                            [minLength]="1" [suggestions]="categoriasFiltradas" field="descricao"
+                            forceSelection="forceSelection" id="inputCategoria" maxlength="80"
+                            name="categoria"></p-autoComplete>
+          </div>
+        </div>
+        <div class="p-col-6">
+          <div class="p-field p-col-12">
+            <label for="inputAno">Data</label>
+            <p-calendar [(ngModel)]="novoTitulo.ano" [locale]="br" dateFormat="dd/mm/yy" id="inputAno" name="ano"
+                        required
+                        showButtonBar="true"></p-calendar>
+          </div>
+          <div class="p-field p-col-12">
+            <label for="inputSinopse">Sinopse</label>
+            <textarea [(ngModel)]="novoTitulo.sinopse" [cols]="80" [rows]="5" autoResize="autoResize" id="inputSinopse"
+                      maxlength="400" name="sinopse" pInputTextarea required></textarea>
+          </div>
+        </div>
+        <div class="p-field p-col-6">
+          <label for="inputAtores">Atores</label>
+          <p-listbox [(ngModel)]="novoTitulo.atores" [checkbox]="true" [filter]="true" [multiple]="true"
+                     [options]="atores" id="inputAtores" name="atores" optionLabel="nome"></p-listbox>
+        </div>
+      </div>
+      <div class="p-grid p-justify-between">
+        <button (click)="formTitulo.reset()" label="Limpar" pButton type="button"></button>
+        <button (click)="post(novoTitulo); formTitulo.reset()" [disabled]="!formTitulo.form.valid" label="Cadastrar"
+                pButton type="submit"></button>
+      </div>
+    </form>
+  </p-card>
+</div>

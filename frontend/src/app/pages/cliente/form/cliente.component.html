@@ -1,0 +1,128 @@
+<div class="list">
+  <p-table [(selection)]="socioSelecionado" [loading]="loading" [paginator]="true" [rows]="20" [value]="socios"
+           selectionMode="single">
+    <ng-template id="caption" pTemplate="caption">
+      <button (click)="setFocus()" icon="pi pi-plus" label="Add" pButton></button>
+      <button (click)="delete(socioSelecionado)" [disabled]="!isOneSelected()" class="botoesCabecalho"
+              icon="pi pi-trash" label="Delete" pButton></button>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th scope="col">Nome</th>
+        <th scope="col">Data de nascimento</th>
+        <th scope="col">Ativo?</th>
+        <th scope="col">Sexo</th>
+        <th scope="col">CPF</th>
+        <th scope="col">Endereco</th>
+        <th scope="col">Telefone</th>
+      </tr>
+    </ng-template>
+    <ng-template let-socio pTemplate="body">
+      <tr [pSelectableRow]="socio">
+        <td>{{socio["nome"]}}</td>
+        <td>{{socio["dataNascimento"]}}</td>
+        <td>{{socio["ativo"] ? 'Sim' : 'Não'}}</td>
+        <td>{{socio["sexo"]["descricao"]}}</td>
+        <td>{{socio["cpf"]}}</td>
+        <td>{{socio["endereco"]}}</td>
+        <td>{{socio["telefone"]}}</td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      Total de registros: {{socios.length}}
+    </ng-template>
+  </p-table>
+</div>
+<div class="crud">
+  <p-card header="Cadastro de Socio">
+    <form #formCliente="ngForm">
+      <div class="ui-fluid p-formgrid p-grid">
+        <div class="p-col-6 p-grid">
+          <div class="p-field p-col-12">
+            <label for="inputNomeSocio">Nome</label>
+            <input [(ngModel)]="novoSocio.nome" id="inputNomeSocio" maxlength="80" name="nomeSocio" pInputText required
+                   type="text">
+          </div>
+          <div class="p-field p-col-4">
+            <label for="inputDataNascimentoSocio">Data de nascimento</label>
+            <p-calendar [(ngModel)]="novoSocio.dataNascimento" [locale]="br" dateFormat="dd/mm/yy"
+                        id="inputDataNascimentoSocio" name="dataNascimentoSocio" required
+                        showButtonBar="true"></p-calendar>
+          </div>
+          <div class="p-field p-col-4">
+            <label for="inputSexoSocio">Sexo</label>
+            <p-dropdown [(ngModel)]="novoSocio.sexo" [options]="sexos" id="inputSexoSocio" name="sexoSocio"
+                        optionLabel="descricao" placeholder="Selecione..." required></p-dropdown>
+          </div>
+          <div class="p-field-checkbox p-col-4">
+            <label></label>
+            <p-checkbox [(ngModel)]="novoSocio.ativo" [binary]="true" label="Ativo?" name="ativoSocio"
+                        required></p-checkbox>
+          </div>
+          <div class="p-field p-col-6">
+            <label for="inputCpfSocio">CPF</label>
+            <p-inputMask [(ngModel)]="novoSocio.cpf" [unmask]="true" autoClear id="inputCpfSocio" mask="999.999.999-99"
+                         name="cpfSocio" required slotChar=" "></p-inputMask>
+          </div>
+          <div class="p-field p-col-6">
+            <label for="inputTelefoneSocio">Telefone</label>
+            <p-inputMask [(ngModel)]="novoSocio.telefone" [unmask]="true" autoClear id="inputTelefoneSocio"
+                         mask="(99) 99999-9999" name="telefoneSocio" required slotChar=" "></p-inputMask>
+          </div>
+          <div class="p-field p-col-12">
+            <label for="inputEnderecoSocio">Endereco</label>
+            <input [(ngModel)]="novoSocio.endereco" id="inputEnderecoSocio" maxlength="200" name="enderecoSocio"
+                   pInputText
+                   required type="text">
+          </div>
+        </div>
+
+        <div class="p-col-6">
+          <button (click)="criarDependente()" [disabled]="isLimiteDependentes()" label="Novo Dependente" pButton
+                  type="button"></button>
+
+          <p-accordion>
+            <p-accordionTab *ngFor="let dependente of novoSocio.dependentes; let i = index;"
+                            header="Dependente {{i + 1}}">
+              <div class="ui-fluid p-formgrid p-grid">
+                <div class="p-col-12">
+                  <button (click)="removerDependente(i)" icon="pi pi-trash" pButton type="button"></button>
+                </div>
+                <div class="p-field p-col-12">
+                  <label for="inputNomeDependente{{i}}">Nome</label>
+                  <input [(ngModel)]="dependente.nome" [ngModelOptions]="{standalone: true}"
+                         id="inputNomeDependente{{i}}"
+                         maxlength="80" name="nomeDependenteativoDependente{{i}}" pInputText required type="text">
+                </div>
+                <div class="p-field p-col-4">
+                  <label for="inputDataNascimentoDependente{{i}}">Data de nascimento</label>
+                  <p-calendar [(ngModel)]="dependente.dataNascimento" [locale]="br"
+                              [ngModelOptions]="{standalone: true}"
+                              dateFormat="dd/mm/yy" id="inputDataNascimentoDependente{{i}}"
+                              name="dataNascimentoDependenteativoDependente{{i}}" required
+                              showButtonBar="true"></p-calendar>
+                </div>
+                <div class="p-field p-col-4">
+                  <label for="inputSexoDependente{{i}}">Sexo</label>
+                  <p-dropdown [(ngModel)]="dependente.sexo" [ngModelOptions]="{standalone: true}" [options]="sexos"
+                              id="inputSexoDependente{{i}}" name="sexoDependenteativoDependente{{i}}"
+                              optionLabel="descricao" placeholder="Selecione..." required></p-dropdown>
+                </div>
+                <div class="p-field-checkbox p-col-4">
+                  <label></label>
+                  <p-checkbox [(ngModel)]="dependente.ativo" [binary]="true" [ngModelOptions]="{standalone: true}"
+                              label="Ativo?" name="ativoDependente{{i}}" required></p-checkbox>
+                </div>
+              </div>
+            </p-accordionTab>
+          </p-accordion>
+        </div>
+      </div>
+      <div class="p-grid p-justify-between">
+        <button (click)="formCliente.reset()" label="Limpar" pButton type="button"></button>
+        <button (click)="post(novoSocio); formCliente.reset()" [disabled]="!formCliente.form.valid" label="Cadastrar"
+                pButton type="submit"></button>
+      </div>
+    </form>
+  </p-card>
+</div>

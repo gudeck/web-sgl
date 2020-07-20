@@ -1,0 +1,61 @@
+li {
+  padding: .3em 0 1em 5px;
+  text-align: start;
+}
+
+ul {
+  font-size: 20px;
+  margin-left: 10px;
+  list-style: none;
+}
+
+ul > li:nth-child(1) {
+  list-style-image: url('../../../assets/filmstrip.png');
+}
+
+ul > li:nth-child(2) {
+  list-style-image: url('../../../assets/account-star.png');
+}
+
+ul > li:nth-child(3) {
+  list-style-image: url('../../../assets/movie-open.png');
+}
+
+ul > li:nth-child(4) {
+  list-style-image: url('../../../assets/trophy-award.png');
+}
+
+ul > li:nth-child(5) {
+  list-style-image: url('../../../assets/disc.png');
+}
+
+ul > li:nth-child(6) {
+  list-style-image: url('../../../assets/account.png');
+}
+
+h2 {
+  color: #DEDEDE;
+  font-weight: bold;
+  font-family: "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+#imagem {
+  border: 1px transparent;
+  width: 50px;
+  height: 50px;
+  margin: 10px auto;
+}
+
+#sidebar {
+  height: 100vh;
+  background-color: #323232;
+}
+
+#content {
+  margin: 10px 25px;
+}
+
+.p-grid {
+  height: 100vh;
+  background-color: dimgray;
+}
