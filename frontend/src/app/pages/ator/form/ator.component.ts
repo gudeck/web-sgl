@@ -6,7 +6,6 @@ import {AtorService} from '../service/ator.service';
 @Component({
   selector: 'app-ator',
   templateUrl: './ator.component.html',
-  styleUrls: ['./ator.component.css']
 })
 export class AtorComponent implements OnInit {
 

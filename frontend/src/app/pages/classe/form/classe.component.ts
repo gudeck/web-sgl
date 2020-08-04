@@ -6,7 +6,6 @@ import {ClasseService} from '../service/classe.service';
 @Component({
   selector: 'app-classe',
   templateUrl: './classe.component.html',
-  styleUrls: ['./classe.component.css']
 })
 export class ClasseComponent implements OnInit {
 

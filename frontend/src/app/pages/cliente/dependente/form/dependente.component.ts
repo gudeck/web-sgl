@@ -5,7 +5,6 @@ import {Sexo} from '../../model/sexo';
 @Component({
   selector: 'app-dependente',
   templateUrl: './dependente.component.html',
-  styleUrls: ['./dependente.component.css']
 })
 export class DependenteComponent implements OnInit {
   @Input() public br: any;

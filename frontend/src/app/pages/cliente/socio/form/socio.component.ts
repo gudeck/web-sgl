@@ -11,7 +11,6 @@ import {SocioService} from '../../service/socio.service';
 @Component({
   selector: 'app-cliente',
   templateUrl: './socio.component.html',
-  styleUrls: ['./socio.component.css']
 })
 export class SocioComponent implements OnInit {
 

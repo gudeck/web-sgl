@@ -11,7 +11,6 @@ import {LocacaoService} from '../service/locacao.service';
 @Component({
   selector: 'app-locacao',
   templateUrl: './locacao.component.html',
-  styleUrls: ['./locacao.component.css']
 })
 export class LocacaoComponent implements OnInit {
 
