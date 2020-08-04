@@ -1,0 +1,27 @@
+<p-dialog [(visible)]="visibilidadeDialog" [closable]="false" [contentStyle]="{'overflow': 'visible'}"
+          [draggable]="false" [modal]="true" [resizable]="false" header="Dependente">
+  <form #formDependente="ngForm">
+    <div class="ui-fluid p-formgrid p-grid">
+      <div class="p-field p-col-12">
+        <label for="inputNome">Nome</label>
+        <input [(ngModel)]="dependente.nome" id="inputNome" maxlength="80" name="nomeAtivo" pInputText required
+               type="text">
+      </div>
+      <div class="p-field p-col-4">
+        <label for="inputDataNascimento">Data de nascimento</label>
+        <p-calendar [(ngModel)]="dependente.dataNascimento" [locale]="br" dateFormat="dd/mm/yy" id="inputDataNascimento"
+                    name="dataNascimento" required showButtonBar="true"></p-calendar>
+      </div>
+      <div class="p-field p-col-4">
+        <label for="inputSexo">Sexo</label>
+        <p-dropdown [(ngModel)]="dependente.sexo" [options]="sexos" id="inputSexo" name="sexoAtivo"
+                    optionLabel="descricao" placeholder="Selecione..." required></p-dropdown>
+      </div>
+    </div>
+    <div class="p-grid p-justify-between">
+      <button (click)="closeDialog(); formDependente.reset();" label="Cancelar" pButton type="button"></button>
+      <button (click)="inserirDependente(dependente); closeDialog(); formDependente.reset(); "
+              [disabled]="!formDependente.form.valid" label="Cadastrar" pButton type="submit"></button>
+    </div>
+  </form>
+</p-dialog>

@@ -4,7 +4,7 @@ import com.ifes.gr.sgl.domain.Classe;
 import com.ifes.gr.sgl.repository.ClasseRepository;
 import com.ifes.gr.sgl.service.ClasseService;
 import com.ifes.gr.sgl.service.dto.ClasseDTO;
-import com.ifes.gr.sgl.service.exception.BadRequestException;
+import com.ifes.gr.sgl.service.exception.RegistroNaoEncontradoException;
 import com.ifes.gr.sgl.service.mapper.ClasseMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,6 +35,6 @@ public class ClasseServiceImpl implements ClasseService {
     }
 
     private Classe getClasse(Long id) {
-        return classeRepository.findById(id).orElseThrow(() -> new BadRequestException(String.format("Classe de id %d não encontrado", id)));
+        return classeRepository.findById(id).orElseThrow(() -> new RegistroNaoEncontradoException(String.format("Classe de id %d não encontrado", id)));
     }
 }

@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {ConfirmationService, Message} from 'primeng';
 import {ConstantService} from '../../../service/constant.service';
 import {Ator} from '../../ator/model/ator';
 import {AtorService} from '../../ator/service/ator.service';
@@ -14,7 +15,6 @@ import {TituloService} from '../service/titulo.service';
 @Component({
   selector: 'app-titulo',
   templateUrl: './titulo.component.html',
-  styleUrls: ['./titulo.component.css']
 })
 export class TituloComponent implements OnInit {
 
@@ -25,7 +25,7 @@ export class TituloComponent implements OnInit {
   public titulos: Titulo[];
 
   public diretoresFiltrados: Diretor[];
-  public categoriasFiltradas: Categoria[];
+
 
   public novoTitulo: Titulo;
   public tituloSelecionado: Titulo;
@@ -33,11 +33,14 @@ export class TituloComponent implements OnInit {
   public br: any;
   public loading: boolean;
 
+  public messages: Message[];
+
   constructor(
     private constantService: ConstantService,
     private atorService: AtorService,
     private categoriaService: CategoriaService,
     private classeService: ClasseService,
+    private confirmationService: ConfirmationService,
     private diretorService: DiretorService,
     private tituloService: TituloService) {
   }
@@ -54,6 +57,7 @@ export class TituloComponent implements OnInit {
     });
 
     this.titulos = [];
+    this.messages = [];
     this.initialize();
 
     this.br = this.constantService.br;
@@ -63,8 +67,12 @@ export class TituloComponent implements OnInit {
     this.loading = true;
     this.tituloService.delete(tituloSelecionado.id).subscribe(() => {
       this.titulos = this.titulos.filter(titulo => titulo.id !== tituloSelecionado.id);
+      this.messages = [{severity: 'info', summary: 'SUCESSO', detail: 'Título excluído.'}];
       this.loading = false;
       this.cleanSelection();
+    }, () => {
+      this.messages = [{severity: 'error', summary: 'FALHA', detail: 'Título associado a item(ns).'}];
+      this.loading = false;
     });
   }
 
@@ -72,8 +80,12 @@ export class TituloComponent implements OnInit {
     this.loading = true;
     this.tituloService.post(novoTitulo).subscribe(tituloRegistrado => {
       this.titulos.push(tituloRegistrado);
+      this.messages = [{severity: 'info', summary: 'SUCESSO', detail: 'Título cadastrado.'}];
       this.loading = false;
       this.initialize();
+    }, () => {
+      this.messages = [{severity: 'info', summary: 'FALHA', detail: 'Não foi possível cadastrar título.'}];
+      this.loading = false;
     });
   }
 
@@ -104,11 +116,14 @@ export class TituloComponent implements OnInit {
     });
   }
 
-  public filtrarCategorias(event) {
-    this.categoriasFiltradas = [];
-    this.categorias.forEach(categoria => {
-      if (categoria.descricao.toLowerCase().indexOf(event.query.toLowerCase()) === 0) {
-        this.categoriasFiltradas.push(categoria);
+  confirmExclusion(tituloSelecionado: Titulo) {
+    this.confirmationService.confirm({
+      message: 'Deseja excluir este registro?',
+      header: 'Confirmação de Exclusão',
+      acceptLabel: 'Sim',
+      rejectLabel: 'Não',
+      accept: () => {
+        this.delete(tituloSelecionado);
       }
     });
   }

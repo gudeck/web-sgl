@@ -1,9 +1,12 @@
+<p-confirmDialog icon="pi pi-exclamation-triangle"></p-confirmDialog>
+<p-messages [value]="messages"></p-messages>
+
 <div class="list">
   <p-table [(selection)]="locacaoSelecionada" [loading]="loading" [paginator]="true" [rows]="20" [value]="locacoes"
            selectionMode="single">
     <ng-template id="caption" pTemplate="caption">
       <button (click)="setFocus()" icon="pi pi-plus" label="Add" pButton></button>
-      <button (click)="delete(locacaoSelecionada)" [disabled]="!isOneSelected()" class="botoesCabecalho"
+      <button (click)="confirmExclusion(locacaoSelecionada)" [disabled]="!isOneSelected()" class="botoesCabecalho"
               icon="pi pi-trash" label="Delete" pButton></button>
     </ng-template>
     <ng-template pTemplate="header">
@@ -37,44 +40,29 @@
   <p-card header="Cadastro de Locação">
     <form #formLocacao="ngForm">
       <div class="ui-fluid p-formgrid p-grid">
-        <div class="p-field p-col-6">
+        <div class="p-field p-col-7">
           <label for="inputCliente">Cliente</label>
           <p-autoComplete (completeMethod)="filtrarClientes($event)" [(ngModel)]="novaLocacao.cliente"
                           [minLength]="1" [suggestions]="clientesFiltrados" field="nome" forceSelection="forceSelection"
                           id="inputCliente" name="cliente" required></p-autoComplete>
         </div>
-        <div class="p-field p-col-6">
+        <div class="p-field p-col-2">
           <label for="inputItem">Item</label>
           <p-autoComplete (completeMethod)="filtrarItens($event)" [(ngModel)]="novaLocacao.item"
-                          [minLength]="1" [suggestions]="itensFiltrados" field="titulo.nome"
+                          [minLength]="1" [suggestions]="itensFiltrados" field="numeroSerie"
                           forceSelection="forceSelection" id="inputItem" name="item" required></p-autoComplete>
         </div>
-        <div class="p-field p-col-6">
-          <label for="inputDataLocacao">Data de locação</label>
-          <p-calendar [(ngModel)]="novaLocacao.dataLocacao" [locale]="br" dateFormat="dd/mm/yy" id="inputDataLocacao"
-                      name="dataLocacao" required showButtonBar="true"></p-calendar>
-        </div>
-        <div class="p-field  p-col-6">
+        <div class="p-field  p-col-2">
           <label for="inputDataDevolucaoPrevista">Data de devolução prevista</label>
           <p-calendar [(ngModel)]="novaLocacao.dataDevolucaoPrevista" [locale]="br" dateFormat="dd/mm/yy"
                       id="inputDataDevolucaoPrevista" name="dataDevolucaoPrevista" required
                       showButtonBar="true"></p-calendar>
         </div>
-        <div class="p-field p-col-6">
-          <label for="inputDataDevolucao">Data de devolução</label>
-          <p-calendar [(ngModel)]="novaLocacao.dataDevolucao" [locale]="br" dateFormat="dd/mm/yy"
-                      id="inputDataDevolucao"
-                      name="dataDevolucao" showButtonBar="true"></p-calendar>
-        </div>
-        <div class="p-field p-col-3">
+        <div class="p-field p-col-1">
           <label for="inputValor">Valor (R$)</label>
           <p-inputNumber [(ngModel)]="novaLocacao.valor" [maxFractionDigits]="2" [minFractionDigits]="2" currency="BRL"
-                         id="inputValor" locale="pt-BR" mode="currency" name="valor" required></p-inputNumber>
-        </div>
-        <div class="p-field p-col-3">
-          <label for="inputMulta">Multa (R$) </label>
-          <p-inputNumber [(ngModel)]="novaLocacao.multa" [maxFractionDigits]="2" [minFractionDigits]="2" currency="BRL"
-                         id="inputMulta" locale="pt-BR" mode="currency" name="multa"></p-inputNumber>
+                         id="inputValor" locale="pt-BR" max="10000" mode="currency" name="valor"
+                         required></p-inputNumber>
         </div>
       </div>
       <div class="p-grid p-justify-between">
