@@ -1,0 +1,103 @@
+<p-confirmDialog icon="pi pi-exclamation-triangle"></p-confirmDialog>
+<p-messages [value]="messages"></p-messages>
+
+<app-dependente #dialogDependente [br]="br" [dependentes]="novoSocio.dependentes" [sexos]="sexos"></app-dependente>
+
+<div class="list">
+  <p-table [(selection)]="socioSelecionado" [loading]="loading" [paginator]="true" [rows]="20" [value]="socios"
+           selectionMode="single">
+    <ng-template id="caption" pTemplate="caption">
+      <button (click)="setFocus()" icon="pi pi-plus" label="Add" pButton></button>
+      <button (click)="confirmExclusion(socioSelecionado)" [disabled]="!isOneSelected()" class="botoesCabecalho"
+              icon="pi pi-trash" label="Delete" pButton></button>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th scope="col">Nome</th>
+        <th scope="col">Data de nascimento</th>
+        <th scope="col">Ativo?</th>
+        <th scope="col">Sexo</th>
+        <th scope="col">CPF</th>
+        <th scope="col">Endereco</th>
+        <th scope="col">Telefone</th>
+      </tr>
+    </ng-template>
+    <ng-template let-socio pTemplate="body">
+      <tr [pSelectableRow]="socio">
+        <td>{{socio["nome"]}}</td>
+        <td>{{socio["dataNascimento"]}}</td>
+        <td>{{socio["ativo"] ? 'Sim' : 'Não'}}</td>
+        <td>{{socio["sexo"]["descricao"]}}</td>
+        <td>{{socio["cpf"]}}</td>
+        <td>{{socio["endereco"]}}</td>
+        <td>{{socio["telefone"]}}</td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      Total de registros: {{socios.length}}
+    </ng-template>
+  </p-table>
+</div>
+<div class="crud">
+  <p-card header="Cadastro de Socio">
+    <form #formCliente="ngForm">
+      <div class="ui-fluid p-formgrid p-grid">
+        <div class="p-field p-col-6">
+          <label for="inputNome">Nome</label>
+          <input [(ngModel)]="novoSocio.nome" id="inputNome" maxlength="80" name="nome" pInputText required
+                 type="text">
+        </div>
+        <div class="p-field p-col-2">
+          <label for="inputDataNascimento">Data de nascimento</label>
+          <p-calendar [(ngModel)]="novoSocio.dataNascimento" [locale]="br" dateFormat="dd/mm/yy"
+                      id="inputDataNascimento" name="dataNascimento" required
+                      showButtonBar="true"></p-calendar>
+        </div>
+        <div class="p-field p-col-2">
+          <label for="inputSexo">Sexo</label>
+          <p-dropdown [(ngModel)]="novoSocio.sexo" [options]="sexos" id="inputSexo" name="sexo"
+                      optionLabel="descricao" placeholder="Selecione..." required></p-dropdown>
+        </div>
+        <div class="p-field p-col-2">
+          <label for="inputCpf">CPF</label>
+          <p-inputMask [(ngModel)]="novoSocio.cpf" [unmask]="true" autoClear id="inputCpf" mask="999.999.999-99"
+                       name="cpf" required slotChar=" "></p-inputMask>
+        </div>
+        <div class="p-field p-col-2">
+          <label for="inputTelefone">Telefone</label>
+          <p-inputMask [(ngModel)]="novoSocio.telefone" [unmask]="true" autoClear id="inputTelefone"
+                       mask="(99) 99999-9999" name="telefone" required slotChar=" "></p-inputMask>
+        </div>
+        <div class="p-field p-col-10">
+          <label for="inputEndereco">Endereco</label>
+          <input [(ngModel)]="novoSocio.endereco" id="inputEndereco" maxlength="200" name="endereco"
+                 pInputText required type="text">
+        </div>
+
+      </div>
+      <div class="p-grid p-justify-between">
+        <button (click)="formCliente.reset()" label="Limpar" pButton type="button"></button>
+        <button (click)="post(novoSocio); formCliente.reset()" [disabled]="!formCliente.form.valid" label="Cadastrar"
+                pButton type="submit"></button>
+      </div>
+    </form>
+  </p-card>
+</div>
+<div class="crud">
+  <p-card header="Dependentes">
+    <p-header>
+      <button (click)="abrirDialog()" [disabled]="isLimiteDependentes()" label="Novo Dependente"
+              pButton type="button"></button>
+    </p-header>
+    <div class="ui-fluid p-formgrid p-grid">
+      <p-card *ngFor="let dependente of novoSocio.dependentes; index as i;" [header]="dependente.nome" class="p-col-4">
+        <p-header>
+          <button (click)="removerDependente(i)" icon="pi pi-trash" pButton type="button"></button>
+        </p-header>
+        Nascido(a) em: {{dependente.dataNascimento.toLocaleDateString()}}<br>
+        Sexo: {{dependente.sexo.descricao}}<br>
+        Ativo(a): {{dependente.ativo}}<br>
+      </p-card>
+    </div>
+  </p-card>
+</div>

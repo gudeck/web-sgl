@@ -4,7 +4,7 @@ import com.ifes.gr.sgl.domain.Ator;
 import com.ifes.gr.sgl.repository.AtorRepository;
 import com.ifes.gr.sgl.service.AtorService;
 import com.ifes.gr.sgl.service.dto.AtorDTO;
-import com.ifes.gr.sgl.service.exception.BadRequestException;
+import com.ifes.gr.sgl.service.exception.RegistroNaoEncontradoException;
 import com.ifes.gr.sgl.service.mapper.AtorMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,7 +36,7 @@ public class AtorServiceImpl implements AtorService {
     }
 
     private Ator getAtor(Long id) {
-        return atorRepository.findById(id).orElseThrow(() -> new BadRequestException(String.format("Ator de id %d não encontrado", id)));
+        return atorRepository.findById(id).orElseThrow(() -> new RegistroNaoEncontradoException(String.format("Ator de id %d não encontrado", id)));
     }
 
 }

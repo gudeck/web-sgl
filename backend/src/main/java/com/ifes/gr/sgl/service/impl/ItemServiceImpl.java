@@ -4,7 +4,7 @@ import com.ifes.gr.sgl.domain.Item;
 import com.ifes.gr.sgl.repository.ItemRepository;
 import com.ifes.gr.sgl.service.ItemService;
 import com.ifes.gr.sgl.service.dto.ItemDTO;
-import com.ifes.gr.sgl.service.exception.BadRequestException;
+import com.ifes.gr.sgl.service.exception.RegistroNaoEncontradoException;
 import com.ifes.gr.sgl.service.mapper.ItemMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,6 +35,6 @@ public class ItemServiceImpl implements ItemService {
     }
 
     private Item getItem(Long id) {
-        return itemRepository.findById(id).orElseThrow(() -> new BadRequestException(String.format("Item de id %d não encontrado", id)));
+        return itemRepository.findById(id).orElseThrow(() -> new RegistroNaoEncontradoException(String.format("Item de id %d não encontrado", id)));
     }
 }

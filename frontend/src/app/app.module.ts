@@ -10,12 +10,16 @@ import {
   CalendarModule,
   CardModule,
   CheckboxModule,
+  ConfirmationService,
+  ConfirmDialogModule,
+  DialogModule,
   DropdownModule,
   InputMaskModule,
   InputNumberModule,
   InputTextareaModule,
   InputTextModule,
   ListboxModule,
+  MessagesModule,
   TableModule
 } from 'primeng';
 import {AppRoutingModule} from './app-routing.module';
@@ -26,7 +30,8 @@ import {LayoutComponent} from './components/layout/layout.component';
 import {SidebarComponent} from './components/sidebar/sidebar.component';
 import {AtorComponent} from './pages/ator/form/ator.component';
 import {ClasseComponent} from './pages/classe/form/classe.component';
-import {ClienteComponent} from './pages/cliente/form/cliente.component';
+import {DependenteComponent} from './pages/cliente/dependente/form/dependente.component';
+import {SocioComponent} from './pages/cliente/socio/form/socio.component';
 import {DiretorComponent} from './pages/diretor/form/diretor.component';
 import {ItemComponent} from './pages/item/form/item.component';
 import {LocacaoComponent} from './pages/locacao/form/locacao.component';
@@ -41,10 +46,11 @@ import {TituloComponent} from './pages/titulo/form/titulo.component';
     ClasseComponent,
     TituloComponent,
     ItemComponent,
-    ClienteComponent,
+    SocioComponent,
     LocacaoComponent,
     LayoutComponent,
-    HomeComponent
+    HomeComponent,
+    DependenteComponent
   ],
   imports: [
     BrowserModule,
@@ -64,9 +70,12 @@ import {TituloComponent} from './pages/titulo/form/titulo.component';
     CheckboxModule,
     InputMaskModule,
     AccordionModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ConfirmDialogModule,
+    MessagesModule,
+    DialogModule
   ],
-  providers: [],
+  providers: [ConfirmationService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

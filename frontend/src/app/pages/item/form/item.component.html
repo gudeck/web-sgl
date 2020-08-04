@@ -1,9 +1,12 @@
+<p-confirmDialog icon="pi pi-exclamation-triangle"></p-confirmDialog>
+<p-messages [value]="messages"></p-messages>
+
 <div class="list">
   <p-table [(selection)]="itemSelecionado" [loading]="loading" [paginator]="true" [rows]="20" [value]="itens"
            selectionMode="single">
     <ng-template id="caption" pTemplate="caption">
       <button (click)="setFocus()" icon="pi pi-plus" label="Add" pButton></button>
-      <button (click)="delete(itemSelecionado)" [disabled]="!isOneSelected()" class="botoesCabecalho"
+      <button (click)="confirmExclusion(itemSelecionado)" [disabled]="!isOneSelected()" class="botoesCabecalho"
               icon="pi pi-trash" label="Delete" pButton></button>
     </ng-template>
     <ng-template pTemplate="header">
@@ -31,12 +34,12 @@
   <p-card header="Cadastro de Item">
     <form #formItem="ngForm">
       <div class="ui-fluid p-formgrid p-grid">
-        <div class="p-field p-col-12">
+        <div class="p-field p-col-2">
           <label for="inputNumeroSerie">Número de série</label>
           <p-inputNumber [(ngModel)]="novoItem.numeroSerie" [useGrouping]="false" id="inputNumeroSerie"
                          max="9999999999999999" name="numeroSerie" required></p-inputNumber>
         </div>
-        <div class="p-field p-col-8">
+        <div class="p-field p-col-6">
           <label for="inputTitulo">Título</label>
           <p-autoComplete (completeMethod)="filtrarTitulos($event)" [(ngModel)]="novoItem.titulo"
                           [minLength]="1" [suggestions]="titulosFiltrados" field="nome" forceSelection="forceSelection"

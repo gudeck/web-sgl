@@ -4,7 +4,7 @@ import com.ifes.gr.sgl.domain.Locacao;
 import com.ifes.gr.sgl.repository.LocacaoRepository;
 import com.ifes.gr.sgl.service.LocacaoService;
 import com.ifes.gr.sgl.service.dto.LocacaoDTO;
-import com.ifes.gr.sgl.service.exception.BadRequestException;
+import com.ifes.gr.sgl.service.exception.RegistroNaoEncontradoException;
 import com.ifes.gr.sgl.service.mapper.LocacaoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,6 +22,14 @@ public class LocacaoServiceImpl implements LocacaoService {
 
     @Override
     public LocacaoDTO save(LocacaoDTO locacaoDTO) {
+
+        if (locacaoDTO.getId() == null) {
+            if (locacaoDTO.getDataDevolucaoPrevista() == null)
+                locacaoDTO.setDataDevolucaoPrevista(locacaoDTO.getDataLocacao().plusDays(locacaoDTO.getItem().getTitulo().getClasse().getPrazoDevolucao()));
+            if (locacaoDTO.getValor() == null)
+                locacaoDTO.setValor(locacaoDTO.getItem().getTitulo().getClasse().getValor());
+        }
+
         return locacaoMapper.toDto(locacaoRepository.save(locacaoMapper.toEntity(locacaoDTO)));
     }
 
@@ -36,7 +44,7 @@ public class LocacaoServiceImpl implements LocacaoService {
     }
 
     private Locacao getLocacao(Long id) {
-        return locacaoRepository.findById(id).orElseThrow(() -> new BadRequestException(String.format("Locacao de id %d não encontrado", id)));
+        return locacaoRepository.findById(id).orElseThrow(() -> new RegistroNaoEncontradoException(String.format("Locacao de id %d não encontrado", id)));
     }
 
 }

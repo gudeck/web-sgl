@@ -4,7 +4,7 @@ import com.ifes.gr.sgl.domain.Titulo;
 import com.ifes.gr.sgl.repository.TituloRepository;
 import com.ifes.gr.sgl.service.TituloService;
 import com.ifes.gr.sgl.service.dto.TituloDTO;
-import com.ifes.gr.sgl.service.exception.BadRequestException;
+import com.ifes.gr.sgl.service.exception.RegistroNaoEncontradoException;
 import com.ifes.gr.sgl.service.mapper.TituloMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,6 +35,6 @@ public class TituloServiceImpl implements TituloService {
     }
 
     private Titulo getTitulo(Long id) {
-        return tituloRepository.findById(id).orElseThrow(() -> new BadRequestException(String.format("Titulo de id %d não encontrado", id)));
+        return tituloRepository.findById(id).orElseThrow(() -> new RegistroNaoEncontradoException(String.format("Titulo de id %d não encontrado", id)));
     }
 }
