@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * Busca não retornou dados.
  */
 @ResponseStatus(HttpStatus.BAD_REQUEST)
-public class BadRequestException extends RuntimeException {
+public class RegistroNaoEncontradoException extends RuntimeException {
 
-    public BadRequestException(final String message) {
+    public RegistroNaoEncontradoException(final String message) {
         this(message, null);
     }
 
-    public BadRequestException(final String message, final Throwable cause) {
+    public RegistroNaoEncontradoException(final String message, final Throwable cause) {
         super(message, cause);
     }
 

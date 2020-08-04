@@ -4,7 +4,7 @@ import com.ifes.gr.sgl.domain.Socio;
 import com.ifes.gr.sgl.repository.SocioRepository;
 import com.ifes.gr.sgl.service.SocioService;
 import com.ifes.gr.sgl.service.dto.SocioDTO;
-import com.ifes.gr.sgl.service.exception.BadRequestException;
+import com.ifes.gr.sgl.service.exception.RegistroNaoEncontradoException;
 import com.ifes.gr.sgl.service.mapper.SocioMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +21,12 @@ public class SocioServiceImpl implements SocioService {
 
     @Override
     public SocioDTO save(SocioDTO socioDTO) {
+        if (socioDTO.getId() == null)
+            socioDTO.setAtivo(true);
+        socioDTO.getDependentes().forEach(dependente -> {
+            if (dependente.getId() == null)
+                dependente.setAtivo(true);
+        });
         return socioMapper.toDto(socioRepository.save(socioMapper.toEntity(socioDTO)));
     }
 
@@ -35,6 +41,6 @@ public class SocioServiceImpl implements SocioService {
     }
 
     private Socio getSocio(Long id) {
-        return socioRepository.findById(id).orElseThrow(() -> new BadRequestException(String.format("Socio de id %d não encontrado", id)));
+        return socioRepository.findById(id).orElseThrow(() -> new RegistroNaoEncontradoException(String.format("Socio de id %d não encontrado", id)));
     }
 }

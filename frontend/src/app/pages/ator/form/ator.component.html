@@ -1,10 +1,13 @@
+<p-confirmDialog icon="pi pi-exclamation-triangle"></p-confirmDialog>
+<p-messages [value]="messages"></p-messages>
+
 <div class="list">
   <p-table [(selection)]="atorSelecionado" [loading]="loading" [paginator]="true" [rows]="20" [value]="atores"
            selectionMode="single">
     <ng-template id="caption" pTemplate="caption">
       <button (click)="setFocus()" icon="pi pi-plus" label="Add" pButton></button>
-      <button (click)="delete(atorSelecionado)" [disabled]="!isOneSelected()" class="botoesCabecalho" icon="pi pi-trash"
-              label="Delete" pButton></button>
+      <button (click)="confirmExclusion(atorSelecionado)" [disabled]="!isOneSelected()" class="botoesCabecalho"
+              icon="pi pi-trash" label="Delete" pButton></button>
     </ng-template>
     <ng-template let-ator pTemplate="body">
       <tr [pSelectableRow]="ator">

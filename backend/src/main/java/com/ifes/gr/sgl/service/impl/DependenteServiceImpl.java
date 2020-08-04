@@ -4,7 +4,7 @@ import com.ifes.gr.sgl.domain.Dependente;
 import com.ifes.gr.sgl.repository.DependenteRepository;
 import com.ifes.gr.sgl.service.DependenteService;
 import com.ifes.gr.sgl.service.dto.DependenteDTO;
-import com.ifes.gr.sgl.service.exception.BadRequestException;
+import com.ifes.gr.sgl.service.exception.RegistroNaoEncontradoException;
 import com.ifes.gr.sgl.service.mapper.DependenteMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,6 +35,6 @@ public class DependenteServiceImpl implements DependenteService {
     }
 
     private Dependente getDependente(Long id) {
-        return dependenteRepository.findById(id).orElseThrow(() -> new BadRequestException(String.format("Dependente de id %d não encontrado", id)));
+        return dependenteRepository.findById(id).orElseThrow(() -> new RegistroNaoEncontradoException(String.format("Dependente de id %d não encontrado", id)));
     }
 }
