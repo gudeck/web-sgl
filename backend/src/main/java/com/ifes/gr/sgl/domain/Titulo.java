@@ -13,13 +13,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity(name = "TITULO")
 @Getter
 @Setter
-public class Titulo {
+public class Titulo implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

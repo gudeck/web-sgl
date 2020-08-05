@@ -8,11 +8,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 @Entity(name = "SEXO")
 @Getter
 @Setter
-public class Sexo {
+public class Sexo implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

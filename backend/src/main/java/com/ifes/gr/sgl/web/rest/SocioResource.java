@@ -26,7 +26,7 @@ public class SocioResource {
 
     @PostMapping
     public ResponseEntity<SocioDTO> create(@RequestBody SocioDTO socioDTO) throws URISyntaxException {
-        SocioDTO novoSocio = socioService.save(socioDTO);
+        SocioDTO novoSocio = socioService.create(socioDTO);
         return ResponseEntity.created(new URI("/socios" + novoSocio.getId())).body(novoSocio);
     }
 

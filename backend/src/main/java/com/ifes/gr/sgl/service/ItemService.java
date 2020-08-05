@@ -1,15 +1,31 @@
 package com.ifes.gr.sgl.service;
 
+import com.ifes.gr.sgl.repository.ItemRepository;
 import com.ifes.gr.sgl.service.dto.ItemDTO;
+import com.ifes.gr.sgl.service.mapper.ItemMapper;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
-public interface ItemService {
+@Service
+@Transactional
+@RequiredArgsConstructor
+public class ItemService {
+    private final ItemMapper itemMapper;
+    private final ItemRepository itemRepository;
 
-    ItemDTO save(ItemDTO itemDTO);
+    public ItemDTO save(ItemDTO itemDTO) {
+        return itemMapper.toDto(itemRepository.save(itemMapper.toEntity(itemDTO)));
+    }
 
-    List<ItemDTO> getAll();
+    public List<ItemDTO> getAll() {
+        return itemMapper.toDto(itemRepository.findAll());
+    }
 
-    void delete(Long id);
+    public void delete(Long id) {
+        itemRepository.deleteById(id);
+    }
 
 }
