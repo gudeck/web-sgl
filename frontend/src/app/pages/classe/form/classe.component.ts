@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ConfirmationService, Message} from 'primeng';
+import {ConfirmationService, MessageService} from 'primeng';
 import {Classe} from '../model/classe';
 import {ClasseService} from '../service/classe.service';
 
@@ -16,11 +16,10 @@ export class ClasseComponent implements OnInit {
 
   public loading: boolean;
 
-  public messages: Message[];
-
   constructor(
     private classeService: ClasseService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
   ) {
   }
 
@@ -31,7 +30,6 @@ export class ClasseComponent implements OnInit {
       this.loading = false;
     });
     this.classes = [];
-    this.messages = [];
     this.initialize();
   }
 
@@ -39,11 +37,11 @@ export class ClasseComponent implements OnInit {
     this.loading = true;
     this.classeService.delete(classeSelecionada.id).subscribe(() => {
       this.classes = this.classes.filter(classe => classe.id !== classeSelecionada.id);
-      this.messages = [{severity: 'info', summary: 'SUCESSO', detail: 'Classe excluída.'}];
+      this.messageService.add({severity: 'info', summary: 'SUCESSO', detail: 'Classe excluída.'});
       this.loading = false;
       this.cleanSelection();
     }, () => {
-      this.messages = [{severity: 'error', summary: 'FALHA', detail: 'Classe associada a título(s).'}];
+      this.messageService.add({severity: 'error', summary: 'FALHA', detail: 'Classe associada a título(s).'});
       this.loading = false;
     });
   }
@@ -52,11 +50,11 @@ export class ClasseComponent implements OnInit {
     this.loading = true;
     this.classeService.post(novaClasse).subscribe(classeRegistrada => {
       this.classes.push(classeRegistrada);
-      this.messages = [{severity: 'info', summary: 'SUCESSO', detail: 'Classe cadastrada.'}];
+      this.messageService.add({severity: 'info', summary: 'SUCESSO', detail: 'Classe cadastrada.'});
       this.loading = false;
       this.initialize();
     }, () => {
-      this.messages = [{severity: 'info', summary: 'FALHA', detail: 'Não foi possível cadastrar classe.'}];
+      this.messageService.add({severity: 'info', summary: 'FALHA', detail: 'Não foi possível cadastrar classe.'});
       this.loading = false;
     });
   }

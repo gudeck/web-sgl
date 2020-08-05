@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {ConfirmationService, Message} from 'primeng';
+import {ConfirmationService, MessageService} from 'primeng';
 import {ConstantService} from '../../../../service/constant.service';
 import {DependenteComponent} from '../../dependente/form/dependente.component';
 import {Sexo} from '../../model/sexo';
@@ -23,13 +23,13 @@ export class SocioComponent implements OnInit {
   public br: any;
   public loading: boolean;
 
-  public messages: Message[];
   @ViewChild('dialogDependente') public dialogDependente: DependenteComponent;
 
   constructor(
     private confirmationService: ConfirmationService,
     private constantService: ConstantService,
     private dependenteService: DependenteService,
+    private messageService: MessageService,
     private sexoService: SexoService,
     private socioService: SocioService) {
   }
@@ -43,7 +43,6 @@ export class SocioComponent implements OnInit {
     });
 
     this.socios = [];
-    this.messages = [];
     this.initialize();
 
     this.br = this.constantService.br;
@@ -53,11 +52,11 @@ export class SocioComponent implements OnInit {
     this.loading = true;
     this.socioService.delete(socioSelecionado.id).subscribe(() => {
       this.socios = this.socios.filter(socio => socio.id !== socioSelecionado.id);
-      this.messages = [{severity: 'info', summary: 'SUCESSO', detail: 'Sócio excluído.'}];
+      this.messageService.add({severity: 'info', summary: 'SUCESSO', detail: 'Sócio excluído.'});
       this.loading = false;
       this.cleanSelection();
     }, () => {
-      this.messages = [{severity: 'error', summary: 'FALHA', detail: 'Sócio associado a locação(ões).'}];
+      this.messageService.add({severity: 'error', summary: 'FALHA', detail: 'Sócio associado a locação(ões).'});
       this.loading = false;
     });
   }
@@ -66,11 +65,11 @@ export class SocioComponent implements OnInit {
     this.loading = true;
     this.socioService.post(novoSocio).subscribe(socioRegistrado => {
       this.socios.push(socioRegistrado);
-      this.messages = [{severity: 'info', summary: 'SUCESSO', detail: 'Sócio cadastrado.'}];
+      this.messageService.add({severity: 'info', summary: 'SUCESSO', detail: 'Sócio cadastrado.'});
       this.loading = false;
       this.initialize();
     }, () => {
-      this.messages = [{severity: 'info', summary: 'FALHA', detail: 'Não foi possível cadastrar sócio.'}];
+      this.messageService.add({severity: 'info', summary: 'FALHA', detail: 'Não foi possível cadastrar sócio.'});
       this.loading = false;
     });
   }

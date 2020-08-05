@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ConfirmationService, Message} from 'primeng';
+import {ConfirmationService, MessageService} from 'primeng';
 import {ConstantService} from '../../../service/constant.service';
 import {Titulo} from '../../titulo/model/titulo';
 import {TituloService} from '../../titulo/service/titulo.service';
@@ -26,12 +26,11 @@ export class ItemComponent implements OnInit {
   public br: any;
   public loading: boolean;
 
-  public messages: Message[];
-
   constructor(
     private confirmationService: ConfirmationService,
     private constantService: ConstantService,
     private itemService: ItemService,
+    private messageService: MessageService,
     private tipoItemService: TipoItemService,
     private tituloService: TituloService
   ) {
@@ -47,7 +46,6 @@ export class ItemComponent implements OnInit {
     this.tituloService.getAll().subscribe(titulos => this.titulos = titulos);
 
     this.itens = [];
-    this.messages = [];
     this.initialize();
 
     this.br = this.constantService.br;
@@ -57,11 +55,11 @@ export class ItemComponent implements OnInit {
     this.loading = true;
     this.itemService.delete(itemSelecionado.id).subscribe(() => {
       this.itens = this.itens.filter(item => item.id !== itemSelecionado.id);
-      this.messages = [{severity: 'info', summary: 'SUCESSO', detail: 'Item excluído.'}];
+      this.messageService.add({severity: 'info', summary: 'SUCESSO', detail: 'Item excluído.'});
       this.loading = false;
       this.cleanSelection();
     }, () => {
-      this.messages = [{severity: 'error', summary: 'FALHA', detail: 'Item associado a locação(ões).'}];
+      this.messageService.add({severity: 'error', summary: 'FALHA', detail: 'Item associado a locação(ões).'});
       this.loading = false;
     });
   }
@@ -70,11 +68,11 @@ export class ItemComponent implements OnInit {
     this.loading = true;
     this.itemService.post(novoItem).subscribe(itemRegistrado => {
       this.itens.push(itemRegistrado);
-      this.messages = [{severity: 'info', summary: 'SUCESSO', detail: 'Item cadastrado.'}];
+      this.messageService.add({severity: 'info', summary: 'SUCESSO', detail: 'Item cadastrado.'});
       this.loading = false;
       this.initialize();
     }, () => {
-      this.messages = [{severity: 'info', summary: 'FALHA', detail: 'Não foi possível cadastrar item.'}];
+      this.messageService.add({severity: 'info', summary: 'FALHA', detail: 'Não foi possível cadastrar item.'});
       this.loading = false;
     });
   }

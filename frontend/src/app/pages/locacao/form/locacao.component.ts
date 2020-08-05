@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ConfirmationService, Message} from 'primeng';
+import {ConfirmationService, MessageService} from 'primeng';
 import {ConstantService} from '../../../service/constant.service';
 import {Cliente} from '../../cliente/model/cliente';
 import {ClienteService} from '../../cliente/service/cliente.service';
@@ -27,14 +27,13 @@ export class LocacaoComponent implements OnInit {
   public br: any;
   public loading: boolean;
 
-  public messages: Message[];
-
   constructor(
+    private clienteService: ClienteService,
     private confirmationService: ConfirmationService,
     private constantService: ConstantService,
-    private clienteService: ClienteService,
     private itemService: ItemService,
-    private locacaoService: LocacaoService
+    private locacaoService: LocacaoService,
+    private messageService: MessageService
   ) {
   }
 
@@ -48,7 +47,6 @@ export class LocacaoComponent implements OnInit {
     });
 
     this.locacoes = [];
-    this.messages = [];
     this.initialize();
 
     this.br = this.constantService.br;
@@ -58,7 +56,7 @@ export class LocacaoComponent implements OnInit {
     this.loading = true;
     this.locacaoService.delete(locacaoSelecionado.id).subscribe(() => {
       this.locacoes = this.locacoes.filter(value => value.id !== locacaoSelecionado.id);
-      this.messages = [{severity: 'info', summary: 'SUCESSO', detail: 'Locação excluída.'}];
+      this.messageService.add({severity: 'info', summary: 'SUCESSO', detail: 'Locação excluída.'});
       this.loading = false;
       this.cleanSelection();
     });
@@ -68,11 +66,11 @@ export class LocacaoComponent implements OnInit {
     this.loading = true;
     this.locacaoService.post(novaLocacao).subscribe(locacaoRegistrado => {
       this.locacoes.push(locacaoRegistrado);
-      this.messages = [{severity: 'info', summary: 'SUCESSO', detail: 'Locação efetuada.'}];
+      this.messageService.add({severity: 'info', summary: 'SUCESSO', detail: 'Locação efetuada.'});
       this.loading = false;
       this.initialize();
     }, () => {
-      this.messages = [{severity: 'info', summary: 'FALHA', detail: 'Não foi possível efetuar locação.'}];
+      this.messageService.add({severity: 'info', summary: 'FALHA', detail: 'Não foi possível efetuar locação.'});
       this.loading = false;
     });
   }

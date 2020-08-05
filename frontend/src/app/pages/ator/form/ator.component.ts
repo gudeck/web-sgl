@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ConfirmationService, Message} from 'primeng';
+import {ConfirmationService, MessageService} from 'primeng';
 import {Ator} from '../model/ator';
 import {AtorService} from '../service/ator.service';
 
@@ -16,11 +16,10 @@ export class AtorComponent implements OnInit {
 
   public loading: boolean;
 
-  public messages: Message[];
-
   constructor(
     private atorService: AtorService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
   ) {
   }
 
@@ -31,7 +30,6 @@ export class AtorComponent implements OnInit {
       this.loading = false;
     });
     this.atores = [];
-    this.messages = [];
     this.initialize();
   }
 
@@ -39,11 +37,11 @@ export class AtorComponent implements OnInit {
     this.loading = true;
     this.atorService.delete(atorSelecionado.id).subscribe(() => {
       this.atores = this.atores.filter(ator => ator.id !== atorSelecionado.id);
-      this.messages = [{severity: 'info', summary: 'SUCESSO', detail: 'Ator excluído.'}];
+      this.messageService.add({severity: 'info', summary: 'SUCESSO', detail: 'Ator excluído.'});
       this.loading = false;
       this.cleanSelection();
     }, () => {
-      this.messages = [{severity: 'error', summary: 'FALHA', detail: 'Ator associado a título(s).'}];
+      this.messageService.add({severity: 'error', summary: 'FALHA', detail: 'Ator associado a título(s).'});
       this.loading = false;
     });
   }
@@ -52,11 +50,11 @@ export class AtorComponent implements OnInit {
     this.loading = true;
     this.atorService.post(novoAtor).subscribe(atorRegistrado => {
       this.atores.push(atorRegistrado);
-      this.messages = [{severity: 'info', summary: 'SUCESSO', detail: 'Ator cadastrado.'}];
+      this.messageService.add({severity: 'info', summary: 'SUCESSO', detail: 'Ator cadastrado.'});
       this.loading = false;
       this.initialize();
     }, () => {
-      this.messages = [{severity: 'info', summary: 'FALHA', detail: 'Não foi possível cadastrar ator.'}];
+      this.messageService.add({severity: 'info', summary: 'FALHA', detail: 'Não foi possível cadastrar ator.'});
       this.loading = false;
     });
   }
