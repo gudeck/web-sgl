@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ConfirmationService, Message} from 'primeng';
+import {ConfirmationService, MessageService} from 'primeng';
 import {Diretor} from '../model/diretor';
 import {DiretorService} from '../service/diretor.service';
 
@@ -11,16 +11,15 @@ export class DiretorComponent implements OnInit {
 
   public diretores: Diretor[];
 
-  public novoDiretor: Diretor;
+  public diretor: Diretor;
   public diretorSelecionado: Diretor;
 
   public loading: boolean;
 
-  public messages: Message[];
-
   constructor(
+    private confirmationService: ConfirmationService,
     private diretorService: DiretorService,
-    private confirmationService: ConfirmationService
+    private messageService: MessageService
   ) {
   }
 
@@ -31,7 +30,6 @@ export class DiretorComponent implements OnInit {
       this.loading = false;
     });
     this.diretores = [];
-    this.messages = [];
     this.initialize();
   }
 
@@ -39,11 +37,11 @@ export class DiretorComponent implements OnInit {
     this.loading = true;
     this.diretorService.delete(diretorSelecionado.id).subscribe(() => {
       this.diretores = this.diretores.filter(diretor => diretor.id !== diretorSelecionado.id);
-      this.messages = [{severity: 'info', summary: 'SUCESSO', detail: 'Diretor excluído.'}];
+      this.messageService.add({severity: 'info', summary: 'SUCESSO', detail: 'Diretor excluído.'});
       this.loading = false;
       this.cleanSelection();
     }, () => {
-      this.messages = [{severity: 'error', summary: 'FALHA', detail: 'Diretor associado a título(s).'}];
+      this.messageService.add({severity: 'error', summary: 'FALHA', detail: 'Diretor associado a título(s).'});
       this.loading = false;
     });
   }
@@ -52,11 +50,24 @@ export class DiretorComponent implements OnInit {
     this.loading = true;
     this.diretorService.post(novoDiretor).subscribe(diretorRegistrado => {
       this.diretores.push(diretorRegistrado);
-      this.messages = [{severity: 'info', summary: 'SUCESSO', detail: 'Diretor cadastrado.'}];
+      this.messageService.add({severity: 'info', summary: 'SUCESSO', detail: 'Diretor cadastrado.'});
       this.loading = false;
       this.initialize();
     }, () => {
-      this.messages = [{severity: 'info', summary: 'FALHA', detail: 'Não foi possível cadastrar diretor.'}];
+      this.messageService.add({severity: 'info', summary: 'FALHA', detail: 'Não foi possível cadastrar diretor.'});
+      this.loading = false;
+    });
+  }
+
+  put(diretor: Diretor) {
+    this.loading = true;
+    this.diretorService.put(diretor).subscribe(diretorAtualizado => {
+      Object.assign(this.diretores.find(diretorListado => diretorListado.id === diretorAtualizado.id), diretorAtualizado);
+      this.messageService.add({severity: 'info', summary: 'SUCESSO', detail: 'Diretor atualizado.'});
+      this.loading = false;
+      this.initialize();
+    }, () => {
+      this.messageService.add({severity: 'info', summary: 'FALHA', detail: 'Não foi possível atualizar diretor.'});
       this.loading = false;
     });
   }
@@ -75,7 +86,7 @@ export class DiretorComponent implements OnInit {
   }
 
   initialize() {
-    this.novoDiretor = new Diretor();
+    this.diretor = new Diretor();
   }
 
   confirmExclusion(diretorSelecionado: Diretor) {
@@ -88,6 +99,22 @@ export class DiretorComponent implements OnInit {
         this.delete(diretorSelecionado);
       }
     });
+  }
+
+  enableEdit() {
+    this.diretor = Object.assign({}, this.diretorSelecionado);
+  }
+
+  disableEdit() {
+    this.diretor = new Diretor();
+  }
+
+  save(diretor: Diretor) {
+    if (diretor.id) {
+      this.put(diretor);
+    } else {
+      this.post(diretor);
+    }
   }
 
 }

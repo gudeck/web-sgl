@@ -1,9 +1,9 @@
 <p-confirmDialog icon="pi pi-exclamation-triangle"></p-confirmDialog>
-<p-messages [value]="messages"></p-messages>
+<p-toast></p-toast>
 
 <div class="list">
   <p-table [(selection)]="classeSelecionada" [loading]="loading" [paginator]="true" [rows]="20" [value]="classes"
-           selectionMode="single">
+           (onRowSelect)="enableEdit()" (onRowUnselect)="disableEdit(); formClasse.reset()" selectionMode="single">
     <ng-template id="caption" pTemplate="caption">
       <button (click)="setFocus()" icon="pi pi-plus" label="Add" pButton></button>
       <button (click)="confirmExclusion(classeSelecionada)" [disabled]="!isOneSelected()" class="botoesCabecalho"
@@ -34,25 +34,26 @@
       <div class="ui-fluid p-formgrid p-grid">
         <div class="p-field p-col-9">
           <label for="inputNome">Nome</label>
-          <input [(ngModel)]="novaClasse.nome" id="inputNome" maxlength="80" name="nome" pInputText required
+          <input [(ngModel)]="classe.nome" id="inputNome" maxlength="80" name="nome" pInputText required
                  type="text">
         </div>
         <div class="p-field p-col-2">
           <label for="inputPrazoDevolucao">Prazo devolução</label>
-          <p-inputNumber [(ngModel)]="novaClasse.prazoDevolucao" [useGrouping]="false" id="inputPrazoDevolucao"
+          <p-inputNumber [(ngModel)]="classe.prazoDevolucao" [useGrouping]="false" id="inputPrazoDevolucao"
                          name="prazoDevolucao" required suffix=" dias"></p-inputNumber>
         </div>
         <div class="p-field p-col-1">
           <label for="inputValor">Valor</label>
-          <p-inputNumber [(ngModel)]="novaClasse.valor" [maxFractionDigits]="2" [minFractionDigits]="2"
+          <p-inputNumber [(ngModel)]="classe.valor" [maxFractionDigits]="2" [minFractionDigits]="2"
                          [useGrouping]="false" currency="BRL" id="inputValor" locale="pt-BR" max="10000" mode="currency"
                          name="valor" required></p-inputNumber>
         </div>
       </div>
       <div class="p-grid p-justify-between">
-        <button (click)="formClasse.reset()" label="Limpar" pButton type="button"></button>
-        <button (click)="post(novaClasse); formClasse.reset()" [disabled]="!formClasse.form.valid" label="Cadastrar"
-                pButton type="submit"></button>
+        <button (click)="disableEdit(); formClasse.reset(); cleanSelection()" label="Limpar" pButton
+                type="button"></button>
+        <button (click)="save(classe); formClasse.reset(); cleanSelection()" [disabled]="!formClasse.form.valid"
+                label="Salvar" pButton type="submit"></button>
       </div>
     </form>
   </p-card>

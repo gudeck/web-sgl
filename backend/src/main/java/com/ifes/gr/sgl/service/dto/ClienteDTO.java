@@ -3,7 +3,7 @@ package com.ifes.gr.sgl.service.dto;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -11,7 +11,7 @@ public class ClienteDTO {
 
     private Long id;
     private String nome;
-    private LocalDate dataNascimento;
+    private LocalDateTime dataNascimento;
     private Boolean ativo;
     private SexoDTO sexo;
 

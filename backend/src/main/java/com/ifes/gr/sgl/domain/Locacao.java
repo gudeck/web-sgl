@@ -10,12 +10,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import java.time.LocalDate;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Entity(name = "LOCACAO")
 @Getter
 @Setter
-public class Locacao {
+public class Locacao implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,13 +24,13 @@ public class Locacao {
     private Long id;
 
     @Column(name = "DATA_LOCACAO", nullable = false)
-    private LocalDate dataLocacao;
+    private LocalDateTime dataLocacao;
 
     @Column(name = "DATA_DEVOLUCAO_PREVISTA", nullable = false)
-    private LocalDate dataDevolucaoPrevista;
+    private LocalDateTime dataDevolucaoPrevista;
 
     @Column(name = "DATA_DEVOLUCAO")
-    private LocalDate dataDevolucao;
+    private LocalDateTime dataDevolucao;
 
     @Column(name = "VALOR", nullable = false)
     private Double valor;

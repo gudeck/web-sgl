@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,8 +27,14 @@ public class LocacaoResource {
 
     @PostMapping
     public ResponseEntity<LocacaoDTO> create(@RequestBody LocacaoDTO locacaoDTO) throws URISyntaxException {
-        LocacaoDTO novaLocacao = locacaoService.save(locacaoDTO);
+        LocacaoDTO novaLocacao = locacaoService.create(locacaoDTO);
         return ResponseEntity.created(new URI("/locacoes" + novaLocacao.getId())).body(novaLocacao);
+    }
+
+    @PutMapping
+    public ResponseEntity<LocacaoDTO> update(@RequestBody LocacaoDTO locacaoDTO) {
+        LocacaoDTO locacao = locacaoService.update(locacaoDTO);
+        return ResponseEntity.ok().body(locacao);
     }
 
     @Transactional(readOnly = true)

@@ -10,12 +10,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import java.time.LocalDate;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Entity(name = "ITEM")
 @Getter
 @Setter
-public class Item {
+public class Item implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +27,7 @@ public class Item {
     private Long numeroSerie;
 
     @Column(name = "DATA_AQUISICAO", nullable = false)
-    private LocalDate dataAquisicao;
+    private LocalDateTime dataAquisicao;
 
     @ManyToOne
     @JoinColumn(name = "ID_TITULO", nullable = false)

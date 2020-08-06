@@ -14,7 +14,7 @@
             <column name="NUMERO_SERIE" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="DATA_AQUISICAO" type="DATE">
+            <column name="DATA_AQUISICAO" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
             <column name="ID_TITULO" type="BIGINT">

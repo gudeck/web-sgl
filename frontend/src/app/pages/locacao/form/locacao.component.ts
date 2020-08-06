@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {ConfirmationService, Message} from 'primeng';
+import * as lodash from 'lodash';
+import {ConfirmationService, MessageService} from 'primeng';
 import {ConstantService} from '../../../service/constant.service';
 import {Cliente} from '../../cliente/model/cliente';
 import {ClienteService} from '../../cliente/service/cliente.service';
@@ -19,22 +20,20 @@ export class LocacaoComponent implements OnInit {
   public locacoes: Locacao[];
 
   public clientesFiltrados: Cliente[];
-  public itensFiltrados: Item[];
 
-  public novaLocacao: Locacao;
+  public locacao: Locacao;
   public locacaoSelecionada: Locacao;
 
   public br: any;
   public loading: boolean;
 
-  public messages: Message[];
-
   constructor(
+    private clienteService: ClienteService,
     private confirmationService: ConfirmationService,
     private constantService: ConstantService,
-    private clienteService: ClienteService,
     private itemService: ItemService,
-    private locacaoService: LocacaoService
+    private locacaoService: LocacaoService,
+    private messageService: MessageService
   ) {
   }
 
@@ -48,7 +47,6 @@ export class LocacaoComponent implements OnInit {
     });
 
     this.locacoes = [];
-    this.messages = [];
     this.initialize();
 
     this.br = this.constantService.br;
@@ -58,7 +56,7 @@ export class LocacaoComponent implements OnInit {
     this.loading = true;
     this.locacaoService.delete(locacaoSelecionado.id).subscribe(() => {
       this.locacoes = this.locacoes.filter(value => value.id !== locacaoSelecionado.id);
-      this.messages = [{severity: 'info', summary: 'SUCESSO', detail: 'Locação excluída.'}];
+      this.messageService.add({severity: 'info', summary: 'SUCESSO', detail: 'Locação excluída.'});
       this.loading = false;
       this.cleanSelection();
     });
@@ -68,11 +66,25 @@ export class LocacaoComponent implements OnInit {
     this.loading = true;
     this.locacaoService.post(novaLocacao).subscribe(locacaoRegistrado => {
       this.locacoes.push(locacaoRegistrado);
-      this.messages = [{severity: 'info', summary: 'SUCESSO', detail: 'Locação efetuada.'}];
+      this.messageService.add({severity: 'info', summary: 'SUCESSO', detail: 'Locação efetuada.'});
       this.loading = false;
       this.initialize();
     }, () => {
-      this.messages = [{severity: 'info', summary: 'FALHA', detail: 'Não foi possível efetuar locação.'}];
+      this.messageService.add({severity: 'info', summary: 'FALHA', detail: 'Não foi possível efetuar locação.'});
+      this.loading = false;
+    });
+  }
+
+  put(locacao: Locacao) {
+    this.loading = true;
+    this.locacaoService.put(locacao).subscribe(locacaoAtualizada => {
+      const indexRegistro = this.locacoes.findIndex(locacaoListada => locacaoListada.id === locacaoAtualizada.id);
+      this.locacoes[indexRegistro] = lodash.cloneDeep(locacaoAtualizada);
+      this.messageService.add({severity: 'info', summary: 'SUCESSO', detail: 'Locação atualizada.'});
+      this.loading = false;
+      this.initialize();
+    }, () => {
+      this.messageService.add({severity: 'info', summary: 'FALHA', detail: 'Não foi possível atualizar locação.'});
       this.loading = false;
     });
   }
@@ -91,7 +103,7 @@ export class LocacaoComponent implements OnInit {
   }
 
   initialize() {
-    this.novaLocacao = new Locacao();
+    this.locacao = new Locacao();
   }
 
   filtrarClientes(event) {
@@ -102,16 +114,6 @@ export class LocacaoComponent implements OnInit {
       }
     });
   }
-
-  filtrarItens(event) {
-    this.itensFiltrados = [];
-    this.itens.forEach(item => {
-      if (item.numeroSerie.toString().indexOf(event.query.toLowerCase()) === 0) {
-        this.itensFiltrados.push(item);
-      }
-    });
-  }
-
   confirmExclusion(locacaoSelecionada: Locacao) {
     this.confirmationService.confirm({
       message: 'Deseja excluir este registro?',
@@ -123,4 +125,32 @@ export class LocacaoComponent implements OnInit {
       }
     });
   }
+
+  enableEdit() {
+    this.locacaoSelecionada.dataDevolucaoPrevista = new Date(this.locacaoSelecionada.dataDevolucaoPrevista);
+    this.locacao = lodash.cloneDeep(this.locacaoSelecionada);
+  }
+
+  disableEdit() {
+    this.locacao = new Locacao();
+  }
+
+  save(locacao: Locacao) {
+    if (locacao.id) {
+      this.put(locacao);
+    } else {
+      this.post(locacao);
+    }
+  }
+
+  preencherDataDevolucaoPrevista() {
+    const dataDevolucaoPrevista = new Date();
+    dataDevolucaoPrevista.setDate(dataDevolucaoPrevista.getDate() + this.locacao.item.titulo.classe.prazoDevolucao);
+    this.locacao.dataDevolucaoPrevista = dataDevolucaoPrevista;
+  }
+
+  preencherValor() {
+    this.locacao.valor = this.locacao.item.titulo.classe.valor;
+  }
+
 }

@@ -8,12 +8,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Entity(name = "CLASSE")
 @Getter
 @Setter
-public class Classe {
+public class Classe implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

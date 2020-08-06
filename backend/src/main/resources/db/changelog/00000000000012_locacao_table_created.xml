@@ -11,13 +11,13 @@
             <column name="ID" type="BIGINT" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="DATA_LOCACAO" type="DATE">
+            <column name="DATA_LOCACAO" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
-            <column name="DATA_DEVOLUCAO_PREVISTA" type="DATE">
+            <column name="DATA_DEVOLUCAO_PREVISTA" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
-            <column name="DATA_DEVOLUCAO" type="DATE">
+            <column name="DATA_DEVOLUCAO" type="DATETIME">
                 <constraints nullable="true"/>
             </column>
             <column name="VALOR" type="DOUBLE">

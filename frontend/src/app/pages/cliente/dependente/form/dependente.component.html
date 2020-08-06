@@ -20,8 +20,8 @@
     </div>
     <div class="p-grid p-justify-between">
       <button (click)="closeDialog(); formDependente.reset();" label="Cancelar" pButton type="button"></button>
-      <button (click)="inserirDependente(dependente); closeDialog(); formDependente.reset(); "
-              [disabled]="!formDependente.form.valid" label="Cadastrar" pButton type="submit"></button>
+      <button (click)="save(dependente); closeDialog(); formDependente.reset(); "
+              [disabled]="!formDependente.form.valid" label="Salvar" pButton type="submit"></button>
     </div>
   </form>
 </p-dialog>

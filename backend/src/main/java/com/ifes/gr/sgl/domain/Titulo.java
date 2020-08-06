@@ -13,13 +13,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import java.time.LocalDate;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity(name = "TITULO")
 @Getter
 @Setter
-public class Titulo {
+public class Titulo implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +31,7 @@ public class Titulo {
     private String nome;
 
     @Column(name = "ANO", nullable = false)
-    private LocalDate ano;
+    private LocalDateTime ano;
 
     @Column(name = "SINOPSE", nullable = false, length = 400)
     private String sinopse;

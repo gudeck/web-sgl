@@ -3,16 +3,16 @@ package com.ifes.gr.sgl.service.dto;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 public class LocacaoDTO {
 
     private Long id;
-    private LocalDate dataLocacao;
-    private LocalDate dataDevolucaoPrevista;
-    private LocalDate dataDevolucao;
+    private LocalDateTime dataLocacao;
+    private LocalDateTime dataDevolucaoPrevista;
+    private LocalDateTime dataDevolucao;
     private Double valor;
     private Double multa;
     private ItemDTO item;

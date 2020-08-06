@@ -1,9 +1,9 @@
 <p-confirmDialog icon="pi pi-exclamation-triangle"></p-confirmDialog>
-<p-messages [value]="messages"></p-messages>
+<p-toast></p-toast>
 
 <div class="list">
   <p-table [(selection)]="atorSelecionado" [loading]="loading" [paginator]="true" [rows]="20" [value]="atores"
-           selectionMode="single">
+           (onRowSelect)="enableEdit()" (onRowUnselect)="disableEdit(); formAtor.reset()" selectionMode="single">
     <ng-template id="caption" pTemplate="caption">
       <button (click)="setFocus()" icon="pi pi-plus" label="Add" pButton></button>
       <button (click)="confirmExclusion(atorSelecionado)" [disabled]="!isOneSelected()" class="botoesCabecalho"
@@ -25,13 +25,14 @@
       <div class="ui-fluid p-formgrid p-grid">
         <div class="p-field p-col-12">
           <label for="inputNome">Nome</label>
-          <input [(ngModel)]="novoAtor.nome" id="inputNome" maxlength="80" name="nome" pInputText required type="text">
+          <input [(ngModel)]="ator.nome" id="inputNome" maxlength="80" name="nome" pInputText required type="text">
         </div>
       </div>
       <div class="p-grid p-justify-between">
-        <button (click)="formAtor.reset()" label="Limpar" pButton type="button"></button>
-        <button (click)="post(novoAtor); formAtor.reset()" [disabled]="!formAtor.form.valid" label="Cadastrar"
-                pButton type="submit"></button>
+        <button (click)="disableEdit(); formAtor.reset(); cleanSelection()" label="Limpar" pButton
+                type="button"></button>
+        <button (click)="save(ator); formAtor.reset(); cleanSelection()" [disabled]="!formAtor.form.valid"
+                label="Salvar" pButton type="submit"></button>
       </div>
     </form>
   </p-card>
