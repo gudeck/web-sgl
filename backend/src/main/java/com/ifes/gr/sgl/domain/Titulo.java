@@ -14,7 +14,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity(name = "TITULO")
@@ -31,7 +31,7 @@ public class Titulo implements Serializable {
     private String nome;
 
     @Column(name = "ANO", nullable = false)
-    private LocalDate ano;
+    private LocalDateTime ano;
 
     @Column(name = "SINOPSE", nullable = false, length = 400)
     private String sinopse;

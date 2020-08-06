@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import * as lodash from 'lodash';
 import {ConfirmationService, MessageService} from 'primeng';
 import {ConstantService} from '../../../service/constant.service';
 import {Ator} from '../../ator/model/ator';
@@ -26,7 +27,7 @@ export class TituloComponent implements OnInit {
 
   public diretoresFiltrados: Diretor[];
 
-  public novoTitulo: Titulo;
+  public titulo: Titulo;
   public tituloSelecionado: Titulo;
 
   public br: any;
@@ -86,6 +87,20 @@ export class TituloComponent implements OnInit {
     });
   }
 
+  put(titulo: Titulo) {
+    this.loading = true;
+    this.tituloService.put(titulo).subscribe(tituloAtualizado => {
+      const indexRegistro = this.titulos.findIndex(tituloListado => tituloListado.id === tituloAtualizado.id);
+      this.titulos[indexRegistro] = lodash.cloneDeep(tituloAtualizado);
+      this.messageService.add({severity: 'info', summary: 'SUCESSO', detail: 'Título atualizado.'});
+      this.loading = false;
+      this.initialize();
+    }, () => {
+      this.messageService.add({severity: 'info', summary: 'FALHA', detail: 'Não foi possível atualizar título.'});
+      this.loading = false;
+    });
+  }
+
   isOneSelected(): boolean {
     return Boolean(this.tituloSelecionado);
   }
@@ -100,7 +115,7 @@ export class TituloComponent implements OnInit {
   }
 
   initialize() {
-    this.novoTitulo = new Titulo();
+    this.titulo = new Titulo();
   }
 
 
@@ -123,6 +138,23 @@ export class TituloComponent implements OnInit {
         this.delete(tituloSelecionado);
       }
     });
+  }
+
+  enableEdit() {
+    this.tituloSelecionado.ano = new Date(this.tituloSelecionado.ano);
+    this.titulo = lodash.cloneDeep(this.tituloSelecionado);
+  }
+
+  disableEdit() {
+    this.titulo = new Titulo();
+  }
+
+  save(titulo: Titulo) {
+    if (titulo.id) {
+      this.put(titulo);
+    } else {
+      this.post(titulo);
+    }
   }
 
 }
