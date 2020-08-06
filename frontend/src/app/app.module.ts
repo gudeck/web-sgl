@@ -19,8 +19,10 @@ import {
   InputTextareaModule,
   InputTextModule,
   ListboxModule,
+  MessageService,
   MessagesModule,
-  TableModule
+  TableModule,
+  ToastModule
 } from 'primeng';
 import {AppRoutingModule} from './app-routing.module';
 
@@ -73,9 +75,10 @@ import {TituloComponent} from './pages/titulo/form/titulo.component';
     AppRoutingModule,
     ConfirmDialogModule,
     MessagesModule,
-    DialogModule
+    DialogModule,
+    ToastModule
   ],
-  providers: [ConfirmationService],
+  providers: [ConfirmationService, MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -12,13 +12,14 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import java.time.LocalDate;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Entity(name = "CLIENTE")
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
-public class Cliente {
+public class Cliente implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +30,7 @@ public class Cliente {
     private String nome;
 
     @Column(name = "DATA_NASCIMENTO", nullable = false)
-    private LocalDate dataNascimento;
+    private LocalDateTime dataNascimento;
 
     @Column(name = "ATIVO", nullable = false)
     private Boolean ativo;

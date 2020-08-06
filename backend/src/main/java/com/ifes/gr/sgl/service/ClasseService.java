@@ -1,15 +1,31 @@
 package com.ifes.gr.sgl.service;
 
+import com.ifes.gr.sgl.repository.ClasseRepository;
 import com.ifes.gr.sgl.service.dto.ClasseDTO;
+import com.ifes.gr.sgl.service.mapper.ClasseMapper;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
-public interface ClasseService {
+@Service
+@Transactional
+@RequiredArgsConstructor
+public class ClasseService {
+    private final ClasseMapper classeMapper;
+    private final ClasseRepository classeRepository;
 
-    ClasseDTO save(ClasseDTO classeDTO);
+    public ClasseDTO save(ClasseDTO classeDTO) {
+        return classeMapper.toDto(classeRepository.save(classeMapper.toEntity(classeDTO)));
+    }
 
-    List<ClasseDTO> getAll();
+    public List<ClasseDTO> getAll() {
+        return classeMapper.toDto(classeRepository.findAll());
+    }
 
-    void delete(Long id);
+    public void delete(Long id) {
+        classeRepository.deleteById(id);
+    }
 
 }

@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {ConfirmationService, Message} from 'primeng';
+import * as lodash from 'lodash';
+import {ConfirmationService, MessageService} from 'primeng';
 import {ConstantService} from '../../../service/constant.service';
 import {Ator} from '../../ator/model/ator';
 import {AtorService} from '../../ator/service/ator.service';
@@ -26,22 +27,20 @@ export class TituloComponent implements OnInit {
 
   public diretoresFiltrados: Diretor[];
 
-
-  public novoTitulo: Titulo;
+  public titulo: Titulo;
   public tituloSelecionado: Titulo;
 
   public br: any;
   public loading: boolean;
 
-  public messages: Message[];
-
   constructor(
-    private constantService: ConstantService,
     private atorService: AtorService,
     private categoriaService: CategoriaService,
     private classeService: ClasseService,
     private confirmationService: ConfirmationService,
+    private constantService: ConstantService,
     private diretorService: DiretorService,
+    private messageService: MessageService,
     private tituloService: TituloService) {
   }
 
@@ -57,7 +56,6 @@ export class TituloComponent implements OnInit {
     });
 
     this.titulos = [];
-    this.messages = [];
     this.initialize();
 
     this.br = this.constantService.br;
@@ -67,11 +65,11 @@ export class TituloComponent implements OnInit {
     this.loading = true;
     this.tituloService.delete(tituloSelecionado.id).subscribe(() => {
       this.titulos = this.titulos.filter(titulo => titulo.id !== tituloSelecionado.id);
-      this.messages = [{severity: 'info', summary: 'SUCESSO', detail: 'Título excluído.'}];
+      this.messageService.add({severity: 'info', summary: 'SUCESSO', detail: 'Título excluído.'});
       this.loading = false;
       this.cleanSelection();
     }, () => {
-      this.messages = [{severity: 'error', summary: 'FALHA', detail: 'Título associado a item(ns).'}];
+      this.messageService.add({severity: 'error', summary: 'FALHA', detail: 'Título associado a item(ns).'});
       this.loading = false;
     });
   }
@@ -80,11 +78,25 @@ export class TituloComponent implements OnInit {
     this.loading = true;
     this.tituloService.post(novoTitulo).subscribe(tituloRegistrado => {
       this.titulos.push(tituloRegistrado);
-      this.messages = [{severity: 'info', summary: 'SUCESSO', detail: 'Título cadastrado.'}];
+      this.messageService.add({severity: 'info', summary: 'SUCESSO', detail: 'Título cadastrado.'});
       this.loading = false;
       this.initialize();
     }, () => {
-      this.messages = [{severity: 'info', summary: 'FALHA', detail: 'Não foi possível cadastrar título.'}];
+      this.messageService.add({severity: 'info', summary: 'FALHA', detail: 'Não foi possível cadastrar título.'});
+      this.loading = false;
+    });
+  }
+
+  put(titulo: Titulo) {
+    this.loading = true;
+    this.tituloService.put(titulo).subscribe(tituloAtualizado => {
+      const indexRegistro = this.titulos.findIndex(tituloListado => tituloListado.id === tituloAtualizado.id);
+      this.titulos[indexRegistro] = lodash.cloneDeep(tituloAtualizado);
+      this.messageService.add({severity: 'info', summary: 'SUCESSO', detail: 'Título atualizado.'});
+      this.loading = false;
+      this.initialize();
+    }, () => {
+      this.messageService.add({severity: 'info', summary: 'FALHA', detail: 'Não foi possível atualizar título.'});
       this.loading = false;
     });
   }
@@ -103,7 +115,7 @@ export class TituloComponent implements OnInit {
   }
 
   initialize() {
-    this.novoTitulo = new Titulo();
+    this.titulo = new Titulo();
   }
 
 
@@ -126,6 +138,23 @@ export class TituloComponent implements OnInit {
         this.delete(tituloSelecionado);
       }
     });
+  }
+
+  enableEdit() {
+    this.tituloSelecionado.ano = new Date(this.tituloSelecionado.ano);
+    this.titulo = lodash.cloneDeep(this.tituloSelecionado);
+  }
+
+  disableEdit() {
+    this.titulo = new Titulo();
+  }
+
+  save(titulo: Titulo) {
+    if (titulo.id) {
+      this.put(titulo);
+    } else {
+      this.post(titulo);
+    }
   }
 
 }

@@ -14,7 +14,7 @@
             <column name="NOME" type="VARCHAR(80)">
                 <constraints nullable="false"/>
             </column>
-            <column name="ANO" type="DATE">
+            <column name="ANO" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
             <column name="SINOPSE" type="VARCHAR(400)">

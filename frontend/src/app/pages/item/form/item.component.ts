@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {ConfirmationService, Message} from 'primeng';
+import * as lodash from 'lodash';
+import {ConfirmationService, MessageService} from 'primeng';
 import {ConstantService} from '../../../service/constant.service';
 import {Titulo} from '../../titulo/model/titulo';
 import {TituloService} from '../../titulo/service/titulo.service';
@@ -20,18 +21,17 @@ export class ItemComponent implements OnInit {
 
   public titulosFiltrados: Titulo[];
 
-  public novoItem: Item;
+  public item: Item;
   public itemSelecionado: Item;
 
   public br: any;
   public loading: boolean;
 
-  public messages: Message[];
-
   constructor(
     private confirmationService: ConfirmationService,
     private constantService: ConstantService,
     private itemService: ItemService,
+    private messageService: MessageService,
     private tipoItemService: TipoItemService,
     private tituloService: TituloService
   ) {
@@ -47,7 +47,6 @@ export class ItemComponent implements OnInit {
     this.tituloService.getAll().subscribe(titulos => this.titulos = titulos);
 
     this.itens = [];
-    this.messages = [];
     this.initialize();
 
     this.br = this.constantService.br;
@@ -57,11 +56,11 @@ export class ItemComponent implements OnInit {
     this.loading = true;
     this.itemService.delete(itemSelecionado.id).subscribe(() => {
       this.itens = this.itens.filter(item => item.id !== itemSelecionado.id);
-      this.messages = [{severity: 'info', summary: 'SUCESSO', detail: 'Item excluído.'}];
+      this.messageService.add({severity: 'info', summary: 'SUCESSO', detail: 'Item excluído.'});
       this.loading = false;
       this.cleanSelection();
     }, () => {
-      this.messages = [{severity: 'error', summary: 'FALHA', detail: 'Item associado a locação(ões).'}];
+      this.messageService.add({severity: 'error', summary: 'FALHA', detail: 'Item associado a locação(ões).'});
       this.loading = false;
     });
   }
@@ -70,11 +69,25 @@ export class ItemComponent implements OnInit {
     this.loading = true;
     this.itemService.post(novoItem).subscribe(itemRegistrado => {
       this.itens.push(itemRegistrado);
-      this.messages = [{severity: 'info', summary: 'SUCESSO', detail: 'Item cadastrado.'}];
+      this.messageService.add({severity: 'info', summary: 'SUCESSO', detail: 'Item cadastrado.'});
       this.loading = false;
       this.initialize();
     }, () => {
-      this.messages = [{severity: 'info', summary: 'FALHA', detail: 'Não foi possível cadastrar item.'}];
+      this.messageService.add({severity: 'info', summary: 'FALHA', detail: 'Não foi possível cadastrar item.'});
+      this.loading = false;
+    });
+  }
+
+  put(item: Item) {
+    this.loading = true;
+    this.itemService.put(item).subscribe(itemAtualizado => {
+      const indexRegistro = this.itens.findIndex(itemListado => itemListado.id === itemAtualizado.id);
+      this.itens[indexRegistro] = lodash.cloneDeep(itemAtualizado);
+      this.messageService.add({severity: 'info', summary: 'SUCESSO', detail: 'Item atualizado.'});
+      this.loading = false;
+      this.initialize();
+    }, () => {
+      this.messageService.add({severity: 'info', summary: 'FALHA', detail: 'Não foi possível atualizar item.'});
       this.loading = false;
     });
   }
@@ -93,9 +106,8 @@ export class ItemComponent implements OnInit {
   }
 
   initialize() {
-    this.novoItem = new Item();
+    this.item = new Item();
   }
-
 
   public filtrarTitulos(event) {
     this.titulosFiltrados = [];
@@ -116,6 +128,23 @@ export class ItemComponent implements OnInit {
         this.delete(itemSelecionado);
       }
     });
+  }
+
+  enableEdit() {
+    this.itemSelecionado.dataAquisicao = new Date(this.itemSelecionado.dataAquisicao);
+    this.item = lodash.cloneDeep(this.itemSelecionado);
+  }
+
+  disableEdit() {
+    this.item = new Item();
+  }
+
+  save(item: Item) {
+    if (item.id) {
+      this.put(item);
+    } else {
+      this.post(item);
+    }
   }
 
 }

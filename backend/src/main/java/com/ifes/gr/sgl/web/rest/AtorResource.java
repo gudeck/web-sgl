@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,6 +29,12 @@ public class AtorResource {
     public ResponseEntity<AtorDTO> create(@RequestBody AtorDTO atorDTO) throws URISyntaxException {
         AtorDTO novoAtor = atorService.save(atorDTO);
         return ResponseEntity.created(new URI("/atores" + novoAtor.getId())).body(novoAtor);
+    }
+
+    @PutMapping
+    public ResponseEntity<AtorDTO> update(@RequestBody AtorDTO atorDTO) {
+        AtorDTO ator = atorService.save(atorDTO);
+        return ResponseEntity.ok().body(ator);
     }
 
     @Transactional(readOnly = true)

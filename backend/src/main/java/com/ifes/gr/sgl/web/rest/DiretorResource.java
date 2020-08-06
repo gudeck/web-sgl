@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,6 +29,12 @@ public class DiretorResource {
     public ResponseEntity<DiretorDTO> create(@RequestBody DiretorDTO diretorDTO) throws URISyntaxException {
         DiretorDTO novoDiretor = diretorService.save(diretorDTO);
         return ResponseEntity.created(new URI("/diretores" + novoDiretor.getId())).body(novoDiretor);
+    }
+
+    @PutMapping
+    public ResponseEntity<DiretorDTO> update(@RequestBody DiretorDTO diretorDTO) {
+        DiretorDTO diretor = diretorService.save(diretorDTO);
+        return ResponseEntity.ok().body(diretor);
     }
 
     @Transactional(readOnly = true)
