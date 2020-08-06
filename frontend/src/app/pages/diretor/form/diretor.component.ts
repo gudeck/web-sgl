@@ -11,7 +11,7 @@ export class DiretorComponent implements OnInit {
 
   public diretores: Diretor[];
 
-  public novoDiretor: Diretor;
+  public diretor: Diretor;
   public diretorSelecionado: Diretor;
 
   public loading: boolean;
@@ -59,6 +59,19 @@ export class DiretorComponent implements OnInit {
     });
   }
 
+  put(diretor: Diretor) {
+    this.loading = true;
+    this.diretorService.put(diretor).subscribe(diretorAtualizado => {
+      Object.assign(this.diretores.find(diretorListado => diretorListado.id === diretorAtualizado.id), diretorAtualizado);
+      this.messageService.add({severity: 'info', summary: 'SUCESSO', detail: 'Diretor atualizado.'});
+      this.loading = false;
+      this.initialize();
+    }, () => {
+      this.messageService.add({severity: 'info', summary: 'FALHA', detail: 'Não foi possível atualizar diretor.'});
+      this.loading = false;
+    });
+  }
+
   isOneSelected(): boolean {
     return Boolean(this.diretorSelecionado);
   }
@@ -73,7 +86,7 @@ export class DiretorComponent implements OnInit {
   }
 
   initialize() {
-    this.novoDiretor = new Diretor();
+    this.diretor = new Diretor();
   }
 
   confirmExclusion(diretorSelecionado: Diretor) {
@@ -86,6 +99,22 @@ export class DiretorComponent implements OnInit {
         this.delete(diretorSelecionado);
       }
     });
+  }
+
+  enableEdit() {
+    this.diretor = Object.assign({}, this.diretorSelecionado);
+  }
+
+  disableEdit() {
+    this.diretor = new Diretor();
+  }
+
+  save(diretor: Diretor) {
+    if (diretor.id) {
+      this.put(diretor);
+    } else {
+      this.post(diretor);
+    }
   }
 
 }

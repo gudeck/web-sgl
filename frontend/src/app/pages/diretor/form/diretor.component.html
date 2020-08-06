@@ -3,7 +3,7 @@
 
 <div class="list">
   <p-table [(selection)]="diretorSelecionado" [loading]="loading" [paginator]="true" [rows]="20" [value]="diretores"
-           selectionMode="single">
+           (onRowSelect)="enableEdit()" (onRowUnselect)="disableEdit(); formDiretor.reset()" selectionMode="single">
     <ng-template id="caption" pTemplate="caption">
       <button (click)="setFocus()" icon="pi pi-plus" label="Add" pButton></button>
       <button (click)="confirmExclusion(diretorSelecionado)" [disabled]="!isOneSelected()" class="botoesCabecalho"
@@ -25,14 +25,15 @@
       <div class="ui-fluid p-formgrid p-grid">
         <div class="p-field p-col-12">
           <label for="inputNome">Nome</label>
-          <input [(ngModel)]="novoDiretor.nome" id="inputNome" maxlength="80" name="nome" pInputText required
+          <input [(ngModel)]="diretor.nome" id="inputNome" maxlength="80" name="nome" pInputText required
                  type="text">
         </div>
       </div>
       <div class="p-grid p-justify-between">
-        <button (click)="formDiretor.reset()" label="Limpar" pButton type="button"></button>
-        <button (click)="post(novoDiretor); formDiretor.reset()" [disabled]="!formDiretor.form.valid" label="Cadastrar"
-                pButton type="submit"></button>
+        <button (click)="disableEdit(); formDiretor.reset(); cleanSelection()" label="Limpar" pButton
+                type="button"></button>
+        <button (click)="save(diretor); formDiretor.reset(); cleanSelection()" [disabled]="!formDiretor.form.valid"
+                label="Salvar" pButton type="submit"></button>
       </div>
     </form>
   </p-card>
