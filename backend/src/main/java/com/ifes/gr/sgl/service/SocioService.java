@@ -22,19 +22,23 @@ public class SocioService {
             if (dependente.getId() == null)
                 dependente.setAtivo(true);
         });
-        return socioMapper.toDto(socioRepository.save(socioMapper.toEntity(socioDTO)));
+        return save(socioDTO);
     }
 
-    public SocioDTO update(SocioDTO socioDTO) {
-        return socioMapper.toDto(socioRepository.save(socioMapper.toEntity(socioDTO)));
+    public void delete(Long id) {
+        socioRepository.deleteById(id);
     }
 
     public List<SocioDTO> getAll() {
         return socioMapper.toDto(socioRepository.findAll());
     }
 
-    public void delete(Long id) {
-        socioRepository.deleteById(id);
+    private SocioDTO save(SocioDTO socioDTO) {
+        return socioMapper.toDto(socioRepository.save(socioMapper.toEntity(socioDTO)));
+    }
+
+    public SocioDTO update(SocioDTO socioDTO) {
+        return save(socioDTO);
     }
 
 }

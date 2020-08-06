@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
@@ -26,28 +24,31 @@ public class DiretorResource {
     private final DiretorService diretorService;
 
     @PostMapping
-    public ResponseEntity<DiretorDTO> create(@RequestBody DiretorDTO diretorDTO) throws URISyntaxException {
-        DiretorDTO novoDiretor = diretorService.save(diretorDTO);
-        return ResponseEntity.created(new URI("/diretores" + novoDiretor.getId())).body(novoDiretor);
-    }
-
-    @PutMapping
-    public ResponseEntity<DiretorDTO> update(@RequestBody DiretorDTO diretorDTO) {
-        DiretorDTO diretor = diretorService.save(diretorDTO);
-        return ResponseEntity.ok().body(diretor);
-    }
-
-    @Transactional(readOnly = true)
-    @GetMapping
-    public ResponseEntity<List<DiretorDTO>> listar() {
-        List<DiretorDTO> diretores = diretorService.getAll();
-        return ResponseEntity.ok().body(diretores);
+    public ResponseEntity<DiretorDTO> create(@RequestBody DiretorDTO diretorDTO) {
+        return save(diretorDTO);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         diretorService.delete(id);
         return ResponseEntity.ok().build();
+    }
+
+    @Transactional(readOnly = true)
+    @GetMapping
+    public ResponseEntity<List<DiretorDTO>> getAll() {
+        List<DiretorDTO> diretores = diretorService.getAll();
+        return ResponseEntity.ok().body(diretores);
+    }
+
+    private ResponseEntity<DiretorDTO> save(DiretorDTO diretorDTO) {
+        DiretorDTO diretor = diretorService.save(diretorDTO);
+        return ResponseEntity.ok().body(diretor);
+    }
+
+    @PutMapping
+    public ResponseEntity<DiretorDTO> update(@RequestBody DiretorDTO diretorDTO) {
+        return save(diretorDTO);
     }
 
 }

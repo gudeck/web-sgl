@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
@@ -26,9 +24,9 @@ public class LocacaoResource {
     private final LocacaoService locacaoService;
 
     @PostMapping
-    public ResponseEntity<LocacaoDTO> create(@RequestBody LocacaoDTO locacaoDTO) throws URISyntaxException {
+    public ResponseEntity<LocacaoDTO> create(@RequestBody LocacaoDTO locacaoDTO) {
         LocacaoDTO novaLocacao = locacaoService.create(locacaoDTO);
-        return ResponseEntity.created(new URI("/locacoes" + novaLocacao.getId())).body(novaLocacao);
+        return ResponseEntity.ok().body(novaLocacao);
     }
 
     @PutMapping

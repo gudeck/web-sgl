@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
@@ -26,9 +24,9 @@ public class SocioResource {
     private final SocioService socioService;
 
     @PostMapping
-    public ResponseEntity<SocioDTO> create(@RequestBody SocioDTO socioDTO) throws URISyntaxException {
+    public ResponseEntity<SocioDTO> create(@RequestBody SocioDTO socioDTO) {
         SocioDTO novoSocio = socioService.create(socioDTO);
-        return ResponseEntity.created(new URI("/socios" + novoSocio.getId())).body(novoSocio);
+        return ResponseEntity.ok().body(novoSocio);
     }
 
     @PutMapping

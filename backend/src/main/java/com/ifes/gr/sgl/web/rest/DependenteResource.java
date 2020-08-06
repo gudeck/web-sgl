@@ -9,12 +9,11 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
@@ -25,9 +24,15 @@ public class DependenteResource {
     private final DependenteService dependenteService;
 
     @PostMapping
-    public ResponseEntity<DependenteDTO> create(@RequestBody DependenteDTO dependenteDTO) throws URISyntaxException {
-        DependenteDTO novoDependente = dependenteService.save(dependenteDTO);
-        return ResponseEntity.created(new URI("/dependentes" + novoDependente.getId())).body(novoDependente);
+    public ResponseEntity<DependenteDTO> create(@RequestBody DependenteDTO dependenteDTO) {
+        DependenteDTO novoDependente = dependenteService.create(dependenteDTO);
+        return ResponseEntity.ok().body(novoDependente);
+    }
+
+    @PutMapping
+    public ResponseEntity<DependenteDTO> update(@RequestBody DependenteDTO dependenteDTO) {
+        DependenteDTO dependente = dependenteService.update(dependenteDTO);
+        return ResponseEntity.ok().body(dependente);
     }
 
     @Transactional(readOnly = true)

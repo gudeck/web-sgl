@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
@@ -26,28 +24,31 @@ public class ClasseResource {
     private final ClasseService classeService;
 
     @PostMapping
-    public ResponseEntity<ClasseDTO> create(@RequestBody ClasseDTO classeDTO) throws URISyntaxException {
-        ClasseDTO novaClasse = classeService.save(classeDTO);
-        return ResponseEntity.created(new URI("/classes" + novaClasse.getId())).body(novaClasse);
-    }
-
-    @PutMapping
-    public ResponseEntity<ClasseDTO> update(@RequestBody ClasseDTO classeDTO) {
-        ClasseDTO classe = classeService.save(classeDTO);
-        return ResponseEntity.ok().body(classe);
-    }
-
-    @Transactional(readOnly = true)
-    @GetMapping
-    public ResponseEntity<List<ClasseDTO>> listar() {
-        List<ClasseDTO> classes = classeService.getAll();
-        return ResponseEntity.ok().body(classes);
+    public ResponseEntity<ClasseDTO> create(@RequestBody ClasseDTO classeDTO) {
+        return save(classeDTO);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         classeService.delete(id);
         return ResponseEntity.ok().build();
+    }
+
+    @Transactional(readOnly = true)
+    @GetMapping
+    public ResponseEntity<List<ClasseDTO>> getAll() {
+        List<ClasseDTO> classes = classeService.getAll();
+        return ResponseEntity.ok().body(classes);
+    }
+
+    private ResponseEntity<ClasseDTO> save(ClasseDTO classeDTO) {
+        ClasseDTO classe = classeService.save(classeDTO);
+        return ResponseEntity.ok().body(classe);
+    }
+
+    @PutMapping
+    public ResponseEntity<ClasseDTO> update(@RequestBody ClasseDTO classeDTO) {
+        return save(classeDTO);
     }
 
 }

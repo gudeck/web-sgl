@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
@@ -26,28 +24,31 @@ public class ItemResource {
     private final ItemService itemService;
 
     @PostMapping
-    public ResponseEntity<ItemDTO> create(@RequestBody ItemDTO itemDTO) throws URISyntaxException {
-        ItemDTO novoItem = itemService.save(itemDTO);
-        return ResponseEntity.created(new URI("/itens" + novoItem.getId())).body(novoItem);
-    }
-
-    @PutMapping
-    public ResponseEntity<ItemDTO> update(@RequestBody ItemDTO itemDTO) {
-        ItemDTO item = itemService.save(itemDTO);
-        return ResponseEntity.ok().body(item);
-    }
-
-    @Transactional(readOnly = true)
-    @GetMapping
-    public ResponseEntity<List<ItemDTO>> listar() {
-        List<ItemDTO> itens = itemService.getAll();
-        return ResponseEntity.ok().body(itens);
+    public ResponseEntity<ItemDTO> create(@RequestBody ItemDTO itemDTO) {
+        return save(itemDTO);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         itemService.delete(id);
         return ResponseEntity.ok().build();
+    }
+
+    @Transactional(readOnly = true)
+    @GetMapping
+    public ResponseEntity<List<ItemDTO>> getAll() {
+        List<ItemDTO> itens = itemService.getAll();
+        return ResponseEntity.ok().body(itens);
+    }
+
+    private ResponseEntity<ItemDTO> save(ItemDTO itemDTO) {
+        ItemDTO item = itemService.save(itemDTO);
+        return ResponseEntity.ok().body(item);
+    }
+
+    @PutMapping
+    public ResponseEntity<ItemDTO> update(@RequestBody ItemDTO itemDTO) {
+        return save(itemDTO);
     }
 
 }

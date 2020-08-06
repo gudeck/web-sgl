@@ -26,19 +26,23 @@ public class LocacaoService {
         if (locacaoDTO.getValor() == null)
             locacaoDTO.setValor(locacaoDTO.getItem().getTitulo().getClasse().getValor());
 
-        return locacaoMapper.toDto(locacaoRepository.save(locacaoMapper.toEntity(locacaoDTO)));
+        return save(locacaoDTO);
     }
 
-    public LocacaoDTO update(LocacaoDTO locacaoDTO) {
-        return locacaoMapper.toDto(locacaoRepository.save(locacaoMapper.toEntity(locacaoDTO)));
+    public void delete(Long id) {
+        locacaoRepository.deleteById(id);
     }
 
     public List<LocacaoDTO> getAll() {
         return locacaoMapper.toDto(locacaoRepository.findAll());
     }
 
-    public void delete(Long id) {
-        locacaoRepository.deleteById(id);
+    private LocacaoDTO save(LocacaoDTO locacaoDTO) {
+        return locacaoMapper.toDto(locacaoRepository.save(locacaoMapper.toEntity(locacaoDTO)));
+    }
+
+    public LocacaoDTO update(LocacaoDTO locacaoDTO) {
+        return save(locacaoDTO);
     }
 
 }
