@@ -3,7 +3,6 @@ import * as lodash from 'lodash';
 import {ConfirmationService, MessageService} from 'primeng';
 import {ConstantService} from '../../../../service/constant.service';
 import {DependenteComponent} from '../../dependente/form/dependente.component';
-import {Dependente} from '../../model/dependente';
 import {Sexo} from '../../model/sexo';
 import {Socio} from '../../model/socio';
 import {DependenteService} from '../../service/dependente.service';
@@ -12,7 +11,7 @@ import {SocioService} from '../../service/socio.service';
 
 @Component({
   selector: 'app-cliente',
-  templateUrl: './socio.component.html',
+  templateUrl: './socio.component.html'
 })
 export class SocioComponent implements OnInit {
 
@@ -125,10 +124,6 @@ export class SocioComponent implements OnInit {
         this.delete(socioSelecionado);
       }
     });
-  }
-
-  abrirDialog(dependente ?: Dependente) {
-    this.dialogDependente.openDialog(dependente);
   }
 
   enableEdit() {
