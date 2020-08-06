@@ -14,6 +14,10 @@ export class ResourceService<T> {
     return this.httpClient.post<T>(this.url, newEntry);
   }
 
+  put(entry: T): Observable<T> {
+    return this.httpClient.put<T>(this.url, entry);
+  }
+
   delete(id: number): Observable<{}> {
     return this.httpClient.delete(`${this.url}/${id}`);
   }

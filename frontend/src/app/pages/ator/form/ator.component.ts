@@ -11,7 +11,7 @@ export class AtorComponent implements OnInit {
 
   public atores: Ator[];
 
-  public novoAtor: Ator;
+  public ator: Ator;
   public atorSelecionado: Ator;
 
   public loading: boolean;
@@ -59,6 +59,19 @@ export class AtorComponent implements OnInit {
     });
   }
 
+  put(ator: Ator) {
+    this.loading = true;
+    this.atorService.put(ator).subscribe(atorAtualizado => {
+      Object.assign(this.atores.find(atorListado => atorListado.id === atorAtualizado.id), atorAtualizado);
+      this.messageService.add({severity: 'info', summary: 'SUCESSO', detail: 'Ator atualizado.'});
+      this.loading = false;
+      this.initialize();
+    }, () => {
+      this.messageService.add({severity: 'info', summary: 'FALHA', detail: 'Não foi possível atualizar ator.'});
+      this.loading = false;
+    });
+  }
+
   isOneSelected(): boolean {
     return Boolean(this.atorSelecionado);
   }
@@ -73,7 +86,7 @@ export class AtorComponent implements OnInit {
   }
 
   initialize() {
-    this.novoAtor = new Ator();
+    this.ator = new Ator();
   }
 
   confirmExclusion(atorSelecionado: Ator) {
@@ -86,6 +99,22 @@ export class AtorComponent implements OnInit {
         this.delete(atorSelecionado);
       }
     });
+  }
+
+  enableEdit() {
+    this.ator = Object.assign({}, this.atorSelecionado);
+  }
+
+  disableEdit() {
+    this.ator = new Ator();
+  }
+
+  save(ator: Ator) {
+    if (ator.id) {
+      this.put(ator);
+    } else {
+      this.post(ator);
+    }
   }
 
 }
