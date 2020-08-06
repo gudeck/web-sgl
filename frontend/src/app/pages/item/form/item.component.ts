@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import * as lodash from 'lodash';
 import {ConfirmationService, MessageService} from 'primeng';
 import {ConstantService} from '../../../service/constant.service';
 import {Titulo} from '../../titulo/model/titulo';
@@ -20,7 +21,7 @@ export class ItemComponent implements OnInit {
 
   public titulosFiltrados: Titulo[];
 
-  public novoItem: Item;
+  public item: Item;
   public itemSelecionado: Item;
 
   public br: any;
@@ -77,6 +78,20 @@ export class ItemComponent implements OnInit {
     });
   }
 
+  put(item: Item) {
+    this.loading = true;
+    this.itemService.put(item).subscribe(itemAtualizado => {
+      const indexRegistro = this.itens.findIndex(itemListado => itemListado.id === itemAtualizado.id);
+      this.itens[indexRegistro] = lodash.cloneDeep(itemAtualizado);
+      this.messageService.add({severity: 'info', summary: 'SUCESSO', detail: 'Item atualizado.'});
+      this.loading = false;
+      this.initialize();
+    }, () => {
+      this.messageService.add({severity: 'info', summary: 'FALHA', detail: 'Não foi possível atualizar item.'});
+      this.loading = false;
+    });
+  }
+
   isOneSelected(): boolean {
     return Boolean(this.itemSelecionado);
   }
@@ -91,9 +106,8 @@ export class ItemComponent implements OnInit {
   }
 
   initialize() {
-    this.novoItem = new Item();
+    this.item = new Item();
   }
-
 
   public filtrarTitulos(event) {
     this.titulosFiltrados = [];
@@ -114,6 +128,23 @@ export class ItemComponent implements OnInit {
         this.delete(itemSelecionado);
       }
     });
+  }
+
+  enableEdit() {
+    this.itemSelecionado.dataAquisicao = new Date(this.itemSelecionado.dataAquisicao);
+    this.item = lodash.cloneDeep(this.itemSelecionado);
+  }
+
+  disableEdit() {
+    this.item = new Item();
+  }
+
+  save(item: Item) {
+    if (item.id) {
+      this.put(item);
+    } else {
+      this.post(item);
+    }
   }
 
 }

@@ -11,7 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity(name = "ITEM")
 @Getter
@@ -27,7 +27,7 @@ public class Item implements Serializable {
     private Long numeroSerie;
 
     @Column(name = "DATA_AQUISICAO", nullable = false)
-    private LocalDate dataAquisicao;
+    private LocalDateTime dataAquisicao;
 
     @ManyToOne
     @JoinColumn(name = "ID_TITULO", nullable = false)
