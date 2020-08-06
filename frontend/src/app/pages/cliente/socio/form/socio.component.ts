@@ -1,7 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
+import * as lodash from 'lodash';
 import {ConfirmationService, MessageService} from 'primeng';
 import {ConstantService} from '../../../../service/constant.service';
 import {DependenteComponent} from '../../dependente/form/dependente.component';
+import {Dependente} from '../../model/dependente';
 import {Sexo} from '../../model/sexo';
 import {Socio} from '../../model/socio';
 import {DependenteService} from '../../service/dependente.service';
@@ -17,7 +19,7 @@ export class SocioComponent implements OnInit {
   public sexos: Sexo[];
   public socios: Socio[];
 
-  public novoSocio: Socio;
+  public socio: Socio;
   public socioSelecionado: Socio;
 
   public br: any;
@@ -74,6 +76,20 @@ export class SocioComponent implements OnInit {
     });
   }
 
+  put(socio: Socio) {
+    this.loading = true;
+    this.socioService.put(socio).subscribe(socioAtualizado => {
+      const indexRegistro = this.socios.findIndex(socioListado => socioListado.id === socioAtualizado.id);
+      this.socios[indexRegistro] = lodash.cloneDeep(socioAtualizado);
+      this.messageService.add({severity: 'info', summary: 'SUCESSO', detail: 'Sócio atualizado.'});
+      this.loading = false;
+      this.initialize();
+    }, () => {
+      this.messageService.add({severity: 'info', summary: 'FALHA', detail: 'Não foi possível atualizar sócio.'});
+      this.loading = false;
+    });
+  }
+
   isOneSelected(): boolean {
     return Boolean(this.socioSelecionado);
   }
@@ -88,15 +104,15 @@ export class SocioComponent implements OnInit {
   }
 
   initialize() {
-    this.novoSocio = new Socio();
+    this.socio = new Socio();
   }
 
   isLimiteDependentes() {
-    return this.novoSocio.dependentes.length >= 3;
+    return this.socio.dependentes.length >= 3;
   }
 
   removerDependente(i: number) {
-    this.novoSocio.dependentes.splice(i, 1);
+    this.socio.dependentes.splice(i, 1);
   }
 
   confirmExclusion(socioSelecionado: Socio) {
@@ -111,8 +127,25 @@ export class SocioComponent implements OnInit {
     });
   }
 
-  abrirDialog() {
-    this.dialogDependente.openDialog();
+  abrirDialog(dependente ?: Dependente) {
+    this.dialogDependente.openDialog(dependente);
+  }
+
+  enableEdit() {
+    this.socioSelecionado.dataNascimento = new Date(this.socioSelecionado.dataNascimento);
+    this.socio = lodash.cloneDeep(this.socioSelecionado);
+  }
+
+  disableEdit() {
+    this.socio = new Socio();
+  }
+
+  save(socio: Socio) {
+    if (socio.id) {
+      this.put(socio);
+    } else {
+      this.post(socio);
+    }
   }
 
 }

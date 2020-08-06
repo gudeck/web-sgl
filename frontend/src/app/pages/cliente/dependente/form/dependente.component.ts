@@ -24,7 +24,7 @@ export class DependenteComponent implements OnInit {
   }
 
 
-  openDialog() {
+  openDialog(dependente ?: Dependente) {
     this.visibilidadeDialog = true;
   }
 

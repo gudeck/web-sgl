@@ -1,11 +1,11 @@
 <p-confirmDialog icon="pi pi-exclamation-triangle"></p-confirmDialog>
 <p-toast></p-toast>
 
-<app-dependente #dialogDependente [br]="br" [dependentes]="novoSocio.dependentes" [sexos]="sexos"></app-dependente>
+<app-dependente #dialogDependente [br]="br" [dependentes]="socio.dependentes" [sexos]="sexos"></app-dependente>
 
 <div class="list">
   <p-table [(selection)]="socioSelecionado" [loading]="loading" [paginator]="true" [rows]="20" [value]="socios"
-           selectionMode="single">
+           (onRowSelect)="enableEdit()" (onRowUnselect)="disableEdit(); formCliente.reset()" selectionMode="single">
     <ng-template id="caption" pTemplate="caption">
       <button (click)="setFocus()" icon="pi pi-plus" label="Add" pButton></button>
       <button (click)="confirmExclusion(socioSelecionado)" [disabled]="!isOneSelected()" class="botoesCabecalho"
@@ -25,7 +25,7 @@
     <ng-template let-socio pTemplate="body">
       <tr [pSelectableRow]="socio">
         <td>{{socio["nome"]}}</td>
-        <td>{{socio["dataNascimento"]}}</td>
+        <td>{{socio["dataNascimento"] | date: 'dd/MM/yyyy'}}</td>
         <td>{{socio["ativo"] ? 'Sim' : 'Não'}}</td>
         <td>{{socio["sexo"]["descricao"]}}</td>
         <td>{{socio["cpf"]}}</td>
@@ -44,41 +44,41 @@
       <div class="ui-fluid p-formgrid p-grid">
         <div class="p-field p-col-6">
           <label for="inputNome">Nome</label>
-          <input [(ngModel)]="novoSocio.nome" id="inputNome" maxlength="80" name="nome" pInputText required
+          <input [(ngModel)]="socio.nome" id="inputNome" maxlength="80" name="nome" pInputText required
                  type="text">
         </div>
         <div class="p-field p-col-2">
           <label for="inputDataNascimento">Data de nascimento</label>
-          <p-calendar [(ngModel)]="novoSocio.dataNascimento" [locale]="br" dateFormat="dd/mm/yy"
+          <p-calendar [(ngModel)]="socio.dataNascimento" [locale]="br" dateFormat="dd/mm/yy"
                       id="inputDataNascimento" name="dataNascimento" required
                       showButtonBar="true"></p-calendar>
         </div>
         <div class="p-field p-col-2">
           <label for="inputSexo">Sexo</label>
-          <p-dropdown [(ngModel)]="novoSocio.sexo" [options]="sexos" id="inputSexo" name="sexo"
+          <p-dropdown [(ngModel)]="socio.sexo" [options]="sexos" id="inputSexo" name="sexo"
                       optionLabel="descricao" placeholder="Selecione..." required></p-dropdown>
         </div>
         <div class="p-field p-col-2">
           <label for="inputCpf">CPF</label>
-          <p-inputMask [(ngModel)]="novoSocio.cpf" [unmask]="true" autoClear id="inputCpf" mask="999.999.999-99"
+          <p-inputMask [(ngModel)]="socio.cpf" [unmask]="true" autoClear id="inputCpf" mask="999.999.999-99"
                        name="cpf" required slotChar=" "></p-inputMask>
         </div>
         <div class="p-field p-col-2">
           <label for="inputTelefone">Telefone</label>
-          <p-inputMask [(ngModel)]="novoSocio.telefone" [unmask]="true" autoClear id="inputTelefone"
+          <p-inputMask [(ngModel)]="socio.telefone" [unmask]="true" autoClear id="inputTelefone"
                        mask="(99) 99999-9999" name="telefone" required slotChar=" "></p-inputMask>
         </div>
         <div class="p-field p-col-10">
           <label for="inputEndereco">Endereco</label>
-          <input [(ngModel)]="novoSocio.endereco" id="inputEndereco" maxlength="200" name="endereco"
+          <input [(ngModel)]="socio.endereco" id="inputEndereco" maxlength="200" name="endereco"
                  pInputText required type="text">
         </div>
-
       </div>
       <div class="p-grid p-justify-between">
-        <button (click)="formCliente.reset()" label="Limpar" pButton type="button"></button>
-        <button (click)="post(novoSocio); formCliente.reset()" [disabled]="!formCliente.form.valid" label="Cadastrar"
-                pButton type="submit"></button>
+        <button (click)="disableEdit(); formCliente.reset(); cleanSelection()" label="Limpar" pButton
+                type="button"></button>
+        <button (click)="save(socio); formCliente.reset(); cleanSelection()" [disabled]="!formCliente.form.valid"
+                label="Salvar" pButton type="submit"></button>
       </div>
     </form>
   </p-card>
@@ -90,9 +90,12 @@
               pButton type="button"></button>
     </p-header>
     <div class="ui-fluid p-formgrid p-grid">
-      <p-card *ngFor="let dependente of novoSocio.dependentes; index as i;" [header]="dependente.nome" class="p-col-4">
+      <p-card *ngFor="let dependente of socio.dependentes; index as i;" [header]="dependente.nome" class="p-col-4">
         <p-header>
-          <button (click)="removerDependente(i)" icon="pi pi-trash" pButton type="button"></button>
+          <div class="p-grid p-justify-between">
+            <button (click)="removerDependente(i)" icon="pi pi-trash" pButton type="button"></button>
+            <button (click)="abrirDialog(dependente)" icon="pi pi-pencil" pButton type="button"></button>
+          </div>
         </p-header>
         Nascido(a) em: {{dependente.dataNascimento.toLocaleDateString()}}<br>
         Sexo: {{dependente.sexo.descricao}}<br>
