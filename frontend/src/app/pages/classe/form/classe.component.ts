@@ -11,7 +11,7 @@ export class ClasseComponent implements OnInit {
 
   public classes: Classe[];
 
-  public novaClasse: Classe;
+  public classe: Classe;
   public classeSelecionada: Classe;
 
   public loading: boolean;
@@ -59,6 +59,19 @@ export class ClasseComponent implements OnInit {
     });
   }
 
+  put(classe: Classe) {
+    this.loading = true;
+    this.classeService.put(classe).subscribe(classeAtualizada => {
+      Object.assign(this.classes.find(classeListada => classeListada.id === classeAtualizada.id), classeAtualizada);
+      this.messageService.add({severity: 'info', summary: 'SUCESSO', detail: 'Classe atualizada.'});
+      this.loading = false;
+      this.initialize();
+    }, () => {
+      this.messageService.add({severity: 'info', summary: 'FALHA', detail: 'Não foi possível atualizar classe.'});
+      this.loading = false;
+    });
+  }
+
   isOneSelected(): boolean {
     return Boolean(this.classeSelecionada);
   }
@@ -73,7 +86,7 @@ export class ClasseComponent implements OnInit {
   }
 
   initialize() {
-    this.novaClasse = new Classe();
+    this.classe = new Classe();
   }
 
   confirmExclusion(classeSelecionada: Classe) {
@@ -87,4 +100,21 @@ export class ClasseComponent implements OnInit {
       }
     });
   }
+
+  enableEdit() {
+    this.classe = Object.assign({}, this.classeSelecionada);
+  }
+
+  disableEdit() {
+    this.classe = new Classe();
+  }
+
+  save(classe: Classe) {
+    if (classe.id) {
+      this.put(classe);
+    } else {
+      this.post(classe);
+    }
+  }
+
 }
