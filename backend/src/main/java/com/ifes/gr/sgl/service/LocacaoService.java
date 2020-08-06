@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -18,6 +19,7 @@ public class LocacaoService {
     private final LocacaoRepository locacaoRepository;
 
     public LocacaoDTO create(LocacaoDTO locacaoDTO) {
+        locacaoDTO.setDataLocacao(LocalDateTime.now());
         if (locacaoDTO.getDataDevolucaoPrevista() == null)
             locacaoDTO.setDataDevolucaoPrevista(locacaoDTO.getDataLocacao().plusDays(locacaoDTO.getItem().getTitulo()
                     .getClasse().getPrazoDevolucao()));

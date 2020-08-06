@@ -3,7 +3,7 @@
 
 <div class="list">
   <p-table [(selection)]="locacaoSelecionada" [loading]="loading" [paginator]="true" [rows]="20" [value]="locacoes"
-           selectionMode="single">
+           (onRowSelect)="enableEdit()" (onRowUnselect)="disableEdit(); formLocacao.reset()" selectionMode="single">
     <ng-template id="caption" pTemplate="caption">
       <button (click)="setFocus()" icon="pi pi-plus" label="Add" pButton></button>
       <button (click)="confirmExclusion(locacaoSelecionada)" [disabled]="!isOneSelected()" class="botoesCabecalho"
@@ -24,10 +24,10 @@
       <tr [pSelectableRow]="locacao">
         <td>{{locacao["cliente"]["nome"]}}</td>
         <td>{{locacao["item"]["titulo"]["nome"]}}</td>
-        <td>{{locacao["dataLocacao"]}}</td>
-        <td>{{locacao["dataDevolucaoPrevista"]}}</td>
-        <td>{{locacao["valor"]}}</td>
-        <td>{{locacao["dataDevolucao"]}}</td>
+        <td>{{locacao["dataLocacao"] | date: 'dd/MM/yyyy'}}</td>
+        <td>{{locacao["dataDevolucaoPrevista"] | date: 'dd/MM/yyyy'}}</td>
+        <td>R$ {{locacao["valor"]}}</td>
+        <td>{{locacao["dataDevolucao"] | date: 'dd/MM/yyyy'}}</td>
         <td>{{locacao["multa"]}}</td>
       </tr>
     </ng-template>
@@ -42,33 +42,34 @@
       <div class="ui-fluid p-formgrid p-grid">
         <div class="p-field p-col-7">
           <label for="inputCliente">Cliente</label>
-          <p-autoComplete (completeMethod)="filtrarClientes($event)" [(ngModel)]="novaLocacao.cliente"
+          <p-autoComplete (completeMethod)="filtrarClientes($event)" [(ngModel)]="locacao.cliente"
                           [minLength]="1" [suggestions]="clientesFiltrados" field="nome" forceSelection="forceSelection"
                           id="inputCliente" name="cliente" required></p-autoComplete>
         </div>
         <div class="p-field p-col-2">
           <label for="inputItem">Item</label>
-          <p-autoComplete (completeMethod)="filtrarItens($event)" [(ngModel)]="novaLocacao.item"
-                          [minLength]="1" [suggestions]="itensFiltrados" field="numeroSerie"
-                          forceSelection="forceSelection" id="inputItem" name="item" required></p-autoComplete>
+          <p-dropdown (onChange)="preencherDataDevolucaoPrevista(); preencherValor()" [(ngModel)]="locacao.item"
+                      [options]="itens" filter="filter" filterBy="value.numeroSerie" id="inputItem" name="item"
+                      optionLabel="numeroSerie" placeholder="Selecione..." required></p-dropdown>
         </div>
         <div class="p-field  p-col-2">
           <label for="inputDataDevolucaoPrevista">Data de devolução prevista</label>
-          <p-calendar [(ngModel)]="novaLocacao.dataDevolucaoPrevista" [locale]="br" dateFormat="dd/mm/yy"
+          <p-calendar [(ngModel)]="locacao.dataDevolucaoPrevista" [locale]="br" dateFormat="dd/mm/yy"
                       id="inputDataDevolucaoPrevista" name="dataDevolucaoPrevista" required
                       showButtonBar="true"></p-calendar>
         </div>
         <div class="p-field p-col-1">
           <label for="inputValor">Valor (R$)</label>
-          <p-inputNumber [(ngModel)]="novaLocacao.valor" [maxFractionDigits]="2" [minFractionDigits]="2" currency="BRL"
+          <p-inputNumber [(ngModel)]="locacao.valor" [maxFractionDigits]="2" [minFractionDigits]="2" currency="BRL"
                          id="inputValor" locale="pt-BR" max="10000" mode="currency" name="valor"
                          required></p-inputNumber>
         </div>
       </div>
       <div class="p-grid p-justify-between">
-        <button (click)="formLocacao.reset()" label="Limpar" pButton type="button"></button>
-        <button (click)="post(novaLocacao); formLocacao.reset()" [disabled]="!formLocacao.form.valid" label="Cadastrar"
-                pButton type="submit"></button>
+        <button (click)="disableEdit(); formLocacao.reset(); cleanSelection()" label="Limpar" pButton
+                type="button"></button>
+        <button (click)="save(locacao); formLocacao.reset(); cleanSelection()" [disabled]="!formLocacao.form.valid"
+                label="Salvar" pButton type="submit"></button>
       </div>
     </form>
   </p-card>

@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import * as lodash from 'lodash';
 import {ConfirmationService, MessageService} from 'primeng';
 import {ConstantService} from '../../../service/constant.service';
 import {Cliente} from '../../cliente/model/cliente';
@@ -19,9 +20,8 @@ export class LocacaoComponent implements OnInit {
   public locacoes: Locacao[];
 
   public clientesFiltrados: Cliente[];
-  public itensFiltrados: Item[];
 
-  public novaLocacao: Locacao;
+  public locacao: Locacao;
   public locacaoSelecionada: Locacao;
 
   public br: any;
@@ -75,6 +75,20 @@ export class LocacaoComponent implements OnInit {
     });
   }
 
+  put(locacao: Locacao) {
+    this.loading = true;
+    this.locacaoService.put(locacao).subscribe(locacaoAtualizada => {
+      const indexRegistro = this.locacoes.findIndex(locacaoListada => locacaoListada.id === locacaoAtualizada.id);
+      this.locacoes[indexRegistro] = lodash.cloneDeep(locacaoAtualizada);
+      this.messageService.add({severity: 'info', summary: 'SUCESSO', detail: 'Locação atualizada.'});
+      this.loading = false;
+      this.initialize();
+    }, () => {
+      this.messageService.add({severity: 'info', summary: 'FALHA', detail: 'Não foi possível atualizar locação.'});
+      this.loading = false;
+    });
+  }
+
   isOneSelected(): boolean {
     return Boolean(this.locacaoSelecionada);
   }
@@ -89,7 +103,7 @@ export class LocacaoComponent implements OnInit {
   }
 
   initialize() {
-    this.novaLocacao = new Locacao();
+    this.locacao = new Locacao();
   }
 
   filtrarClientes(event) {
@@ -100,16 +114,6 @@ export class LocacaoComponent implements OnInit {
       }
     });
   }
-
-  filtrarItens(event) {
-    this.itensFiltrados = [];
-    this.itens.forEach(item => {
-      if (item.numeroSerie.toString().indexOf(event.query.toLowerCase()) === 0) {
-        this.itensFiltrados.push(item);
-      }
-    });
-  }
-
   confirmExclusion(locacaoSelecionada: Locacao) {
     this.confirmationService.confirm({
       message: 'Deseja excluir este registro?',
@@ -121,4 +125,32 @@ export class LocacaoComponent implements OnInit {
       }
     });
   }
+
+  enableEdit() {
+    this.locacaoSelecionada.dataDevolucaoPrevista = new Date(this.locacaoSelecionada.dataDevolucaoPrevista);
+    this.locacao = lodash.cloneDeep(this.locacaoSelecionada);
+  }
+
+  disableEdit() {
+    this.locacao = new Locacao();
+  }
+
+  save(locacao: Locacao) {
+    if (locacao.id) {
+      this.put(locacao);
+    } else {
+      this.post(locacao);
+    }
+  }
+
+  preencherDataDevolucaoPrevista() {
+    const dataDevolucaoPrevista = new Date();
+    dataDevolucaoPrevista.setDate(dataDevolucaoPrevista.getDate() + this.locacao.item.titulo.classe.prazoDevolucao);
+    this.locacao.dataDevolucaoPrevista = dataDevolucaoPrevista;
+  }
+
+  preencherValor() {
+    this.locacao.valor = this.locacao.item.titulo.classe.valor;
+  }
+
 }
