@@ -2,8 +2,9 @@
 <p-toast></p-toast>
 
 <div class="list">
-  <p-table [(selection)]="itemSelecionado" [loading]="loading" [paginator]="true" [rows]="20" [value]="itens"
-           (onRowSelect)="enableEdit()" (onRowUnselect)="disableEdit(); formItem.reset()" selectionMode="single">
+  <p-table (onRowSelect)="enableEdit()" (onRowUnselect)="disableEdit(); formItem.reset()"
+           [(selection)]="itemSelecionado" [loading]="loading" [paginator]="true"
+           [rows]="20" [value]="itens" selectionMode="single">
     <ng-template id="caption" pTemplate="caption">
       <button (click)="setFocus()" icon="pi pi-plus" label="Add" pButton></button>
       <button (click)="confirmExclusion(itemSelecionado)" [disabled]="!isOneSelected()" class="botoesCabecalho"

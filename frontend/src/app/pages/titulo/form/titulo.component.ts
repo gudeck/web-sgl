@@ -15,7 +15,7 @@ import {TituloService} from '../service/titulo.service';
 
 @Component({
   selector: 'app-titulo',
-  templateUrl: './titulo.component.html',
+  templateUrl: './titulo.component.html'
 })
 export class TituloComponent implements OnInit {
 

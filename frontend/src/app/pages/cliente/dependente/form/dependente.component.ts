@@ -17,13 +17,13 @@ export class DependenteComponent implements OnInit {
   @Input() public responsavel: Socio;
   @Input() public sexos: Sexo[];
 
-  closeDialog() {
-    this.visibilidadeDialog = false;
-  }
-
   constructor(
     private dependenteService: DependenteService
   ) {
+  }
+
+  closeDialog() {
+    this.visibilidadeDialog = false;
   }
 
   ngOnInit(): void {

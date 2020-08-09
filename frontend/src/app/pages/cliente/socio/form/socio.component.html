@@ -4,8 +4,9 @@
 <app-dependente #dialogDependente [br]="br" [responsavel]="socio" [sexos]="sexos"></app-dependente>
 
 <div class="list">
-  <p-table [(selection)]="socioSelecionado" [loading]="loading" [paginator]="true" [rows]="20" [value]="socios"
-           (onRowSelect)="enableEdit()" (onRowUnselect)="disableEdit(); formCliente.reset()" selectionMode="single">
+  <p-table (onRowSelect)="enableEdit()" (onRowUnselect)="disableEdit(); formCliente.reset()"
+           [(selection)]="socioSelecionado" [loading]="loading" [paginator]="true"
+           [rows]="20" [value]="socios" selectionMode="single">
     <ng-template id="caption" pTemplate="caption">
       <button (click)="setFocus()" icon="pi pi-plus" label="Add" pButton></button>
       <button (click)="confirmExclusion(socioSelecionado)" [disabled]="!isOneSelected()" class="botoesCabecalho"

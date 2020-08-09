@@ -1,0 +1,19 @@
+<div class="list">
+  <p-table (onRowSelect)="enableEdit(); isOneSelected()" (onRowUnselect)="disableEdit(); isOneSelected()"
+           [(selection)]="selecao" [paginator]="true" [rows]="numeroRegistros" [value]="registros"
+           selectionMode="single">
+    <ng-template id="caption" pTemplate="caption">
+      Atores
+    </ng-template>
+    <ng-template let-ator pTemplate="body">
+      <tr [pSelectableRow]="ator">
+        <td>{{ator["nome"]}}</td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      Total de registros: {{registros.length}}
+    </ng-template>
+  </p-table>
+</div>
+<p-confirmDialog icon="pi pi-exclamation-triangle"></p-confirmDialog>
+

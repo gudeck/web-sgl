@@ -34,7 +34,7 @@ ul > li:nth-child(6) {
 }
 
 h2 {
-  color: #DEDEDE;
+  color: rgb(222, 222, 222);
   font-weight: bold;
   font-family: "Open Sans", "Helvetica Neue", sans-serif;
 }
@@ -48,7 +48,7 @@ h2 {
 
 #sidebar {
   height: 100vh;
-  background-color: #323232;
+  background-color: rgb(50, 50, 50);
 }
 
 #content {
@@ -57,5 +57,5 @@ h2 {
 
 .p-grid {
   height: 100vh;
-  background-color: dimgray;
+  background-color: rgb(105, 105, 105);
 }

@@ -5,7 +5,7 @@ import {ClasseService} from '../service/classe.service';
 
 @Component({
   selector: 'app-classe',
-  templateUrl: './classe.component.html',
+  templateUrl: './classe.component.html'
 })
 export class ClasseComponent implements OnInit {
 
