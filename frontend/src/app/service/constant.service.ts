@@ -17,6 +17,8 @@ export class ConstantService {
     clear: 'Limpar'
   };
 
+  readonly quantidadeRegistrosLista = 20;
+
   constructor() {
   }
 }

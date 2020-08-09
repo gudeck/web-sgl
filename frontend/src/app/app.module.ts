@@ -30,7 +30,8 @@ import {AppComponent} from './app.component';
 import {HomeComponent} from './components/home/home.component';
 import {LayoutComponent} from './components/layout/layout.component';
 import {SidebarComponent} from './components/sidebar/sidebar.component';
-import {AtorComponent} from './pages/ator/form/ator.component';
+import {AtorFormComponent} from './pages/ator/form/ator-form.component';
+import {AtorListComponent} from './pages/ator/list/ator-list.component';
 import {ClasseComponent} from './pages/classe/form/classe.component';
 import {DependenteComponent} from './pages/cliente/dependente/form/dependente.component';
 import {SocioComponent} from './pages/cliente/socio/form/socio.component';
@@ -42,7 +43,7 @@ import {TituloComponent} from './pages/titulo/form/titulo.component';
 @NgModule({
   declarations: [
     AppComponent,
-    AtorComponent,
+    AtorFormComponent,
     DiretorComponent,
     SidebarComponent,
     ClasseComponent,
@@ -52,7 +53,8 @@ import {TituloComponent} from './pages/titulo/form/titulo.component';
     LocacaoComponent,
     LayoutComponent,
     HomeComponent,
-    DependenteComponent
+    DependenteComponent,
+    AtorListComponent
   ],
   imports: [
     BrowserModule,

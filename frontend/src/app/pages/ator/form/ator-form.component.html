@@ -1,0 +1,26 @@
+<app-ator-list #atorList (oneSelected)="onOneSelected($event)" [form]="formAtor"></app-ator-list>
+<div class="crud">
+  <p-card header="Cadastro de Ator">
+    <form #formAtor="ngForm">
+      <div class="ui-fluid p-formgrid p-grid">
+        <div class="p-field p-col-12">
+          <label for="inputNome">Nome</label>
+          <input [(ngModel)]="atorList.registro.nome" id="inputNome" maxlength="80" name="nome" pInputText required
+                 type="text">
+        </div>
+      </div>
+      <div class="p-grid p-justify-between">
+        <div>
+          <button (click)="confirmExclusion(atorList.registro);" [disabled]="!isOneSelected" class="botoesCabecalho"
+                  icon="pi pi-trash" label="Excluir" pButton></button>
+        </div>
+        <div>
+          <button (click)="atorList.cleanSelection();" icon="pi pi-undo" label="Limpar" pButton type="button"></button>
+          <button (click)="save(atorList.registro); atorList.disableEdit();" [disabled]="!formAtor.form.valid"
+                  icon="pi pi-save" id="botao-salvar" label="Salvar" pButton type="submit"></button>
+        </div>
+      </div>
+    </form>
+  </p-card>
+</div>
+<p-toast></p-toast>

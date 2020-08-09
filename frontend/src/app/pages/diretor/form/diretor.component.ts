@@ -5,7 +5,7 @@ import {DiretorService} from '../service/diretor.service';
 
 @Component({
   selector: 'app-diretor',
-  templateUrl: './diretor.component.html',
+  templateUrl: './diretor.component.html'
 })
 export class DiretorComponent implements OnInit {
 

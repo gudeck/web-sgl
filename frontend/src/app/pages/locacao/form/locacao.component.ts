@@ -11,7 +11,7 @@ import {LocacaoService} from '../service/locacao.service';
 
 @Component({
   selector: 'app-locacao',
-  templateUrl: './locacao.component.html',
+  templateUrl: './locacao.component.html'
 })
 export class LocacaoComponent implements OnInit {
 
@@ -114,6 +114,7 @@ export class LocacaoComponent implements OnInit {
       }
     });
   }
+
   confirmExclusion(locacaoSelecionada: Locacao) {
     this.confirmationService.confirm({
       message: 'Deseja excluir este registro?',

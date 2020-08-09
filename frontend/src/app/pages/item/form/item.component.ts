@@ -11,7 +11,7 @@ import {TipoItemService} from '../service/tipo-item.service';
 
 @Component({
   selector: 'app-item',
-  templateUrl: './item.component.html',
+  templateUrl: './item.component.html'
 })
 export class ItemComponent implements OnInit {
 
