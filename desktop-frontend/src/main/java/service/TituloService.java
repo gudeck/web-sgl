@@ -16,9 +16,13 @@ public class TituloService {
         this.tituloResource = new TituloResource();
     }
 
-    public List<Titulo> getTitulos() {
+    public List<Titulo> get() {
         Type listType = new TypeToken<List<Titulo>>() {
         }.getType();
-        return new Gson().fromJson(tituloResource.getTitulos(), listType);
+        return new Gson().fromJson(tituloResource.get(), listType);
+    }
+
+    public void delete(Long id) throws Exception {
+        tituloResource.delete(id);
     }
 }

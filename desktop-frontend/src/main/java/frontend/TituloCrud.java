@@ -5,8 +5,6 @@ import service.TituloService;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 
 public class TituloCrud extends JFrame {
@@ -20,7 +18,7 @@ public class TituloCrud extends JFrame {
     public TituloCrud(String tituloPagina) {
         super(tituloPagina);
         TituloService tituloService = new TituloService();
-        titulos = tituloService.getTitulos();
+        titulos = tituloService.get();
 
         populateJTable(titulos);
 
@@ -30,11 +28,29 @@ public class TituloCrud extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
 
-        btnExcluir.addActionListener(e -> System.out.println(titulos.get(tbTitulos.getSelectedRow()).getId()));
+        btnExcluir.addActionListener(e -> {
+            try {
+                int indexRegistro = tbTitulos.getSelectedRow();
+                if (indexRegistro == -1)
+                    JOptionPane.showMessageDialog(this, "Selecione um título.", "ERRO", JOptionPane.ERROR_MESSAGE);
+                else {
+                    tituloService.delete(titulos.get(indexRegistro).getId());
+                    excluirTitulo(indexRegistro);
+                    JOptionPane.showMessageDialog(this, "Título excluído.", "SUCESSO", JOptionPane.INFORMATION_MESSAGE);
+                }
+            } catch (Exception exception) {
+                JOptionPane.showMessageDialog(this, "Título associado a item(ns).", "ERRO", JOptionPane.ERROR_MESSAGE);
+            }
+        });
     }
 
     public static void main(String[] args) {
-        new TituloCrud("App");
+        new TituloCrud("Marco 04");
+    }
+
+    private void excluirTitulo(int indexRegistro) {
+        titulos.remove(indexRegistro);
+        populateJTable(titulos);
     }
 
     private void populateJTable(List<Titulo> titulos) {
