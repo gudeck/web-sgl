@@ -25,7 +25,9 @@
         <children>
           <component id="15f3f" class="javax.swing.JTable" binding="tbTitulos">
             <constraints/>
-            <properties/>
+            <properties>
+              <enabled value="true"/>
+            </properties>
           </component>
         </children>
       </scrollpane>

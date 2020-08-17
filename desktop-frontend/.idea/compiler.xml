@@ -9,5 +9,8 @@
         <module name="desktop-frontend" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="desktop-frontend" target="8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

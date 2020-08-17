@@ -44,10 +44,6 @@ public class TituloCrud extends JFrame {
         });
     }
 
-    public static void main(String[] args) {
-        new TituloCrud("Marco 04");
-    }
-
     private void excluirTitulo(int indexRegistro) {
         titulos.remove(indexRegistro);
         populateJTable(titulos);
